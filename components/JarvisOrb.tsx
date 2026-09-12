@@ -8,6 +8,7 @@ import { HandTracker, type TrackerStatus } from "@/lib/handTracker";
 type CameraState = "off" | "starting" | "on" | "error";
 type VoiceState = "idle" | "listening" | "speaking" | "unsupported" | "error";
 type UiMode = "original" | "cinematic";
+type ChatMessage = { id: number; role: "user" | "rox"; text: string };
 
 type SpeechRecognitionEventLike = Event & {
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
@@ -58,6 +59,11 @@ export default function RoxOrb() {
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
   const [voiceTranscript, setVoiceTranscript] = useState("Awaiting voice command");
   const [uiMode, setUiMode] = useState<UiMode>("original");
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
+  const chatDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
 
   const stopVoiceMeter = () => {
     if (audioFrameRef.current !== null) {
@@ -194,27 +200,62 @@ export default function RoxOrb() {
 
   const handleVoiceCommand = useCallback(
     async (command: string) => {
-      setVoiceTranscript(`Processing: ${command}`);
+      const message = command.trim();
+      if (!message) return;
+      setChatMessages((current) => [...current, { id: Date.now(), role: "user", text: message }]);
+      setVoiceTranscript(`Processing: ${message}`);
 
       try {
         const response = await fetch("/api/assistant", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: command }),
+          body: JSON.stringify({ message }),
         });
         if (!response.ok) throw new Error("Assistant request failed");
         const result = (await response.json()) as AssistantResult;
         applyAssistantAction(result.action);
         setVoiceTranscript(`${result.provider.toUpperCase()}: ${result.reply}`);
+        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: result.reply }]);
         speak(result.reply);
       } catch {
         const fallback = "The assistant service is unavailable. Local orb controls are still ready.";
         setVoiceTranscript(fallback);
+        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: fallback }]);
         speak(fallback);
       }
     },
     [toggleGestures],
   );
+
+  const sendChatMessage = () => {
+    const message = chatInput.trim();
+    if (!message) return;
+    setChatInput("");
+    void handleVoiceCommand(message);
+  };
+
+  const startChatDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    chatDragRef.current = {
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: chatPosition.x,
+      originY: chatPosition.y,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const moveChatDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const drag = chatDragRef.current;
+    if (!drag) return;
+    setChatPosition({
+      x: drag.originX + event.clientX - drag.startX,
+      y: drag.originY + event.clientY - drag.startY,
+    });
+  };
+
+  const stopChatDrag = () => {
+    chatDragRef.current = null;
+  };
 
   const startVoiceCapture = async () => {
     if (voiceStartingRef.current || recognitionRef.current || voiceState === "speaking") return;
@@ -420,6 +461,60 @@ export default function RoxOrb() {
           <span>TO TALK</span>
         </div>
       </div>
+
+      <button
+        type="button"
+        className={`chat-launcher${chatOpen ? " is-open" : ""}`}
+        aria-label={chatOpen ? "Close Rox chat" : "Open Rox chat"}
+        aria-expanded={chatOpen}
+        onClick={() => setChatOpen((open) => !open)}
+      >
+        <span className="chat-launcher-core" />
+      </button>
+
+      <section
+        className={`chat-panel${chatOpen ? " is-open" : ""}`}
+        aria-label="Rox conversation"
+        style={{ "--chat-x": `${chatPosition.x}px`, "--chat-y": `${chatPosition.y}px` } as React.CSSProperties}
+      >
+        <div
+          className="chat-panel-header"
+          onPointerDown={startChatDrag}
+          onPointerMove={moveChatDrag}
+          onPointerUp={stopChatDrag}
+          onPointerCancel={stopChatDrag}
+        >
+          <span>ROX / SESSION TRANSCRIPT</span>
+          <button type="button" aria-label="Close chat" onClick={() => setChatOpen(false)}>×</button>
+        </div>
+        <div className="chat-messages">
+          {chatMessages.length === 0 ? (
+            <div className="chat-empty">Your conversation with Rox will appear here.</div>
+          ) : (
+            chatMessages.map((message) => (
+              <div key={message.id} className={`chat-message chat-${message.role}`}>
+                <span>{message.role === "user" ? "YOU" : "ROX"}</span>
+                <p>{message.text}</p>
+              </div>
+            ))
+          )}
+        </div>
+        <form
+          className="chat-composer"
+          onSubmit={(event) => {
+            event.preventDefault();
+            sendChatMessage();
+          }}
+        >
+          <input
+            value={chatInput}
+            onChange={(event) => setChatInput(event.target.value)}
+            placeholder="Message Rox..."
+            aria-label="Message Rox"
+          />
+          <button type="submit" aria-label="Send message">↗</button>
+        </form>
+      </section>
 
       <div className="hud hud-hint">
         <div>
