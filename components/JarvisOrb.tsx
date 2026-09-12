@@ -9,6 +9,7 @@ type CameraState = "off" | "starting" | "on" | "error";
 type VoiceState = "idle" | "listening" | "speaking" | "unsupported" | "error";
 type UiMode = "original" | "cinematic";
 type ChatMessage = { id: number; role: "user" | "rox"; text: string };
+type SystemSnapshot = { memoryUsedPercent: number; cpuCores: number; loadAverage: number[]; capturedAt: string };
 
 type SpeechRecognitionEventLike = Event & {
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
@@ -62,6 +63,7 @@ export default function RoxOrb() {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [systemSnapshot, setSystemSnapshot] = useState<SystemSnapshot | null>(null);
   const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
   const chatDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
 
@@ -416,6 +418,26 @@ export default function RoxOrb() {
     };
   });
 
+  useEffect(() => {
+    let cancelled = false;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const poll = async () => {
+      try {
+        const response = await fetch("/api/system", { cache: "no-store" });
+        if (!response.ok || cancelled) return;
+        setSystemSnapshot((await response.json()) as SystemSnapshot);
+      } catch {
+        // The UI remains usable if the optional system monitor is unavailable.
+      }
+    };
+    void poll();
+    timer = setInterval(() => void poll(), 15_000);
+    return () => {
+      cancelled = true;
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+
   return (
     <div className={`rox-shell ui-${uiMode}`}>
       <div ref={containerRef} className="orb-root" />
@@ -442,6 +464,11 @@ export default function RoxOrb() {
           <span>SYNC</span><b>ACTIVE</b><i><em style={{ width: "91%" }} /></i>
         </div>
         <div className="diagnostic-code">RX-07 · ORBITAL MESH · 0xFF3A · READY</div>
+        {systemSnapshot && (
+          <div className={`diagnostic-system${systemSnapshot.memoryUsedPercent > 85 ? " warning" : ""}`}>
+            HOST {systemSnapshot.memoryUsedPercent}% RAM · {systemSnapshot.cpuCores} CORES · LOAD {systemSnapshot.loadAverage[0]}
+          </div>
+        )}
       </div>
 
       <div className={`hud hud-voice voice-${voiceState}`} aria-live="polite">

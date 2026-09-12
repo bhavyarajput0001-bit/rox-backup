@@ -730,6 +730,19 @@ body:has(.palette-lava[aria-pressed="true"]) {
   opacity: 0.6;
 }
 
+.diagnostic-system {
+  margin-top: 6px;
+  color: var(--hud-bright);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  opacity: 0.62;
+}
+
+.diagnostic-system.warning {
+  color: var(--hud-hot);
+  text-shadow: 0 0 8px var(--hud-mid);
+}
+
 .palette-panel {
   display: flex;
   flex-direction: column;

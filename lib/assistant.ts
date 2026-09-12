@@ -1,4 +1,5 @@
 import { calculate, capabilityReport, getNews, getWeather, readWebpage, searchWeb } from "@/lib/onlineTools";
+import { openApp, openUrl, searchUrl, systemSnapshot } from "@/lib/automation";
 import { remember } from "@/lib/memory";
 
 export type AssistantAction =
@@ -166,12 +167,68 @@ async function onlineIntent(message: string): Promise<AssistantResult | null> {
   return null;
 }
 
+async function automationIntent(message: string): Promise<AssistantResult | null> {
+  const normalized = message.toLowerCase().trim();
+  if (normalized.includes("system scan") || normalized.includes("system status") || normalized === "scan my system") {
+    const snapshot = systemSnapshot();
+    return {
+      reply: `System scan complete. Memory is ${snapshot.memoryUsedPercent}% used across ${snapshot.cpuCores} CPU cores. Load is ${snapshot.loadAverage[0]}.`,
+      provider: "local",
+    };
+  }
+
+  const directUrl = message.match(/(?:open|go to|visit)\s+(https?:\/\/[^\s]+)/i)?.[1];
+  if (directUrl) {
+    try {
+      const opened = await openUrl(directUrl);
+      return { reply: `Opening ${opened}.`, provider: "local" };
+    } catch {
+      return { reply: "I could not open that website.", provider: "local" };
+    }
+  }
+
+  const youtube = message.match(/(?:play|open|search)\s+(.+?)\s+(?:on|in)\s+youtube/i) ?? message.match(/^youtube\s+(.+)/i);
+  if (youtube?.[1]) {
+    try {
+      const url = searchUrl("youtube", youtube[1]);
+      await openUrl(url);
+      return { reply: `Opening YouTube results for ${youtube[1].trim()}.`, provider: "local" };
+    } catch {
+      return { reply: "I could not open YouTube.", provider: "local" };
+    }
+  }
+
+  const spotify = message.match(/(?:play|open|search)\s+(.+?)\s+(?:on|in)\s+spotify/i) ?? message.match(/^spotify\s+(.+)/i);
+  if (spotify?.[1]) {
+    try {
+      await openUrl(searchUrl("spotify", spotify[1]));
+      return { reply: `Opening Spotify results for ${spotify[1].trim()}.`, provider: "local" };
+    } catch {
+      return { reply: "I could not open Spotify.", provider: "local" };
+    }
+  }
+
+  const app = message.match(/^(?:open|launch|start)\s+(?:the\s+)?(.+?)\s+app$/i);
+  if (app?.[1]) {
+    try {
+      await openApp(app[1]);
+      return { reply: `Launching ${app[1].trim()}.`, provider: "local" };
+    } catch {
+      return { reply: `I could not launch ${app[1].trim()}.`, provider: "local" };
+    }
+  }
+  return null;
+}
+
 export async function runAssistant(message: string, history: AssistantTurn[] = []): Promise<AssistantResult> {
   const local = localIntent(message);
   if (local) return local;
 
   const online = await onlineIntent(message);
   if (online) return online;
+
+  const automation = await automationIntent(message);
+  if (automation) return automation;
 
   const model = await modelReply(message, history.slice(-8));
   if (model) return model;
