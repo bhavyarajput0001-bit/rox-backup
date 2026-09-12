@@ -39,7 +39,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.8;
   container.appendChild(renderer.domElement);
@@ -545,7 +545,8 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     phase: number;
   }
   const debris: THREE.Mesh[] = [];
-  for (let i = 0; i < 250; i++) {
+  const debrisCount = window.innerWidth < 900 ? 110 : 160;
+  for (let i = 0; i < debrisCount; i++) {
     const geo = debrisGeos[Math.floor(Math.random() * debrisGeos.length)];
     const mat = registerMaterial(new THREE.MeshBasicMaterial({
       color: Math.random() > 0.7 ? C_BRIGHT : C_MID,
@@ -587,7 +588,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   // ═══════════════════════════════════════════════
   // DUST PARTICLES — lots of them
   // ═══════════════════════════════════════════════
-  const dustCount = 2000;
+  const dustCount = window.innerWidth < 900 ? 700 : 1200;
   const dustPos = new Float32Array(dustCount * 3);
 
   for (let i = 0; i < dustCount; i++) {
@@ -730,10 +731,15 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   let flickerTimer = 0;
   let rafId = 0;
   let disposed = false;
+  let lastFrameAt = 0;
+  let pageVisible = document.visibilityState === "visible";
+  const frameInterval = 1000 / 30;
 
-  function animate() {
+  function animate(now = performance.now()) {
     if (disposed) return;
     rafId = requestAnimationFrame(animate);
+    if (!pageVisible || now - lastFrameAt < frameInterval) return;
+    lastFrameAt = now;
     const t = clock.getElapsedTime();
 
     // Outer shell rotation
@@ -852,6 +858,15 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
 
   animate();
 
+  function onVisibilityChange() {
+    pageVisible = document.visibilityState === "visible";
+    if (pageVisible) {
+      clock.getDelta();
+      lastFrameAt = performance.now();
+    }
+  }
+  document.addEventListener("visibilitychange", onVisibilityChange);
+
   // ——— RESIZE ———
   function onResize() {
     const w = container.clientWidth;
@@ -868,6 +883,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     disposed = true;
     cancelAnimationFrame(rafId);
     window.removeEventListener("resize", onResize);
+    document.removeEventListener("visibilitychange", onVisibilityChange);
     controls.dispose();
     scene.traverse((obj) => {
       const mesh = obj as THREE.Mesh;

@@ -26,6 +26,11 @@ and can answer open-ended requests through any OpenAI-compatible API by copying
 `.env.example` to `.env.local` and setting `AI_BASE_URL`, `AI_API_KEY`, and
 `AI_MODEL`.
 
+Built-in assistant tools include calculator, weather lookup, web search, webpage
+reading, news headlines, and bounded conversation context. The orb render loop
+is capped at 30 FPS, uses adaptive particle counts, lowers maximum pixel ratio,
+and pauses while the tab is hidden to reduce CPU, GPU, RAM, and heat usage.
+
 ## Controls
 
 ### Mouse / touch

@@ -209,7 +209,10 @@ export default function RoxOrb() {
         const response = await fetch("/api/assistant", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message }),
+          body: JSON.stringify({
+            message,
+            history: chatMessages.slice(-8).map((turn) => ({ role: turn.role, content: turn.text })),
+          }),
         });
         if (!response.ok) throw new Error("Assistant request failed");
         const result = (await response.json()) as AssistantResult;
@@ -224,7 +227,7 @@ export default function RoxOrb() {
         speak(fallback);
       }
     },
-    [toggleGestures],
+    [chatMessages, toggleGestures],
   );
 
   const sendChatMessage = () => {

@@ -1,4 +1,4 @@
-import { capabilityReport, readWebpage, searchWeb } from "@/lib/onlineTools";
+import { calculate, capabilityReport, getNews, getWeather, readWebpage, searchWeb } from "@/lib/onlineTools";
 
 export type AssistantAction =
   | { type: "palette"; value: "original" | "lava" }
@@ -10,6 +10,11 @@ export type AssistantResult = {
   reply: string;
   action?: AssistantAction;
   provider: "local" | "model" | "online";
+};
+
+export type AssistantTurn = {
+  role: "user" | "rox";
+  content: string;
 };
 
 const SYSTEM_PROMPT = [
@@ -55,7 +60,7 @@ function localIntent(message: string): AssistantResult | null {
   return null;
 }
 
-async function modelReply(message: string): Promise<AssistantResult | null> {
+async function modelReply(message: string, history: AssistantTurn[]): Promise<AssistantResult | null> {
   const apiKey = process.env.AI_API_KEY;
   if (!apiKey) return null;
 
@@ -76,6 +81,10 @@ async function modelReply(message: string): Promise<AssistantResult | null> {
         temperature: 0.4,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
+          ...history.map((turn) => ({
+            role: turn.role === "rox" ? ("assistant" as const) : ("user" as const),
+            content: turn.content,
+          })),
           { role: "user", content: message },
         ],
       }),
@@ -98,6 +107,34 @@ async function onlineIntent(message: string): Promise<AssistantResult | null> {
 
   if (normalized.includes("online skills") || normalized.includes("what skills do you have")) {
     return { reply: capabilityReport(), provider: "local" };
+  }
+
+  const calculation = message.match(/(?:calculate|what is)\s+([0-9()+\-*/%.\s]+)$/i);
+  if (calculation?.[1]) {
+    try {
+      return { reply: `The answer is ${calculate(calculation[1])}.`, provider: "local" };
+    } catch {
+      return { reply: "I could not parse that calculation.", provider: "local" };
+    }
+  }
+
+  const weatherMatch = message.match(/(?:weather|temperature)\s+(?:in|at|for)\s+(.+)/i);
+  if (weatherMatch?.[1]) {
+    try {
+      return { reply: await getWeather(weatherMatch[1]), provider: "online" };
+    } catch {
+      return { reply: "I could not reach the weather service right now.", provider: "local" };
+    }
+  }
+
+  const newsMatch = message.match(/(?:news|headlines)(?:\s+(?:about|on|for))?\s*(.*)$/i);
+  if (newsMatch) {
+    try {
+      const headlines = await getNews(newsMatch[1]);
+      return { reply: headlines ? `Here are the latest headlines:\n${headlines}` : "No headlines were found.", provider: "online" };
+    } catch {
+      return { reply: "I could not reach the news service right now.", provider: "local" };
+    }
   }
 
   const url = message.match(/https?:\/\/[^\s]+/i)?.[0];
@@ -123,14 +160,14 @@ async function onlineIntent(message: string): Promise<AssistantResult | null> {
   return null;
 }
 
-export async function runAssistant(message: string): Promise<AssistantResult> {
+export async function runAssistant(message: string, history: AssistantTurn[] = []): Promise<AssistantResult> {
   const local = localIntent(message);
   if (local) return local;
 
   const online = await onlineIntent(message);
   if (online) return online;
 
-  const model = await modelReply(message);
+  const model = await modelReply(message, history.slice(-8));
   if (model) return model;
 
   return {
