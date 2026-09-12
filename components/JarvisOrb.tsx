@@ -7,6 +7,7 @@ import { HandTracker, type TrackerStatus } from "@/lib/handTracker";
 
 type CameraState = "off" | "starting" | "on" | "error";
 type VoiceState = "idle" | "listening" | "speaking" | "unsupported" | "error";
+type UiMode = "original" | "cinematic";
 
 type SpeechRecognitionEventLike = Event & {
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
@@ -56,6 +57,7 @@ export default function RoxOrb() {
   const [palette, setPalette] = useState<OrbPalette>("original");
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
   const [voiceTranscript, setVoiceTranscript] = useState("Awaiting voice command");
+  const [uiMode, setUiMode] = useState<UiMode>("original");
 
   const stopVoiceMeter = () => {
     if (audioFrameRef.current !== null) {
@@ -347,7 +349,7 @@ export default function RoxOrb() {
   });
 
   return (
-    <>
+    <div className={`rox-shell ui-${uiMode}`}>
       <div ref={containerRef} className="orb-root" />
 
       <div className="overlay-vignette" />
@@ -384,6 +386,39 @@ export default function RoxOrb() {
               : "VOICE LINK"}
         </span>
         <small>{voiceTranscript}</small>
+      </div>
+
+      <div className="hud ui-mode-switch" role="group" aria-label="Interface mode">
+        <span>INTERFACE</span>
+        <button
+          type="button"
+          className={uiMode === "original" ? "active" : ""}
+          aria-pressed={uiMode === "original"}
+          onClick={() => setUiMode("original")}
+        >
+          CORE
+        </button>
+        <button
+          type="button"
+          className={uiMode === "cinematic" ? "active" : ""}
+          aria-pressed={uiMode === "cinematic"}
+          onClick={() => setUiMode("cinematic")}
+        >
+          FLOW
+        </button>
+      </div>
+
+      <div className="cinematic-console" aria-live="polite">
+        <div className="cinematic-orbit-label">ROX / PERSONAL INTELLIGENCE</div>
+        <div className="cinematic-state">
+          <span className="cinematic-state-dot" />
+          {voiceState === "listening" ? "LISTENING TO YOU" : voiceState === "speaking" ? "ROX IS SPEAKING" : "READY WHEN YOU ARE"}
+        </div>
+        <div className="cinematic-transcript">{voiceTranscript}</div>
+        <div className="cinematic-actions">
+          <span>HOLD SPACE</span>
+          <span>TO TALK</span>
+        </div>
       </div>
 
       <div className="hud hud-hint">
@@ -488,6 +523,6 @@ export default function RoxOrb() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

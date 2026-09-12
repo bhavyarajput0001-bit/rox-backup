@@ -9,6 +9,10 @@ body {
   height: 100%;
 }
 
+.rox-shell {
+  min-height: 100%;
+}
+
 body {
   background: #000;
   overflow: hidden;
@@ -161,6 +165,149 @@ body:has(.palette-lava[aria-pressed="true"]) {
   color: var(--hud-bright);
   font-family: "Courier New", monospace;
   user-select: none;
+}
+
+.ui-mode-switch {
+  top: 22px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px;
+  border: 1px solid color-mix(in srgb, var(--hud-bright) 28%, transparent);
+  background: rgba(5, 0, 0, 0.55);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+}
+
+.ui-mode-switch > span {
+  padding: 0 5px;
+  color: var(--hud-hot);
+  opacity: 0.62;
+}
+
+.ui-mode-switch button {
+  min-width: 42px;
+  height: 24px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--hud-bright);
+  font: bold 9px "Courier New", monospace;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.ui-mode-switch button.active {
+  border-color: var(--hud-hot);
+  background: color-mix(in srgb, var(--hud-mid) 35%, transparent);
+  color: var(--hud-hot);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--hud-bright) 25%, transparent) inset;
+}
+
+.cinematic-console {
+  position: fixed;
+  left: 50%;
+  bottom: 9vh;
+  z-index: 20;
+  display: none;
+  width: min(560px, calc(100vw - 40px));
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.cinematic-orbit-label {
+  color: var(--hud-hot);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  opacity: 0.7;
+}
+
+.cinematic-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-top: 13px;
+  color: var(--hud-hot);
+  font-size: clamp(16px, 2.4vw, 24px);
+  font-weight: bold;
+  letter-spacing: 0.16em;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--hud-bright) 70%, transparent);
+}
+
+.cinematic-state-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hud-bright);
+  box-shadow: 0 0 15px var(--hud-bright);
+  animation: cinematic-pulse 1.1s ease-in-out infinite alternate;
+}
+
+.cinematic-transcript {
+  max-width: 520px;
+  margin: 12px auto 0;
+  overflow: hidden;
+  color: var(--hud-bright);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cinematic-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  color: var(--hud-hot);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  opacity: 0.55;
+}
+
+@keyframes cinematic-pulse {
+  from { transform: scale(0.72); opacity: 0.5; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+
+.ui-cinematic .hud-title,
+.ui-cinematic .hud-diagnostics,
+.ui-cinematic .hud-hint,
+.ui-cinematic .hud-voice,
+.ui-cinematic .hud-controls {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.ui-cinematic .ui-mode-switch,
+.ui-cinematic .cinematic-console {
+  opacity: 1;
+}
+
+.ui-cinematic .cinematic-console {
+  display: block;
+}
+
+.ui-cinematic .orb-root canvas {
+  transform: translateX(0) scale(1.16);
+}
+
+.ui-cinematic .voice-hologram {
+  inset: 4% 6% 2% 6%;
+  opacity: 0.85;
+}
+
+.ui-cinematic .voice-hologram.voice-idle {
+  opacity: 0.22;
+}
+
+.ui-cinematic .voice-hologram.voice-listening,
+.ui-cinematic .voice-hologram.voice-speaking {
+  opacity: 1;
 }
 
 .hud-controls {
