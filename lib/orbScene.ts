@@ -13,8 +13,16 @@ export interface OrbSceneApi {
   zoomIn(): void;
   zoomOut(): void;
   resetView(): void;
+  setPalette(palette: OrbPalette): void;
   dispose(): void;
 }
+
+export type OrbPalette = "original" | "lava";
+
+const PALETTES: Record<OrbPalette, [number, number, number, number, number]> = {
+  original: [0xffaa30, 0xdd7700, 0x884400, 0x553300, 0xffcc66],
+  lava: [0xb3090b, 0x7a0508, 0x3a0204, 0x1a0102, 0xff3b1f],
+};
 
 const HOME_POSITION = new THREE.Vector3(0, 0.5, 5.5);
 const MIN_DISTANCE = 0.6;
@@ -47,6 +55,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     0.2, // threshold
   );
   composer.addPass(bloom);
+  let paletteBloom = 1;
 
   // Chromatic aberration + color grade shader
   const chromaticShader = {
@@ -54,6 +63,8 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
       tDiffuse: { value: null },
       uTime: { value: 0 },
       uIntensity: { value: 0.003 },
+      uLava: { value: 0 },
+      uLavaPulse: { value: 0 },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -66,6 +77,8 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
       uniform sampler2D tDiffuse;
       uniform float uTime;
       uniform float uIntensity;
+      uniform float uLava;
+      uniform float uLavaPulse;
       varying vec2 vUv;
       void main() {
         vec2 dir = vUv - vec2(0.5);
@@ -77,8 +90,11 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
         vec4 cg = texture2D(tDiffuse, vUv);
         vec4 cb = texture2D(tDiffuse, vUv - dir * offset * 0.5);
         gl_FragColor = vec4(cr.r, cg.g * 1.05, cb.b * 0.6, 1.0) * flicker;
-        // Push towards amber/orange tone
-        gl_FragColor.rgb = mix(gl_FragColor.rgb, gl_FragColor.rgb * vec3(1.15, 0.85, 0.55), 0.3);
+        // Keep the original amber grade, or push the lava palette toward red-orange.
+        vec3 amberGrade = gl_FragColor.rgb * vec3(1.15, 0.85, 0.55);
+        vec3 lavaGrade = gl_FragColor.rgb * vec3(1.25, 0.18, 0.04);
+        gl_FragColor.rgb = mix(mix(gl_FragColor.rgb, amberGrade, 0.3), lavaGrade, uLava * 0.7);
+        gl_FragColor.rgb *= 1.0 + uLavaPulse * uLava;
       }
     `,
   };
@@ -95,11 +111,13 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   controls.enablePan = false;
 
   // ——— COLORS ———
-  const C_BRIGHT = 0xffaa30;
-  const C_MID = 0xdd7700;
-  const C_DIM = 0x884400;
-  const C_FAINT = 0x553300;
-  const C_HOT = 0xffcc66;
+  let [C_BRIGHT, C_MID, C_DIM, C_FAINT, C_HOT] = PALETTES.original;
+  const paletteMaterials: THREE.Material[] = [];
+
+  function registerMaterial<T extends THREE.Material>(material: T) {
+    paletteMaterials.push(material);
+    return material;
+  }
 
   // ——— ORB ROOT ———
   // Every part of the orb (shells, core, orbiting debris, text, dust, rings)
@@ -109,13 +127,13 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
 
   // ——— MATERIAL HELPERS ———
   function lineMat(color: number, opacity = 1) {
-    return new THREE.LineBasicMaterial({
+    return registerMaterial(new THREE.LineBasicMaterial({
       color,
       transparent: true,
       opacity,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-    });
+    }));
   }
 
   // ——— UTILITY: Create ring at latitude ———
@@ -387,22 +405,22 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   orbGroup.add(icoWire);
 
   // Glowing center sphere — subtle, see-through
-  const coreSphereMat = new THREE.MeshBasicMaterial({
+  const coreSphereMat = registerMaterial(new THREE.MeshBasicMaterial({
     color: C_HOT,
     transparent: true,
     opacity: 0.15,
     blending: THREE.AdditiveBlending,
-  });
+  }));
   const coreSphere = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), coreSphereMat);
   orbGroup.add(coreSphere);
 
   // Larger faint glow — very subtle
-  const glowSphereMat = new THREE.MeshBasicMaterial({
+  const glowSphereMat = registerMaterial(new THREE.MeshBasicMaterial({
     color: C_MID,
     transparent: true,
     opacity: 0.04,
     blending: THREE.AdditiveBlending,
-  });
+  }));
   const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), glowSphereMat);
   orbGroup.add(glowSphere);
 
@@ -529,12 +547,12 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   const debris: THREE.Mesh[] = [];
   for (let i = 0; i < 250; i++) {
     const geo = debrisGeos[Math.floor(Math.random() * debrisGeos.length)];
-    const mat = new THREE.MeshBasicMaterial({
+    const mat = registerMaterial(new THREE.MeshBasicMaterial({
       color: Math.random() > 0.7 ? C_BRIGHT : C_MID,
       transparent: true,
       opacity: 0.3 + Math.random() * 0.6,
       blending: THREE.AdditiveBlending,
-    });
+    }));
     const mesh = new THREE.Mesh(geo, mat);
     const orbitR = 1.2 + Math.random() * 4.0;
     const speed = (0.08 + Math.random() * 0.6) * (Math.random() > 0.5 ? 1 : -1);
@@ -597,7 +615,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   dCtx.fillStyle = g;
   dCtx.fillRect(0, 0, 64, 64);
 
-  const dustMat = new THREE.PointsMaterial({
+  const dustMat = registerMaterial(new THREE.PointsMaterial({
     map: new THREE.CanvasTexture(dotC),
     size: 0.04,
     transparent: true,
@@ -606,7 +624,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     depthWrite: false,
     sizeAttenuation: true,
     color: C_BRIGHT,
-  });
+  }));
   const dustPoints = new THREE.Points(dustGeo, dustMat);
   orbGroup.add(dustPoints);
 
@@ -615,14 +633,14 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   // ═══════════════════════════════════════════════
   function makeScanRing(radius: number, thickness = 0.015) {
     const geo = new THREE.RingGeometry(radius - thickness, radius + thickness, 120);
-    const mat = new THREE.MeshBasicMaterial({
+    const mat = registerMaterial(new THREE.MeshBasicMaterial({
       color: C_BRIGHT,
       transparent: true,
       opacity: 0,
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
       depthWrite: false,
-    });
+    }));
     const mesh = new THREE.Mesh(geo, mat);
     mesh.rotation.x = Math.PI / 2;
     return mesh;
@@ -688,6 +706,21 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     controls.target.set(0, 0, 0);
     camera.lookAt(controls.target);
     controls.update();
+  }
+
+  function setPalette(palette: OrbPalette) {
+    [C_BRIGHT, C_MID, C_DIM, C_FAINT, C_HOT] = PALETTES[palette];
+    chromaticPass.uniforms.uLava.value = palette === "lava" ? 1 : 0;
+    paletteBloom = palette === "lava" ? 1.45 : 1;
+    paletteMaterials.forEach((material) => {
+      const colorMaterial = material as THREE.Material & { color?: THREE.Color };
+      if (!colorMaterial.color) return;
+      const current = colorMaterial.color.getHex();
+      const colorIndex = Object.values(PALETTES).findIndex((colors) => colors.includes(current));
+      if (colorIndex === -1) return;
+      const roleIndex = Object.values(PALETTES).flatMap((colors) => colors).indexOf(current) % 5;
+      colorMaterial.color.setHex(PALETTES[palette][roleIndex]);
+    });
   }
 
   // ═══════════════════════════════════════════════
@@ -803,7 +836,12 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     }
 
     // Bloom pulse
-    bloom.strength = 1.6 + Math.sin(t * 0.8) * 0.3;
+    const lavaPulse = Math.max(
+      0,
+      Math.sin(t * 2.7) * 0.08 + Math.sin(t * 7.5) * 0.04,
+    );
+    chromaticPass.uniforms.uLavaPulse.value = lavaPulse;
+    bloom.strength = (1.6 + Math.sin(t * 0.8) * 0.3 + lavaPulse * 2.2) * paletteBloom;
 
     // Update chromatic aberration time
     chromaticPass.uniforms.uTime.value = t;
@@ -853,6 +891,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     zoomIn: () => zoomBy(0.65),
     zoomOut: () => zoomBy(1.55),
     resetView,
+    setPalette,
     dispose,
   };
 }
