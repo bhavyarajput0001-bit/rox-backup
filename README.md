@@ -24,10 +24,14 @@ Open [http://localhost:3000](http://localhost:3000).
 Voice commands are sent to `/api/assistant`. Rox handles orb controls locally
 and can answer open-ended requests through any OpenAI-compatible API by copying
 `.env.example` to `.env.local` and setting `AI_BASE_URL`, `AI_API_KEY`, and
-`AI_MODEL`.
+`AI_MODEL`. When configured, the local Omniroute endpoint is tried first with
+automatic provider routing, then Rox falls back to the `AI_*` provider.
+
+Set `OMNIROUTE_API_KEY` in `.env.local` to authorize the local Omniroute server;
+the default endpoint is `http://127.0.0.1:20128/v1`.
 
 Built-in assistant tools include calculator, weather lookup, web search, webpage
-reading, news headlines, and bounded conversation context. The orb render loop
+reading, news headlines, SSE streaming, and bounded persistent conversation context. The orb render loop
 is capped at 30 FPS, uses adaptive particle counts, lowers maximum pixel ratio,
 and pauses while the tab is hidden to reduce CPU, GPU, RAM, and heat usage.
 

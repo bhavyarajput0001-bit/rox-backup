@@ -211,15 +211,39 @@ export default function RoxOrb() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             message,
+            stream: true,
             history: chatMessages.slice(-8).map((turn) => ({ role: turn.role, content: turn.text })),
           }),
         });
         if (!response.ok) throw new Error("Assistant request failed");
-        const result = (await response.json()) as AssistantResult;
-        applyAssistantAction(result.action);
-        setVoiceTranscript(`${result.provider.toUpperCase()}: ${result.reply}`);
-        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: result.reply }]);
-        speak(result.reply);
+        if (!response.body) throw new Error("Assistant stream unavailable");
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        let reply = "";
+        let result: AssistantResult | null = null;
+        while (true) {
+          const { done, value } = await reader.read();
+          buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+          const events = buffer.split("\n\n");
+          buffer = events.pop() ?? "";
+          for (const event of events) {
+            const data = event.split("\n").find((line) => line.startsWith("data: "))?.slice(6);
+            if (!data) continue;
+            const payload = JSON.parse(data) as { type: string; text?: string } & Partial<AssistantResult>;
+            if (payload.type === "chunk" && payload.text) {
+              reply += payload.text;
+              setVoiceTranscript(`ROX: ${reply}`);
+            }
+            if (payload.type === "done") result = payload as AssistantResult;
+          }
+          if (done) break;
+        }
+        const finalResult = result ?? { reply: reply.trim(), provider: "model" as const };
+        applyAssistantAction(finalResult.action);
+        setVoiceTranscript(`${finalResult.provider.toUpperCase()}: ${finalResult.reply}`);
+        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: finalResult.reply }]);
+        speak(finalResult.reply);
       } catch {
         const fallback = "The assistant service is unavailable. Local orb controls are still ready.";
         setVoiceTranscript(fallback);

@@ -1,4 +1,5 @@
-import { runAssistant, type AssistantTurn } from "@/lib/assistant";
+import { runAssistant, streamAssistant, type AssistantTurn } from "@/lib/assistant";
+import { recentMemory, remember } from "@/lib/memory";
 
 export async function GET() {
   return Response.json(
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
           .slice(-8)
           .map((turn) => ({ role: turn.role, content: turn.content.slice(0, 1_000) }))
       : [];
+  const stream = typeof body === "object" && body !== null && "stream" in body && body.stream === true;
 
   if (!message) {
     return Response.json({ error: "A message is required." }, { status: 400 });
@@ -42,7 +44,18 @@ export async function POST(request: Request) {
   }
 
   try {
-    return Response.json(await runAssistant(message, history), {
+    if (stream) {
+      return new Response(await streamAssistant(message, history), {
+        headers: { "Cache-Control": "no-store", "Content-Type": "text/event-stream; charset=utf-8", Connection: "keep-alive" },
+      });
+    }
+    const storedHistory = await recentMemory(8);
+    const result = await runAssistant(message, [...storedHistory, ...history].slice(-8));
+    await remember([
+      { role: "user", content: message },
+      { role: "rox", content: result.reply },
+    ]);
+    return Response.json(result, {
       headers: { "Cache-Control": "no-store" },
     });
   } catch {

@@ -1,4 +1,5 @@
 import { calculate, capabilityReport, getNews, getWeather, readWebpage, searchWeb } from "@/lib/onlineTools";
+import { remember } from "@/lib/memory";
 
 export type AssistantAction =
   | { type: "palette"; value: "original" | "lava" }
@@ -60,46 +61,51 @@ function localIntent(message: string): AssistantResult | null {
   return null;
 }
 
+function providerCandidates() {
+  return [
+    process.env.OMNIROUTE_API_KEY && {
+      baseUrl: (process.env.OMNIROUTE_BASE_URL || "http://127.0.0.1:20128/v1").replace(/\/$/, ""),
+      apiKey: process.env.OMNIROUTE_API_KEY,
+      model: process.env.OMNIROUTE_MODEL || "auto",
+    },
+    process.env.AI_API_KEY && {
+      baseUrl: (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, ""),
+      apiKey: process.env.AI_API_KEY,
+      model: process.env.AI_MODEL || "gpt-4o-mini",
+    },
+  ].filter(Boolean) as Array<{ baseUrl: string; apiKey: string; model: string }>;
+}
+
 async function modelReply(message: string, history: AssistantTurn[]): Promise<AssistantResult | null> {
-  const apiKey = process.env.AI_API_KEY;
-  if (!apiKey) return null;
-
-  const baseUrl = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
-  const model = process.env.AI_MODEL || "gpt-4o-mini";
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15_000);
-
-  try {
-    const response = await fetch(`${baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model,
-        temperature: 0.4,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...history.map((turn) => ({
-            role: turn.role === "rox" ? ("assistant" as const) : ("user" as const),
-            content: turn.content,
-          })),
-          { role: "user", content: message },
-        ],
-      }),
-      signal: controller.signal,
-    });
-    if (!response.ok) return null;
-
-    const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
-    };
-    const reply = data.choices?.[0]?.message?.content?.trim();
-    return reply ? { reply, provider: "model" } : null;
-  } finally {
-    clearTimeout(timeout);
+  for (const provider of providerCandidates()) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15_000);
+    try {
+      const response = await fetch(`${provider.baseUrl}/chat/completions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${provider.apiKey}` },
+        body: JSON.stringify({
+          model: provider.model,
+          temperature: 0.4,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            ...history.map((turn) => ({ role: turn.role === "rox" ? ("assistant" as const) : ("user" as const), content: turn.content })),
+            { role: "user", content: message },
+          ],
+        }),
+        signal: controller.signal,
+      });
+      if (!response.ok) continue;
+      const data = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
+      const reply = data.choices?.[0]?.message?.content?.trim();
+      if (reply) return { reply, provider: "model" };
+    } catch {
+      continue;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
+  return null;
 }
 
 async function onlineIntent(message: string): Promise<AssistantResult | null> {
@@ -174,4 +180,110 @@ export async function runAssistant(message: string, history: AssistantTurn[] = [
     reply: "I heard you, but my reasoning model is not connected yet. I can still control the orb locally.",
     provider: "local",
   };
+}
+
+function sseEvent(payload: unknown) {
+  return `data: ${JSON.stringify(payload)}\n\n`;
+}
+
+export async function streamAssistant(message: string, history: AssistantTurn[] = []) {
+  const local = localIntent(message);
+  const online = local ? null : await onlineIntent(message);
+  const immediate = local ?? online;
+  const encoder = new TextEncoder();
+
+  if (immediate) {
+    return new ReadableStream<Uint8Array>({
+      async start(controller) {
+        controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: immediate.provider })));
+        for (const word of immediate.reply.split(/(?<=\s)/)) {
+          controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: word })));
+        }
+        controller.enqueue(encoder.encode(sseEvent({ type: "done", ...immediate })));
+        await remember([{ role: "user", content: message }, { role: "rox", content: immediate.reply }]);
+        controller.close();
+      },
+    });
+  }
+
+  const provider = providerCandidates()[0];
+  if (!provider) {
+    const fallback = await runAssistant(message, history);
+    return new ReadableStream<Uint8Array>({
+      async start(controller) {
+        controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: fallback.reply })));
+        controller.enqueue(encoder.encode(sseEvent({ type: "done", ...fallback })));
+        await remember([{ role: "user", content: message }, { role: "rox", content: fallback.reply }]);
+        controller.close();
+      },
+    });
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(`${provider.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${provider.apiKey}` },
+      body: JSON.stringify({
+        model: provider.model,
+        stream: true,
+        temperature: 0.4,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...history.slice(-8).map((turn) => ({ role: turn.role === "rox" ? ("assistant" as const) : ("user" as const), content: turn.content })),
+          { role: "user", content: message },
+        ],
+      }),
+      signal: AbortSignal.timeout(30_000),
+    });
+  } catch {
+    const fallback = await runAssistant(message, history);
+    return streamAssistantResult(fallback, message, encoder);
+  }
+  if (!response.ok || !response.body) {
+    const fallback = await runAssistant(message, history);
+    return streamAssistantResult(fallback, message, encoder);
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let reply = "";
+  return new ReadableStream<Uint8Array>({
+    async start(controller) {
+      controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: "model" })));
+      let buffer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+        const events = buffer.split("\n\n");
+        buffer = events.pop() ?? "";
+        for (const event of events) {
+          const data = event.split("\n").find((line) => line.startsWith("data: "))?.slice(6);
+          if (!data || data === "[DONE]") continue;
+          const delta = (JSON.parse(data) as { choices?: Array<{ delta?: { content?: string } }> }).choices?.[0]?.delta?.content;
+          if (delta) {
+            reply += delta;
+            controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: delta })));
+          }
+        }
+        if (done) break;
+      }
+      const result: AssistantResult = { reply: reply.trim(), provider: "model" };
+      controller.enqueue(encoder.encode(sseEvent({ type: "done", ...result })));
+      await remember([{ role: "user", content: message }, { role: "rox", content: result.reply }]);
+      controller.close();
+    },
+  });
+}
+
+function streamAssistantResult(result: AssistantResult, message: string, encoder: TextEncoder) {
+  return new ReadableStream<Uint8Array>({
+    async start(controller) {
+      controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: result.provider })));
+      controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: result.reply })));
+      controller.enqueue(encoder.encode(sseEvent({ type: "done", ...result })));
+      await remember([{ role: "user", content: message }, { role: "rox", content: result.reply }]);
+      controller.close();
+    },
+  });
 }
