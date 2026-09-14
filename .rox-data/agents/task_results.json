@@ -1,0 +1,712 @@
+[
+  {
+    "taskId": "task_1789404650921_9kbb9",
+    "department": "youtube",
+    "task": "generate a youtube title about coffee",
+    "action": "youtube.run(task=\"generate a youtube title about coffee\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "YouTube task: generate a youtube title about coffee...",
+    "timestamp": "2026-09-14T16:50:50.921Z"
+  },
+  {
+    "taskId": "task_1789404657036_46xgf",
+    "department": "content",
+    "task": "write a script about productivity",
+    "action": "content.create(task=\"write a script about productivity\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Generated content for: write a script about productivity...",
+    "timestamp": "2026-09-14T16:50:57.036Z"
+  },
+  {
+    "taskId": "task_1789404699028_7id7r",
+    "department": "youtube",
+    "task": "generate a youtube title about morning routine",
+    "action": "youtube.run(task=\"generate a youtube title about morning routine\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "YouTube task: generate a youtube title about morning routine...",
+    "timestamp": "2026-09-14T16:51:39.028Z"
+  },
+  {
+    "taskId": "task_1789404718105_byssk",
+    "department": "content",
+    "task": "write a productivity script",
+    "action": "content.create(task=\"write a productivity script\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Generated content for: write a productivity script...",
+    "timestamp": "2026-09-14T16:51:58.105Z"
+  },
+  {
+    "taskId": "task_1789404718214_z4hh0",
+    "department": "research",
+    "task": "search for React performance tips",
+    "action": "research.search(query=\"search for React performance tips\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Researched: search for React performance tips...",
+    "timestamp": "2026-09-14T16:51:58.214Z"
+  },
+  {
+    "taskId": "task_1789405795109_26n6y",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.run(task=\"youtube status\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "YouTube task: youtube status...",
+    "timestamp": "2026-09-14T17:09:55.109Z"
+  },
+  {
+    "taskId": "task_1789405795119_ii448",
+    "department": "youtube",
+    "task": "yt script about rust",
+    "action": "youtube.run(task=\"yt script about rust\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "YouTube task: yt script about rust...",
+    "timestamp": "2026-09-14T17:09:55.119Z"
+  },
+  {
+    "taskId": "task_1789406497464_ui97x",
+    "department": "youtube",
+    "task": "youtube generate video about rust",
+    "action": "youtube.run(task=\"youtube generate video about rust\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "YouTube task: youtube generate video about rust...",
+    "timestamp": "2026-09-14T17:21:37.464Z"
+  },
+  {
+    "taskId": "task_1789406510910_8v4xu",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:21:50.910Z"
+  },
+  {
+    "taskId": "task_1789406511164_mtvb4",
+    "department": "general",
+    "task": "what can you do?",
+    "action": "generic.process(task=\"what can you do?\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: what can you do?...",
+    "timestamp": "2026-09-14T17:21:51.164Z"
+  },
+  {
+    "taskId": "task_1789406521067_sk3te",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:22:01.067Z"
+  },
+  {
+    "taskId": "task_1789406524375_tcw0l",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:22:04.375Z"
+  },
+  {
+    "taskId": "task_1789406535103_ua0re",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:22:15.103Z"
+  },
+  {
+    "taskId": "task_1789406586767_xiof4",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:23:06.767Z"
+  },
+  {
+    "taskId": "task_1789406593125_t34rw",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:23:13.125Z"
+  },
+  {
+    "taskId": "task_1789406596927_k2gry",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:23:16.927Z"
+  },
+  {
+    "taskId": "task_1789406605645_56hda",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:23:25.645Z"
+  },
+  {
+    "taskId": "task_1789406605706_ddu4d",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:23:25.706Z"
+  },
+  {
+    "taskId": "task_1789406609255_24hyq",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:23:29.255Z"
+  },
+  {
+    "taskId": "task_1789406662287_1airr",
+    "department": "youtube",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 17,
+    "output": "The YouTube agent is in setup mode — it needs YouTube credentials before it can generate. Run `npm run walkthrough` in the agent directory.",
+    "timestamp": "2026-09-14T17:24:22.304Z"
+  },
+  {
+    "taskId": "task_1789406665767_x7ep7",
+    "department": "youtube",
+    "task": "yt script about rust programming",
+    "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 15785,
+    "output": "# 🎬 YouTube Script: \"Why Rust Is the Future of Programming (And Should Be Yours)\"\n\n---\n\n## 📹 VIDEO INFO\n- **Estimated Runtime:** 12–14 minutes\n- **Target Audience:** Intermediate developers curious about Rust\n- **Tone:** Energetic, informative, approachable\n\n---\n\n## ⏱️ [0:00 – 0:05] OPENING HOOK\n\n**(Fast cuts: stack overflow error screens, segfaults, a rocket landing — all set to dramatic music)**\n\n> **\"In 2015, NASA lost a $125 million orbiter because of a single buffer overflow. That bug? Already solved by a language called Rust. So why are 9 out of 10 developers still writing code that can crash at runtime?\"**\n\n**(Beat. Cut to host on camera.)**\n\n> **\"Stick around — because in the next 12 minutes, I'm going to convince you that Rust isn't just the 'most loved programming language' for six years running... it's the language that's rewriting the rules of software.\"**\n\n---\n\n## ⏱️ [0:05 – 0:45] INTRO\n\n**(Host on camera, upbeat background music)**\n\n> **\"Hey everyone, welcome back to the channel! I'm [Your Name], and today we're diving deep into Rust — the systems programming language that guarantees memory safety without a garbage collector, powers some of the world's most critical infrastructure, and has somehow made developers *actually enjoy* working with a compiler.\"**\n\n**(B-roll: Rust logo, code snippets, GitHub stars ticking up)**\n\n> **\"Rust was first created by Graydon Hoare at Mozilla back in 2006, and it wasn't until 2010 that the first public release dropped. Since then? It's gone from niche experiment to powering Linux kernels, browser engines, cloud infrastructure, and even parts of Windows and Android.\"**\n\n> **\"Now, I know what you're thinking — 'Rust has a steep learning curve. The borrow checker will destroy me.' And yeah, it might hurt a little at first. But by the end of this video, you'll understand *why* Rust does what it does, and whether it's worth your time.\"**\n\n**(Quick channel plug)**\n\n> **\"If you're new here, smash that subscribe button and ",
+    "timestamp": "2026-09-14T17:24:41.552Z"
+  },
+  {
+    "taskId": "task_1789406690116_4rxil",
+    "department": "content",
+    "task": "write a script about productivity",
+    "action": "content.generate(task=\"write a script about productivity\")",
+    "success": true,
+    "latencyMs": 14784,
+    "output": "# The Productivity Paradox\n\n**A Short Film Script**\n\n---\n\n## **CHARACTERS**\n\n- **MAYA** (30s) — A driven marketing professional who has mastered the art of being \"busy\"\n- **JULIAN** (50s) — Maya's mentor, a retired consultant known for his unconventional wisdom\n- **NARRATOR** (Voiceover) — A calm, reflective voice\n\n---\n\n## **ACT 1: THE GRIND**\n\n### **SCENE 1 — INT. MAYA'S APARTMENT — MORNING**\n\n*Sunlight streams through floor-to-ceiling windows. The apartment is sleek, modern, and meticulously organized. An alarm clock buzzes at 5:30 AM.*\n\n*MAYA sits bolt upright, already reaching for her phone before her feet touch the floor. She scrolls through emails, checks her calendar, and takes a sip of green juice.*\n\n**NARRATOR (V.O.)**\n> Her day began before most people opened their eyes. Five alarms. A cold shower. A workout log. A breakfast measured in macros. Maya didn't just manage her time — she weaponized it.\n\n*Cut to a MONTAGE:*\n\n- Maya typing furiously on her laptop\n- Maya scheduling a call while eating a protein bar\n- Maya checking off items on a color-coded to-do list (ten items crossed off in rapid succession)\n- Maya in a Zoom meeting, multitasking across three screens\n\n**NARRATOR (V.O.)**\n> By noon, she had completed more than most people did in a week. By lunch, she was already planning tomorrow. And yet — she felt exhausted. Not the good kind of tired. The deep, hollow kind.\n\n*MAYA stares at her screen, blinking slowly. A single notification pops up. She doesn't move.*\n\n**TITLE CARD: \"THE PRODUCTIVITY PARADOX\"**\n\n---\n\n## **ACT 2: THE ENCOUNTER**\n\n### **SCENE 2 — INT. COFFEE SHOP — LATE AFTERNOON**\n\n*Maya enters, laptop bag slung over one shoulder. She finds a seat and immediately begins working. Across the room, JULIAN sits at a small table with nothing but a notebook and a cup of coffee. He watches her with gentle amusement.*\n\n**JULIAN**\n> You know, I've been watching you for ten minutes. You've checked your phone fourteen times, answered three emails, and no",
+    "timestamp": "2026-09-14T17:25:04.900Z"
+  },
+  {
+    "taskId": "task_1789406831075_sp7ab",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 1,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:27:11.076Z"
+  },
+  {
+    "taskId": "task_1789406831328_gluth",
+    "department": "general",
+    "task": "what can you do?",
+    "action": "generic.process(task=\"what can you do?\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: what can you do?...",
+    "timestamp": "2026-09-14T17:27:11.328Z"
+  },
+  {
+    "taskId": "task_1789406835365_x9w07",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 1,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:27:15.365Z"
+  },
+  {
+    "taskId": "task_1789406836387_v20ki",
+    "department": "youtube",
+    "task": "yt script about rust programming",
+    "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
+    "success": false,
+    "latencyMs": 30007,
+    "output": "Command failed: The operation was aborted due to timeout. Is FreeLLM running on localhost:31415?",
+    "timestamp": "2026-09-14T17:27:46.394Z"
+  },
+  {
+    "taskId": "task_1789406933387_10vlo",
+    "department": "youtube",
+    "task": "yt script about rust programming",
+    "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 8378,
+    "output": "**Title:** *Why Rust Is the Future of Systems Programming – A 10‑Minute Crash Course*  \n\n**Video Length:** ~10 min  \n\n---  \n\n### 📋 QUICK OVERVIEW  \n\n| Timestamp | Section | What You’ll See / Hear |\n|-----------|---------|------------------------|\n| **0:00 – 0:05** | **Hook** | *“What if you could write blazing‑fast code *without* ever worrying about seg‑faults?”* |\n| 0:05 – 0:30 | Intro & Channel Branding | Quick channel intro, host intro, promise of the video |\n| 0:30 – 2:00 | 1️⃣ What Is Rust? | History, goals, where it’s used |\n| 2:00 – 3:30 | 2️⃣ Memory Safety Without GC | Stack vs heap, the “no‑null” guarantee |\n| 3:30 – 5:00 | 3️⃣ Ownership & Borrowing | Core concepts with visual metaphors |\n| 5:00 – 6:30 | 4️⃣ Fearless Concurrency | Threads, `Send`/`Sync`, async basics |\n| 6:30 – 7:30 | 5️⃣ The Ecosystem & Tooling | Cargo, crates.io, IDE support |\n| 7:30 – 8:30 | 6️⃣ Getting Started – “Hello, World!” | Live demo (code + terminal) |\n| 8:30 – 9:30 | 7️⃣ Real‑World Success Stories | Companies & projects that love Rust |\n| 9:30 – 10:00 | CTA & Wrap‑Up | Subscribe, like, comment, next video tease |\n\n---  \n\n## 🎬 FULL SCRIPT  \n\n### 0:00 – 0:05 **HOOK** *(First 5 seconds – grab attention)*  \n\n> **[On‑screen: fast‑moving montage of a rocket launch, a game engine, and a server rack]**  \n> **Host (energetic):** “What if you could write blazing‑fast code *without* ever worrying about seg‑faults? Meet Rust – the language that’s rewriting the rules of systems programming!”  \n\n*(Quick 1‑second beat, then jump to intro.)*  \n\n---\n\n### 0:05 – 0:30 **INTRO & CHANNEL BRANDING**  \n\n> **Host (smiling):** “Hey everyone, I’m *[Your Name]*, and welcome back to **CodeCraft**, the channel where we turn complex tech into bite‑size brilliance. If you love clean, high‑performance code, hit that **Subscribe** button and ring the bell – we drop a new deep‑dive every week.”  \n\n> **[Graphic overlay]**: “Today’s video → Rust 101: Why it matters, how it works, and how to start coding in under",
+    "timestamp": "2026-09-14T17:29:01.765Z"
+  },
+  {
+    "taskId": "task_1789406956858_mgqqj",
+    "department": "content",
+    "task": "write a blog post about AI",
+    "action": "content.generate(task=\"write a blog post about AI\")",
+    "success": true,
+    "latencyMs": 2072,
+    "output": "# The AI Revolution: From Science Fiction to Everyday Reality\n\nArtificial Intelligence (AI) is no longer a buzzword that lives only in tech‑savvy boardrooms or speculative science‑fiction novels. It’s the invisible engine powering everything from the recommendation engines that keep you scrolling on Netflix, to the autonomous cars that are still in the testing phase, to the sophisticated medical diagnostics that can spot cancers months before a human doctor could. In this post we’ll unpack what AI really is, trace its evolution, spotlight its most exciting applications, and discuss the ethical, economic and societal challenges that come with a world where machines can “think”.\n\n> **Pro Tip:** Want to stay ahead of the curve? Subscribe to our weekly newsletter for deeper dives into AI trends, case studies, and expert interviews.\n\n---\n\n## 1. A Brief History: From Turing to Transformers\n\n| Era | Milestone | Key Figure(s) | Impact |\n|-----|-----------|---------------|--------|\n| **1940s–1950s** | *Birth of the concept* | Alan Turing, John McCarthy | Turing’s “imitation game” (now Turing Test) and the term “Artificial Intelligence” set the stage. |\n| **1956–1970s** | *Early optimism & “AI winter”* | Marvin Minsky, Claude Shannon | The Dartmouth Conference, early neural nets, but hardware limits caused a lull. |\n| **1980s–1990s** | *Rule‑based systems & expert systems* | Edward Feigenbaum, John McCarthy | Knowledge‑based systems like MYCIN showed practical value in medicine. |\n| **2000s** | *Machine Learning boom* | Geoffrey Hinton, Andrew Ng | Backpropagation, support vector machines, and the rise of data‑driven approaches. |\n| **2010s** | *Deep Learning & Big Data* | Yann LeCun, Jeff Dean | CNNs, RNNs, and large‑scale GPUs made AI super‑human in image & speech tasks. |\n| **2020s** | *Generative AI & Large Language Models* | OpenAI, DeepMind | GPT‑4, DALL‑E, and multimodal models that can write, draw, and even code. |\n\n### Why the recent surge matters\n\nThe confluence of ",
+    "timestamp": "2026-09-14T17:29:18.929Z"
+  },
+  {
+    "taskId": "task_1789406959101_qtj3j",
+    "department": "research",
+    "task": "search for React performance tips",
+    "action": "research.search(query=\"search for React performance tips\")",
+    "success": true,
+    "latencyMs": 6834,
+    "output": "Title: Optimizing Performance - React\nURL: https://legacy.reactjs.org/docs/optimizing-performance.html\nPublished: N/A\nAuthor: N/A\nHighlights:\nInternally, React uses several clever techniques to minimize the number of costly DOM operations required to update the UI. For many applications, using React will lead to a fast user interface without doing much work to specifically optimize for performance. Nevertheless, there are several ways you can speed up your React application.\n...\n## Use the Production Build \n\nIf you’re benchmarking or experiencing performance problems in your React apps, make sure you’re testing with the minified production build.\n...\nBy default, React includes many helpful warnings. These warnings are very useful in development. However, they make React larger and slower so you should make sure to use the production version when you deploy the app.\n...\n### Brunch\n...\nFor the most efficient Brunch production build, install the `terser-brunch` plugin:\n...\nThen, to create a production build, add the `-p` flag to the `build` command:\n...\nRemember that you only need to do this for production builds. You shouldn’t pass the `-p` flag or apply this plugin in development, because it will hide useful React warnings and make the builds much slower.\n...\n### Browserify \n\nFor the most efficient Browserify production build, install a few plugins:\n...\nTo create a production build, make sure that you add these transforms (the order matters):\n...\n- The `envify` transform ensures the right build environment is set. Make it global (`-g`).\n- The `uglifyify` transform removes development imports. Make it global too (`-g`).\n- Finally, the resulting bundle is piped to `terser` for mangling (read why).\n...\n### Rollup \n\nFor the most efficient Rollup production build, install a few plugins:\n...\nTo create a production build, make sure that you add these plugins (\n...\norder matters):\n...\n- The `replace` plugin ensures the right build environment is set.\n- The `commonjs` plugin ",
+    "timestamp": "2026-09-14T17:29:25.935Z"
+  },
+  {
+    "taskId": "task_1789406968987_6eoxl",
+    "department": "youtube",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 4,
+    "output": "The YouTube agent is in setup mode — it needs YouTube credentials before it can generate. Run `npm run walkthrough` in the agent directory.",
+    "timestamp": "2026-09-14T17:29:28.991Z"
+  },
+  {
+    "taskId": "task_1789407044107_rf0uc",
+    "department": "youtube",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 7,
+    "output": "The YouTube agent is in setup mode — it needs YouTube credentials before it can generate. Run `npm run walkthrough` in the agent directory.",
+    "timestamp": "2026-09-14T17:30:44.114Z"
+  },
+  {
+    "taskId": "task_1789407059126_eizkq",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:30:59.126Z"
+  },
+  {
+    "taskId": "task_1789407059258_ximq5",
+    "department": "general",
+    "task": "what can you do?",
+    "action": "generic.process(task=\"what can you do?\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: what can you do?...",
+    "timestamp": "2026-09-14T17:30:59.258Z"
+  },
+  {
+    "taskId": "task_1789407078791_pzqnf",
+    "department": "general",
+    "task": "hi",
+    "action": "generic.process(task=\"hi\")",
+    "success": true,
+    "latencyMs": 1,
+    "output": "Processed: hi...",
+    "timestamp": "2026-09-14T17:31:18.792Z"
+  },
+  {
+    "taskId": "task_1789407100344_mdu7t",
+    "department": "youtube",
+    "task": "yt hook about fitness",
+    "action": "local_yt.yt_hook({\"command\":\"yt_hook\",\"topic\":\"about fitness\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 882,
+    "output": "**1. [Question]**  \n“Ever wondered why your workout stalls after 4 weeks?”  \n*Why it works:* A direct question pulls viewers into a personal problem they likely face.\n\n**2. [Bold Claim]**  \n“Drop 10 pounds in 7 days—no gym, no diet, just this move.”  \n*Why it works:* The outrageous promise sparks instant intrigue and the need to see the secret.\n\n**3. [Story Start]**  \n“Last year I was 300 lbs; this one trick changed everything.”  \n*Why it works:* A personal anecdote sets up a narrative hook that viewers want to follow.\n\n**4. [Controversy]**  \n“Why most trainers hate this ‘quick‑fix’ workout.”  \n*Why it works:* Suggests insider knowledge and conflict, prompting curiosity about the “hate.”\n\n**5. [Pattern Interrupt]**  \n“Stop scrolling—your next rep could be the most important.”  \n*Why it works:* The abrupt command breaks routine viewing, forcing attention.\n\n**6. [Question]**  \n“How many reps would you do if you could skip the warm‑up?”  \n*Why it works:* Challenges a common habit, inviting viewers to imagine a new approach.\n\n**7. [Bold Claim]**  \n“I can bench 300 lbs in 30 days—watch me prove it.”  \n*Why it works:* The bold statement promises a spectacle that viewers want to verify.\n\n**8. [Story Start]**  \n“On my first day, I thought I’d never finish a plank.”  \n*Why it works:* Starts with a relatable struggle, creating a hook for a transformation story.\n\n**9. [Controversy]**  \n“Why cardio is killing your muscle gains.”  \n*Why it works:* Presents a counter‑intuitive idea that challenges mainstream advice.\n\n**10. [Pattern Interrupt]**  \n“Imagine a workout that burns calories while you sleep—here’s how.”  \n*Why it works:* The impossible scenario grabs attention and sets up a promise of a surprising solution.",
+    "timestamp": "2026-09-14T17:31:41.226Z"
+  },
+  {
+    "taskId": "task_1789407098449_1kzu0",
+    "department": "research",
+    "task": "analyze the current weather in San Francisco",
+    "action": "research.search(query=\"analyze the current weather in San Francisco\")",
+    "success": true,
+    "latencyMs": 3185,
+    "output": "Title: San Francisco Bay Area, CA\nURL: https://www.weather.gov/\nPublished: N/A\nAuthor: N/A\nHighlights:\n# Areas of Heavy to Excessive Rainfall and Hot Temperatures This Week\n...\nHeavy to excessive rainfall could bring areas of flooding at times Monday through Thursday across parts of the central Plains into the Midwest as well as southern Arizona and New Mexico. Hot temperatures and high humidity will continue across much of east Texas into\n...\nlower and mid-Mississippi Valley through at least midweek. Read More >\n\n---\n\nTitle: San Francisco, CA Current Weather | AccuWeather\nURL: https://www.accuweather.com/en/us/san-francisco/94103/current-weather/347629\nPublished: N/A\nAuthor: N/A\nHighlights:\nWednesday, September 2\n...\n# Current Weather\n...\n12:15 AM\n...\n61°F\n...\nPartly cloudy\n...\nRealFeel® 62°\n...\n53° to 62°\n...\nLight jacket or sweater may be appropriate.\n...\n62°\n...\nSSW 2 mph\n...\nWind Gusts\n...\n87%\n...\n67% (Slightly Humid)\n...\n57° F\n...\n↔ 30.02 in\n...\n49%\n...\n10 mi\n...\n40000 ft\n...\n9/2\n...\n71°Hi\n...\nRealFeel® 73°\n...\n63° to 81°\n...\nA morning sprinkle; otherwise, clouds breaking for some sun\n...\nMax UV Index7.0 (High)\n...\nAccuLumen Brightness Index™4 (Dull)\n...\nWindSW 13 mph\n...\nWind Gusts24 mph\n...\nProbability of Precipitation25%\n...\nProbability of Thunderstorms1%\n...\nPrecipitation0.00 in\n...\nTotal Hours of Precipitation0.5\n...\nTotal Hours of Rain0.5\n...\nCloud Cover70%\n...\n9/2\n...\n59°Lo\n...\nRealFeel® 56°\n...\n53° to 62°\n...\nLight jacket or sweater may be appropriate.\n...\nAreas of low clouds\n...\nWindSW 9 mph\n...\nWind Gusts15 mph\n...\nProbability of Precipitation20%\n...\nProbability of Thunderstorms0%\n...\nPrecipitation0.00 in\n...\nCloud Cover79%\n...\n## Temperature History\n...\n## Current Weather Conditions in San Francisco\n...\nSan Francisco, California is currently Partly cloudy with a temperature of 61°. The current RealFeel® Temperature is 62° (Cool) based on observed conditions including 87% humidity, 49% cloud cover, a UV index of 0, and winds of 2 mph. In shade, the R",
+    "timestamp": "2026-09-14T17:31:41.634Z"
+  },
+  {
+    "taskId": "task_1789408627749_hing8",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 36,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 26592s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T17:57:07.785Z"
+  },
+  {
+    "taskId": "task_1789408627802_x0q6l",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 175,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T17:57:07.977Z"
+  },
+  {
+    "taskId": "task_1789408627984_xxl85",
+    "department": "youtube",
+    "task": "youtube analytics",
+    "action": "youtube.analytics({\"command\":\"analytics\"})",
+    "success": true,
+    "latencyMs": 2,
+    "output": "Analytics: 0 videos, average performance score 0.\nNo insights yet.",
+    "timestamp": "2026-09-14T17:57:07.986Z"
+  },
+  {
+    "taskId": "task_1789408627992_0cqgm",
+    "department": "youtube",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 2,
+    "output": "The YouTube agent is in setup mode — it needs YouTube credentials before it can generate. Run `npm run walkthrough` in the agent directory.",
+    "timestamp": "2026-09-14T17:57:07.994Z"
+  },
+  {
+    "taskId": "task_1789408628001_a9icg",
+    "department": "general",
+    "task": "what can you do",
+    "action": "generic.process(task=\"what can you do\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: what can you do...",
+    "timestamp": "2026-09-14T17:57:08.001Z"
+  },
+  {
+    "taskId": "task_1789408628009_6olcv",
+    "department": "general",
+    "task": "system status",
+    "action": "generic.process(task=\"system status\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: system status...",
+    "timestamp": "2026-09-14T17:57:08.009Z"
+  },
+  {
+    "taskId": "task_1789409377053_li23b",
+    "department": "youtube",
+    "task": "yt title about coffee",
+    "action": "local_yt.yt_title({\"command\":\"yt_title\",\"topic\":\"about coffee\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 5437,
+    "output": "1. 10 Secrets Every Coffee Lover Must Know  \n2. How to Brew the Perfect Cup in 5 Minutes  \n3. Is Your Coffee Lacking Flavor? Fix It Now!  \n4. 7 Coffee Myths Busted: What Really Matters  \n5. The Ultimate Guide to Coffee Beans 2026  \n6. Why Dark Roast Tastes Better—Science Explained  \n7. Coffee Hacks: Save Money & Taste Better  \n8. Top 5 Home Espresso Machines Reviewed  \n9. Can You Drink Coffee After Midnight? Find Out  \n10. From Bean to Brew: 3 Steps to Barista‑Level",
+    "timestamp": "2026-09-14T18:09:42.490Z"
+  },
+  {
+    "taskId": "task_1789409383124_gr8xz",
+    "department": "code",
+    "task": "review this Python code for security issues",
+    "action": "code.execute(task=\"review this Python code for security issues\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Code task analyzed: review this Python code for security issues... Would execute in workspace.",
+    "timestamp": "2026-09-14T18:09:43.124Z"
+  },
+  {
+    "taskId": "task_1789409414184_jwudz",
+    "department": "youtube",
+    "task": "generate youtube hooks about fitness",
+    "action": "youtube.generate({\"command\":\"generate\"})",
+    "success": false,
+    "latencyMs": 46,
+    "output": "The YouTube agent is in setup mode — it needs YouTube credentials before it can generate. Run `npm run walkthrough` in the agent directory.",
+    "timestamp": "2026-09-14T18:10:14.230Z"
+  },
+  {
+    "taskId": "task_1789409425463_anzw2",
+    "department": "youtube",
+    "task": "generate youtube title about productivity",
+    "action": "local_yt.yt_title({\"command\":\"yt_title\",\"topic\":\"productivity\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 792,
+    "output": "1. How to Double Your Productivity in 7 Minutes a Day  \n2. 10 Proven Hacks to Boost Productivity Fast  \n3. What Is the #1 Productivity Trick for Busy People?  \n4. Why Most People Fail at Productivity (And How to Win)  \n5. 5 Morning Rituals That Skyrocket Productivity  \n6. The Ultimate Productivity Blueprint for 2026  \n7. Can a 2‑Hour Workday Really Work? Productivity Truth  \n8. Stop Procrastinating: 3 Science‑Backed Techniques  \n9. Top 3 Tools Every High‑Performing Pro Uses  \n10. The Productivity Myth That’s Holding You Back",
+    "timestamp": "2026-09-14T18:10:26.255Z"
+  },
+  {
+    "taskId": "task_1789409426299_9lx4b",
+    "department": "youtube",
+    "task": "yt hook about sleep",
+    "action": "local_yt.yt_hook({\"command\":\"yt_hook\",\"topic\":\"about sleep\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 800,
+    "output": "**1. Question** – “What if your nightly routine is secretly sabotaging your dreams?”  \n*Why it works:* The question sparks curiosity and invites the viewer to find the hidden truth.\n\n**2. Bold Claim** – “You can double your productivity by sleeping just 3 hours a night.”  \n*Why it works:* A shocking promise grabs attention and compels viewers to learn the secret.\n\n**3. Story Start** – “When I finally slept 10 hours, my brain did something wild…”  \n*Why it works:* A personal anecdote creates immediate intrigue and a human connection.\n\n**4. Controversy** – “The ‘sleep‑deprivation cult’ that could change your life (and your health).”  \n*Why it works:* Controversial framing challenges assumptions, prompting viewers to investigate.\n\n**5. Pattern Interrupt** – “Stop scrolling—this is the one thing you’re missing for perfect sleep.”  \n*Why it works:* The abrupt stop forces the viewer to pause and focus on a promised revelation.\n\n**6. Question** – “Ever wondered why you dream in color, not black‑and‑white?”  \n*Why it works:* A simple, everyday mystery hooks the audience with a relatable curiosity.\n\n**7. Bold Claim** – “You can cure insomnia in 30 minutes—no medication needed.”  \n*Why it works:* A bold, time‑bound promise creates urgency and hope.\n\n**8. Story Start** – “I tried every sleep trick—until I discovered this one weird habit.”  \n*Why it works:* The teaser of a “secret” habit promises a unique, actionable tip.\n\n**9. Controversy** – “Why the government is hiding the true science of REM sleep.”  \n*Why it works:* Suggesting a conspiracy taps into viewers’ desire for exclusive knowledge.\n\n**10. Pattern Interrupt** – “This 5‑second trick will rewrite your dreams—watch now.”  \n*Why it works:* A short, actionable promise combined with an immediate call‑to‑action captures quick attention.",
+    "timestamp": "2026-09-14T18:10:27.099Z"
+  },
+  {
+    "taskId": "task_1789410424729_4m8g2",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 3,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 28389s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T18:27:04.732Z"
+  },
+  {
+    "taskId": "task_1789411160844_gy80j",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 15,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 29125s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T18:39:20.859Z"
+  },
+  {
+    "taskId": "task_1789411160868_5e0nl",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 90,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T18:39:20.958Z"
+  },
+  {
+    "taskId": "task_1789411160965_8anhu",
+    "department": "general",
+    "task": "system status",
+    "action": "generic.process(task=\"system status\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: system status...",
+    "timestamp": "2026-09-14T18:39:20.965Z"
+  },
+  {
+    "taskId": "task_1789411160972_qzwwb",
+    "department": "youtube",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 2,
+    "output": "The YouTube agent is in setup mode — it needs YouTube credentials before it can generate. Run `npm run walkthrough` in the agent directory.",
+    "timestamp": "2026-09-14T18:39:20.974Z"
+  },
+  {
+    "taskId": "task_1789412383875_3tfbu",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 3,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 30348s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T18:59:43.878Z"
+  },
+  {
+    "taskId": "task_1789412383888_h0w9j",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 886,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T18:59:44.774Z"
+  },
+  {
+    "taskId": "task_1789412384789_8illl",
+    "department": "general",
+    "task": "system status",
+    "action": "generic.process(task=\"system status\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: system status...",
+    "timestamp": "2026-09-14T18:59:44.789Z"
+  },
+  {
+    "taskId": "task_1789412540325_mufo2",
+    "department": "general",
+    "task": "hello",
+    "action": "generic.process(task=\"hello\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: hello...",
+    "timestamp": "2026-09-14T19:02:20.325Z"
+  },
+  {
+    "taskId": "task_1789412554848_52w37",
+    "department": "general",
+    "task": "what is the weather",
+    "action": "generic.process(task=\"what is the weather\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "Processed: what is the weather...",
+    "timestamp": "2026-09-14T19:02:34.848Z"
+  },
+  {
+    "taskId": "task_1789412625741_wxrc1",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 20,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 30590s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:03:45.761Z"
+  },
+  {
+    "taskId": "task_1789412701591_zucql",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 3,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 30666s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:05:01.594Z"
+  },
+  {
+    "taskId": "task_1789412701642_r63ek",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 53,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T19:05:01.695Z"
+  },
+  {
+    "taskId": "task_1789412701703_esi01",
+    "department": "youtube",
+    "task": "youtube analytics",
+    "action": "youtube.analytics({\"command\":\"analytics\"})",
+    "success": true,
+    "latencyMs": 2,
+    "output": "Analytics: 0 videos, average performance score 0.\nNo insights yet.",
+    "timestamp": "2026-09-14T19:05:01.705Z"
+  },
+  {
+    "taskId": "task_1789413616270_8xmgr",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 5,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 31581s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:20:16.275Z"
+  },
+  {
+    "taskId": "task_1789413823092_fpqqp",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 46,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 31787s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:23:43.138Z"
+  },
+  {
+    "taskId": "task_1789413823169_i7048",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 467,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T19:23:43.636Z"
+  },
+  {
+    "taskId": "task_1789413823661_m8thv",
+    "department": "youtube",
+    "task": "youtube analytics",
+    "action": "youtube.analytics({\"command\":\"analytics\"})",
+    "success": true,
+    "latencyMs": 2,
+    "output": "Analytics: 0 videos, average performance score 0.\nNo insights yet.",
+    "timestamp": "2026-09-14T19:23:43.663Z"
+  },
+  {
+    "taskId": "task_1789414517312_5yxgj",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 6,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 32482s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:35:17.318Z"
+  },
+  {
+    "taskId": "task_1789414517333_hqje5",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 99,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T19:35:17.432Z"
+  },
+  {
+    "taskId": "task_1789415048884_l02xq",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 2,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 33013s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:44:08.886Z"
+  },
+  {
+    "taskId": "task_1789415048895_faegt",
+    "department": "youtube",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 60,
+    "output": "Recent jobs:\n• job_1789381403613_sy5uy9lva — completed — Checkpointed automation\n• job_1789381403332_deje2ebj9 — interrupted — Provider durability test\n• job_1789381088715_ctcahfvfc — completed — Checkpointed automation\n• job_1789381088142_ioqaydv0k — interrupted — Provider durability test",
+    "timestamp": "2026-09-14T19:44:08.955Z"
+  },
+  {
+    "taskId": "task_1789415238479_hgp6g",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 8,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 33203s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:47:18.487Z"
+  },
+  {
+    "taskId": "task_1789415813920_qsf9t",
+    "department": "youtube",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 1,
+    "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 33778s. Agents: none. Dashboard: http://127.0.0.1:3457/",
+    "timestamp": "2026-09-14T19:56:53.921Z"
+  }
+]

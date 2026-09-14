@@ -1,0 +1,523 @@
+[
+  {
+    "id": "lesson_task_1789404650921_9kbb9",
+    "task": "generate a youtube title about coffee",
+    "action": "youtube.run(task=\"generate a youtube title about coffee\")",
+    "success": true,
+    "latencyMs": 0,
+    "keywords": [
+      "generate",
+      "youtube",
+      "title",
+      "about",
+      "coffee"
+    ],
+    "timestamp": "2026-09-14T16:50:50.921Z"
+  },
+  {
+    "id": "lesson_task_1789404699028_7id7r",
+    "task": "generate a youtube title about morning routine",
+    "action": "youtube.run(task=\"generate a youtube title about morning routine\")",
+    "success": true,
+    "latencyMs": 0,
+    "keywords": [
+      "generate",
+      "youtube",
+      "title",
+      "about",
+      "morning",
+      "routine"
+    ],
+    "timestamp": "2026-09-14T16:51:39.028Z"
+  },
+  {
+    "id": "lesson_task_1789405795109_26n6y",
+    "task": "youtube status",
+    "action": "youtube.run(task=\"youtube status\")",
+    "success": true,
+    "latencyMs": 0,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T17:09:55.109Z"
+  },
+  {
+    "id": "lesson_task_1789405795119_ii448",
+    "task": "yt script about rust",
+    "action": "youtube.run(task=\"yt script about rust\")",
+    "success": true,
+    "latencyMs": 0,
+    "keywords": [
+      "script",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T17:09:55.119Z"
+  },
+  {
+    "id": "lesson_task_1789406497464_ui97x",
+    "task": "youtube generate video about rust",
+    "action": "youtube.run(task=\"youtube generate video about rust\")",
+    "success": true,
+    "latencyMs": 0,
+    "keywords": [
+      "youtube",
+      "generate",
+      "video",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T17:21:37.464Z"
+  },
+  {
+    "id": "lesson_task_1789406662287_1airr",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 17,
+    "keywords": [
+      "youtube",
+      "generate",
+      "video",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T17:24:22.304Z"
+  },
+  {
+    "id": "lesson_task_1789406665767_x7ep7",
+    "task": "yt script about rust programming",
+    "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 15785,
+    "keywords": [
+      "script",
+      "about",
+      "rust",
+      "programming"
+    ],
+    "timestamp": "2026-09-14T17:24:41.552Z"
+  },
+  {
+    "id": "lesson_task_1789406836387_v20ki",
+    "task": "yt script about rust programming",
+    "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
+    "success": false,
+    "latencyMs": 30007,
+    "keywords": [
+      "script",
+      "about",
+      "rust",
+      "programming"
+    ],
+    "timestamp": "2026-09-14T17:27:46.394Z"
+  },
+  {
+    "id": "lesson_task_1789406933387_10vlo",
+    "task": "yt script about rust programming",
+    "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 8378,
+    "keywords": [
+      "script",
+      "about",
+      "rust",
+      "programming"
+    ],
+    "timestamp": "2026-09-14T17:29:01.765Z"
+  },
+  {
+    "id": "lesson_task_1789406968987_6eoxl",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 4,
+    "keywords": [
+      "youtube",
+      "generate",
+      "video",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T17:29:28.991Z"
+  },
+  {
+    "id": "lesson_task_1789407044107_rf0uc",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 7,
+    "keywords": [
+      "youtube",
+      "generate",
+      "video",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T17:30:44.114Z"
+  },
+  {
+    "id": "lesson_task_1789407100344_mdu7t",
+    "task": "yt hook about fitness",
+    "action": "local_yt.yt_hook({\"command\":\"yt_hook\",\"topic\":\"about fitness\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 882,
+    "keywords": [
+      "hook",
+      "about",
+      "fitness"
+    ],
+    "timestamp": "2026-09-14T17:31:41.226Z"
+  },
+  {
+    "id": "lesson_task_1789408627749_hing8",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 36,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T17:57:07.785Z"
+  },
+  {
+    "id": "lesson_task_1789408627802_x0q6l",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 175,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T17:57:07.977Z"
+  },
+  {
+    "id": "lesson_task_1789408627984_xxl85",
+    "task": "youtube analytics",
+    "action": "youtube.analytics({\"command\":\"analytics\"})",
+    "success": true,
+    "latencyMs": 2,
+    "keywords": [
+      "youtube",
+      "analytics"
+    ],
+    "timestamp": "2026-09-14T17:57:07.986Z"
+  },
+  {
+    "id": "lesson_task_1789408627992_0cqgm",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 2,
+    "keywords": [
+      "youtube",
+      "generate",
+      "video",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T17:57:07.994Z"
+  },
+  {
+    "id": "lesson_task_1789409377053_li23b",
+    "task": "yt title about coffee",
+    "action": "local_yt.yt_title({\"command\":\"yt_title\",\"topic\":\"about coffee\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 5437,
+    "keywords": [
+      "title",
+      "about",
+      "coffee"
+    ],
+    "timestamp": "2026-09-14T18:09:42.490Z"
+  },
+  {
+    "id": "lesson_task_1789409414184_jwudz",
+    "task": "generate youtube hooks about fitness",
+    "action": "youtube.generate({\"command\":\"generate\"})",
+    "success": false,
+    "latencyMs": 46,
+    "keywords": [
+      "generate",
+      "youtube",
+      "hooks",
+      "about",
+      "fitness"
+    ],
+    "timestamp": "2026-09-14T18:10:14.230Z"
+  },
+  {
+    "id": "lesson_task_1789409425463_anzw2",
+    "task": "generate youtube title about productivity",
+    "action": "local_yt.yt_title({\"command\":\"yt_title\",\"topic\":\"productivity\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 792,
+    "keywords": [
+      "generate",
+      "youtube",
+      "title",
+      "about",
+      "productivity"
+    ],
+    "timestamp": "2026-09-14T18:10:26.255Z"
+  },
+  {
+    "id": "lesson_task_1789409426299_9lx4b",
+    "task": "yt hook about sleep",
+    "action": "local_yt.yt_hook({\"command\":\"yt_hook\",\"topic\":\"about sleep\"}).slice(0,100)",
+    "success": true,
+    "latencyMs": 800,
+    "keywords": [
+      "hook",
+      "about",
+      "sleep"
+    ],
+    "timestamp": "2026-09-14T18:10:27.099Z"
+  },
+  {
+    "id": "lesson_task_1789410424729_4m8g2",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 3,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T18:27:04.732Z"
+  },
+  {
+    "id": "lesson_task_1789411160844_gy80j",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 15,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T18:39:20.859Z"
+  },
+  {
+    "id": "lesson_task_1789411160868_5e0nl",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 90,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T18:39:20.958Z"
+  },
+  {
+    "id": "lesson_task_1789411160972_qzwwb",
+    "task": "youtube generate video about rust",
+    "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
+    "success": false,
+    "latencyMs": 2,
+    "keywords": [
+      "youtube",
+      "generate",
+      "video",
+      "about",
+      "rust"
+    ],
+    "timestamp": "2026-09-14T18:39:20.974Z"
+  },
+  {
+    "id": "lesson_task_1789412383875_3tfbu",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 3,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T18:59:43.878Z"
+  },
+  {
+    "id": "lesson_task_1789412383888_h0w9j",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 886,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T18:59:44.774Z"
+  },
+  {
+    "id": "lesson_task_1789412625741_wxrc1",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 20,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:03:45.761Z"
+  },
+  {
+    "id": "lesson_task_1789412701591_zucql",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 3,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:05:01.594Z"
+  },
+  {
+    "id": "lesson_task_1789412701642_r63ek",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 53,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T19:05:01.695Z"
+  },
+  {
+    "id": "lesson_task_1789412701703_esi01",
+    "task": "youtube analytics",
+    "action": "youtube.analytics({\"command\":\"analytics\"})",
+    "success": true,
+    "latencyMs": 2,
+    "keywords": [
+      "youtube",
+      "analytics"
+    ],
+    "timestamp": "2026-09-14T19:05:01.705Z"
+  },
+  {
+    "id": "lesson_task_1789413616270_8xmgr",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 5,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:20:16.275Z"
+  },
+  {
+    "id": "lesson_task_1789413823092_fpqqp",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 46,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:23:43.138Z"
+  },
+  {
+    "id": "lesson_task_1789413823169_i7048",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 467,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T19:23:43.636Z"
+  },
+  {
+    "id": "lesson_task_1789413823661_m8thv",
+    "task": "youtube analytics",
+    "action": "youtube.analytics({\"command\":\"analytics\"})",
+    "success": true,
+    "latencyMs": 2,
+    "keywords": [
+      "youtube",
+      "analytics"
+    ],
+    "timestamp": "2026-09-14T19:23:43.663Z"
+  },
+  {
+    "id": "lesson_task_1789414517312_5yxgj",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 6,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:35:17.318Z"
+  },
+  {
+    "id": "lesson_task_1789414517333_hqje5",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 99,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T19:35:17.432Z"
+  },
+  {
+    "id": "lesson_task_1789415048884_l02xq",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 2,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:44:08.886Z"
+  },
+  {
+    "id": "lesson_task_1789415048895_faegt",
+    "task": "youtube jobs",
+    "action": "youtube.jobs({\"command\":\"jobs\"})",
+    "success": true,
+    "latencyMs": 60,
+    "keywords": [
+      "youtube",
+      "jobs"
+    ],
+    "timestamp": "2026-09-14T19:44:08.955Z"
+  },
+  {
+    "id": "lesson_task_1789415238479_hgp6g",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 8,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:47:18.487Z"
+  },
+  {
+    "id": "lesson_task_1789415813920_qsf9t",
+    "task": "youtube status",
+    "action": "youtube.status({\"command\":\"status\"})",
+    "success": true,
+    "latencyMs": 1,
+    "keywords": [
+      "youtube",
+      "status"
+    ],
+    "timestamp": "2026-09-14T19:56:53.921Z"
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "content": {
+    "name": "Content",
+    "path": "/Users/bhavyarajput/Downloads/Rox/.rox-data/agents/content",
+    "tools": [],
+    "expertise": [],
+    "memoryCount": 0,
+    "lessonsLearned": 4,
+    "tasksCompleted": 4,
+    "successRate": 1,
+    "lastActive": "2026-09-14T17:29:18.936Z"
+  },
+  "code": {
+    "name": "Code",
+    "path": "/Users/bhavyarajput/Downloads/Rox/.rox-data/agents/code",
+    "tools": [],
+    "expertise": [],
+    "memoryCount": 0,
+    "lessonsLearned": 1,
+    "tasksCompleted": 1,
+    "successRate": 1,
+    "lastActive": "2026-09-14T18:09:43.125Z"
+  },
+  "media": {
+    "name": "Media",
+    "path": "/Users/bhavyarajput/Downloads/Rox/.rox-data/agents/media",
+    "tools": [],
+    "expertise": [],
+    "memoryCount": 0,
+    "lessonsLearned": 0,
+    "tasksCompleted": 0,
+    "successRate": 0,
+    "lastActive": "never"
+  },
+  "research": {
+    "name": "Research",
+    "path": "/Users/bhavyarajput/Downloads/Rox/.rox-data/agents/research",
+    "tools": [],
+    "expertise": [],
+    "memoryCount": 0,
+    "lessonsLearned": 3,
+    "tasksCompleted": 3,
+    "successRate": 1,
+    "lastActive": "2026-09-14T17:31:41.636Z"
+  },
+  "youtube": {
+    "name": "Youtube",
+    "path": "/Users/bhavyarajput/Downloads/Rox/.rox-data/agents/youtube",
+    "tools": [],
+    "expertise": [],
+    "memoryCount": 0,
+    "lessonsLearned": 40,
+    "tasksCompleted": 40,
+    "successRate": 0.82,
+    "lastActive": "2026-09-14T19:56:53.925Z"
+  },
+  "general": {
+    "name": "General",
+    "path": "/Users/bhavyarajput/Downloads/Rox/.rox-data/agents/general",
+    "tools": [],
+    "expertise": [],
+    "memoryCount": 0,
+    "lessonsLearned": 9,
+    "tasksCompleted": 9,
+    "successRate": 1,
+    "lastActive": "2026-09-14T19:02:34.851Z"
+  }
+}

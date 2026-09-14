@@ -1,77 +1,121 @@
-# Rox Orb UI
+# ROX
 
-An Iron Man–inspired holographic orb built with **Next.js**, **Three.js**, and **MediaPipe** hand tracking — control it with your bare hands through your webcam.
+A futuristic personal AI assistant with an interactive 3D holographic core.
 
-> 🔮 This is the open-source **interface** of Rox, an interactive holographic orb built for real-time control.
+## Architecture
 
-> 📱 **[Watch the demo on Instagram](https://www.instagram.com/p/DayJ17OTwvx/)**
-
-![Rox orb UI](docs/screenshot.png)
-
-https://github.com/user-attachments/assets/91578a83-9a27-44e8-84b0-96defcfd7366
-
-## Getting started
-
-```bash
-npm install
-npm run dev
+```
+rox/
+├── apps/
+│   ├── web/          # React + Three.js frontend (Vite)
+│   └── server/       # Express API with AI orchestration
+├── packages/
+│   ├── types/        # Shared TypeScript types
+│   └── ui/           # Zustand store, modules, tools registry
+├── database/         # SQLite migrations (future)
+└── assets/           # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## Quick Start
 
-## Assistant backend
+```bash
+# Install pnpm if you haven't
+corepack enable
+corepack prepare pnpm@9.15.0 --activate
 
-Voice commands are sent to `/api/assistant`. Rox handles orb controls locally
-and can answer open-ended requests through any OpenAI-compatible API by copying
-`.env.example` to `.env.local` and setting `AI_BASE_URL`, `AI_API_KEY`, and
-`AI_MODEL`. When configured, the local Omniroute endpoint is tried first with
-automatic provider routing, then Rox falls back to the `AI_*` provider.
+# Install dependencies
+pnpm install
 
-Set `OMNIROUTE_API_KEY` in `.env.local` to authorize the local Omniroute server;
-the default endpoint is `http://127.0.0.1:20128/v1`.
+# Copy environment file
+cp .env.example .env
 
-Built-in assistant tools include calculator, weather lookup, web search, webpage
-reading, news headlines, SSE streaming, and bounded persistent conversation context. The orb render loop
-is capped at 30 FPS, uses adaptive particle counts, lowers maximum pixel ratio,
-and pauses while the tab is hidden to reduce CPU, GPU, RAM, and heat usage.
+# Start both apps
+pnpm dev
+```
 
-## Controls
+- Frontend: http://localhost:3000
+- Server: http://localhost:4000
 
-### Mouse / touch
+## Commands
 
-| Input | Action |
-| --- | --- |
-| Drag | Spin the orb |
-| Scroll / pinch | Zoom in & out |
+```bash
+pnpm dev          # Start dev servers (web + server)
+pnpm build        # Build both apps
+pnpm build:web    # Build frontend only
+pnpm build:server # Build server only
+pnpm lint         # Lint all packages
+pnpm typecheck    # Type check all packages
+```
 
-### Hand gestures (webcam)
+## Adding a Module
 
-Click **GESTURES OFF** (or press `G`) and allow camera access, then:
+Edit `packages/ui/src/modules.ts` and add to the `MODULES` array:
 
-| Gesture | Action |
-| --- | --- |
-| Pinch (thumb + index) one hand and move it | Spin the orb |
-| Pinch with **both** hands, spread apart / bring together | Zoom in / out |
+```typescript
+{
+  id: 'your-module',
+  name: 'Your Module',
+  icon: 'icon-name',  // from lucide-react
+  description: 'Description',
+  capabilities: ['cap1', 'cap2'],
+}
+```
 
-### Keyboard
+Then add the UI in `apps/web/src/components/`.
 
-| Key | Action |
-| --- | --- |
-| `G` | Toggle hand gestures |
-| `R` | Reset the view |
-| `+` / `−` | Zoom in / out |
+## Adding an AI Provider
 
-## How it works
+1. Implement `AIProviderInterface` in `apps/server/src/ai/orchestrator.ts`
+2. Add constructor in `AIOrchestrationLayer`
+3. Add key to `.env.example`
 
-- **`lib/orbScene.ts`** — the Three.js scene: layered wireframe shells, a spiral
-  inner core, floating code-text sprites, orbiting debris, dust particles, scan
-  rings, and a bloom + chromatic-aberration post-processing stack.
-- **`lib/handTracker.ts`** — MediaPipe HandLandmarker running on the webcam
-  feed. Pinch detection with hysteresis: one pinched hand spins the orb, two
-  pinched hands zoom by spreading apart or together.
-- **`components/JarvisOrb.tsx`** — the Rox HUD and glue between the scene, the
-  tracker, and your inputs.
+```typescript
+class MyProvider implements AIProviderInterface {
+  readonly name = 'my-provider';
+  async chat(messages, options) { /* ... */ }
+  isAvailable() { return !!process.env.MY_PROVIDER_KEY; }
+}
+```
 
-## License
+## Adding a Tool
 
-MIT
+Add to `packages/ui/src/tools.ts`:
+
+```typescript
+{
+  name: 'my_tool',
+  description: 'What it does',
+  inputSchema: { param: 'string' },
+  outputSchema: { result: 'string' },
+  permissions: ['read'],
+}
+```
+
+## Modifying the Rox Core
+
+The 3D core is in `apps/web/src/components/RoxCore.tsx`. It's composed of:
+- `CoreNucleus` — central glowing sphere
+- `EnergyShell` — wireframe icosahedron layers
+- `OrbitalRings` — rotating torus geometries
+- `ParticleField` — instanced particle system
+- `CoreLighting` — point lights with amber colors
+- `CoreEffects` — bloom, fog, etc.
+
+Each state (idle, thinking, researching, etc.) animates different properties. See `useRoxStore.coreState`.
+
+## Changing the Theme
+
+Edit `packages/ui/src/theme.ts` and `apps/web/src/styles/globals.css`. The design system uses CSS custom properties for consistency.
+
+## Building for Production
+
+```bash
+pnpm build
+cd apps/web && node dist/index.js  # or serve the static build
+cd apps/server && node dist/index.js
+```
+
+## Requirements
+
+- Node.js >= 20
+- pnpm >= 9

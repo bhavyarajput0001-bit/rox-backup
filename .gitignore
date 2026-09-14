@@ -1,27 +1,14 @@
-# dependencies
-/node_modules
-/.rox-data/
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+node_modules
+dist
+.next
+out
 .DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# env files
-.env*
-!.env.example
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+*.log
+.env
+.env.local
+coverage
+.venv
+.pytest_cache
+.svelte-kit
+turbo
+.cache

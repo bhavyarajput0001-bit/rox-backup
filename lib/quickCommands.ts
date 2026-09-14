@@ -372,7 +372,7 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       if (!args) return { ok: false, reply: "What to search for?" };
       try {
-        const r = await searchWeb(args, 5);
+        const r = await searchWeb(args);
         return { ok: true, reply: `Results for "${args}":\n\n${r}` };
       } catch { return { ok: false, reply: "Search failed." }; }
     },
@@ -388,7 +388,7 @@ const QUICK_COMMANDS: QuickCommand[] = [
         if (r?.ok) {
           const data = await r.json();
           const articles = data.articles?.slice(0, 5) || [];
-          return { ok: true, reply: `Latest ${topic} news:\n\n` + articles.map((a, i) => `${i + 1}. ${a.title}`).join("\n") };
+          return { ok: true, reply: `Latest ${topic} news:\n\n` + articles.map((a: any, i: number) => `${i + 1}. ${a.title}`).join("\n") };
         }
         return { ok: true, reply: `Here are the latest ${topic} headlines from around the web:` };
       } catch { return { ok: false, reply: "Could not fetch news." }; }

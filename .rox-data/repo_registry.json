@@ -1,0 +1,26 @@
+{
+  "AgencyAgents": {
+    "name": "AgencyAgents",
+    "path": "/Users/bhavyarajput/Downloads/Rox/self_improvement/AgencyAgents",
+    "discoveredAt": "2026-09-14T16:31:26.313Z",
+    "lastBuild": "2026-09-14T16:31:26.324Z",
+    "tools": [],
+    "graftStatus": "ready"
+  },
+  "CodebaseMemoryMCP": {
+    "name": "CodebaseMemoryMCP",
+    "path": "/Users/bhavyarajput/Downloads/Rox/self_improvement/CodebaseMemoryMCP",
+    "discoveredAt": "2026-09-14T16:31:26.324Z",
+    "lastBuild": "2026-09-14T16:31:26.327Z",
+    "tools": [],
+    "graftStatus": "ready"
+  },
+  "OpenMontage": {
+    "name": "OpenMontage",
+    "path": "/Users/bhavyarajput/Downloads/Rox/self_improvement/OpenMontage",
+    "discoveredAt": "2026-09-14T16:31:26.327Z",
+    "lastBuild": "2026-09-14T16:31:26.330Z",
+    "tools": [],
+    "graftStatus": "ready"
+  }
+}
