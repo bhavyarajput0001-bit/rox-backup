@@ -8,8 +8,25 @@ import { HandTracker, type TrackerStatus } from "@/lib/handTracker";
 type CameraState = "off" | "starting" | "on" | "error";
 type VoiceState = "idle" | "listening" | "speaking" | "unsupported" | "error";
 type UiMode = "original" | "cinematic";
-type ChatMessage = { id: number; role: "user" | "rox"; text: string };
+type ChatMessage = { id: number; role: "user" | "rox"; text: string; tools?: string[] };
+type AgentActivity = { cognitive: string; tools: string; lessons: number; recalled: number };
+type AgentToolCallRecord = { tool: string; ok: boolean; output: string };
+type AgentResultEnvelope = {
+  reply: string;
+  toolCalls?: AgentToolCallRecord[];
+  recalled?: Array<{ task: string; result: string; runs: number }>;
+  learned?: boolean;
+  cognitiveState?: string;
+  lessonsLearned?: number;
+  provider?: string;
+  action?: AssistantAction;
+};
 type SystemSnapshot = { memoryUsedPercent: number; cpuCores: number; loadAverage: number[]; capturedAt: string };
+type YouTubeAgentStatus =
+  | { state: "checking" }
+  | { state: "online"; initialized: boolean; setupRequired: boolean; agents: string[]; uptime: number; dashboardUrl: string; url: string }
+  | { state: "offline"; error?: string; url: string }
+  | { state: "error"; error: string; url: string };
 
 type SpeechRecognitionEventLike = Event & {
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
@@ -66,6 +83,10 @@ export default function RoxOrb() {
   const [systemSnapshot, setSystemSnapshot] = useState<SystemSnapshot | null>(null);
   const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
   const chatDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
+  const [youtubeAgent, setYouTubeAgent] = useState<YouTubeAgentStatus>({ state: "checking" });
+  const [youtubePanelOpen, setYouTubePanelOpen] = useState(false);
+  const [youtubeCopilot, setYouTubeCopilot] = useState<{ message: string; reply: string } | null>(null);
+  const [agentActivity, setAgentActivity] = useState<AgentActivity>({ cognitive: "idle", tools: "", lessons: 0, recalled: 0 });
 
   const stopVoiceMeter = () => {
     if (audioFrameRef.current !== null) {
@@ -206,6 +227,32 @@ export default function RoxOrb() {
       if (!message) return;
       setChatMessages((current) => [...current, { id: Date.now(), role: "user", text: message }]);
       setVoiceTranscript(`Processing: ${message}`);
+      setAgentActivity((current) => ({ ...current, cognitive: "focus" }));
+
+      const historyForApi = chatMessages.slice(-8).map((turn) => ({ role: turn.role, content: turn.text }));
+
+      const processAgentResult = (finalResult: AgentResultEnvelope) => {
+        const tools = finalResult.toolCalls || [];
+        const recalled = finalResult.recalled || [];
+        const toolLabel = tools.length ? tools.map((call) => call.tool).join(" → ") : "";
+        const activity: AgentActivity = {
+          cognitive: finalResult.cognitiveState ?? (tools.length ? "automating" : "idle"),
+          tools: toolLabel,
+          lessons: finalResult.lessonsLearned ?? 0,
+          recalled: recalled.length,
+        };
+        setAgentActivity(activity);
+        applyAssistantAction(finalResult.action);
+        const roxMessage: ChatMessage = {
+          id: Date.now() + 1,
+          role: "rox",
+          text: finalResult.reply,
+          tools: tools.length ? tools.map((call) => `${call.tool}${call.ok ? "" : " ✗"}`) : undefined,
+        };
+        setChatMessages((current) => [...current, roxMessage]);
+        setVoiceTranscript(`${(finalResult.provider ?? "model").toUpperCase()}: ${finalResult.reply}`);
+        speak(finalResult.reply);
+      };
 
       try {
         const response = await fetch("/api/assistant", {
@@ -213,43 +260,18 @@ export default function RoxOrb() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             message,
-            stream: true,
-            history: chatMessages.slice(-8).map((turn) => ({ role: turn.role, content: turn.text })),
+            stream: false,
+            history: historyForApi,
           }),
         });
-        if (!response.ok) throw new Error("Assistant request failed");
-        if (!response.body) throw new Error("Assistant stream unavailable");
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-        let reply = "";
-        let result: AssistantResult | null = null;
-        while (true) {
-          const { done, value } = await reader.read();
-          buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
-          const events = buffer.split("\n\n");
-          buffer = events.pop() ?? "";
-          for (const event of events) {
-            const data = event.split("\n").find((line) => line.startsWith("data: "))?.slice(6);
-            if (!data) continue;
-            const payload = JSON.parse(data) as { type: string; text?: string } & Partial<AssistantResult>;
-            if (payload.type === "chunk" && payload.text) {
-              reply += payload.text;
-              setVoiceTranscript(`ROX: ${reply}`);
-            }
-            if (payload.type === "done") result = payload as AssistantResult;
-          }
-          if (done) break;
-        }
-        const finalResult = result ?? { reply: reply.trim(), provider: "model" as const };
-        applyAssistantAction(finalResult.action);
-        setVoiceTranscript(`${finalResult.provider.toUpperCase()}: ${finalResult.reply}`);
-        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: finalResult.reply }]);
-        speak(finalResult.reply);
-      } catch {
-        const fallback = "The assistant service is unavailable. Local orb controls are still ready.";
+        if (!response.ok) throw new Error(`Assistant request failed (${response.status})`);
+        const data = (await response.json()) as AgentResultEnvelope;
+        processAgentResult(data);
+      } catch (error) {
+        const fallback = `The assistant service is unavailable (${error instanceof Error ? error.message : "network error"}). Local orb controls are still ready.`;
         setVoiceTranscript(fallback);
         setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: fallback }]);
+        setAgentActivity((current) => ({ ...current, cognitive: "offline" }));
         speak(fallback);
       }
     },
@@ -423,11 +445,30 @@ export default function RoxOrb() {
     let timer: ReturnType<typeof setInterval> | undefined;
     const poll = async () => {
       try {
-        const response = await fetch("/api/system", { cache: "no-store" });
+        const response = await fetch("/api/youtube/control", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: "status" }) });
         if (!response.ok || cancelled) return;
-        setSystemSnapshot((await response.json()) as SystemSnapshot);
+        const data = (await response.json()) as {
+          ok: boolean;
+          reply: string;
+          data?: { health?: { initialized: boolean; setupRequired: boolean; agents: string[]; uptime: number }; dashboardUrl?: string; url?: string };
+          error?: string;
+        };
+        if (!data.ok) {
+          setYouTubeAgent({ state: "offline", error: data.error, url: "http://127.0.0.1:3457" });
+          return;
+        }
+        const health = data.data?.health;
+        setYouTubeAgent({
+          state: "online",
+          initialized: health?.initialized ?? false,
+          setupRequired: health?.setupRequired ?? false,
+          agents: health?.agents ?? [],
+          uptime: health?.uptime ?? 0,
+          dashboardUrl: data.data?.dashboardUrl ?? "/api/youtube/proxy",
+          url: data.data?.url ?? "http://127.0.0.1:3457",
+        });
       } catch {
-        // The UI remains usable if the optional system monitor is unavailable.
+        if (!cancelled) setYouTubeAgent({ state: "offline", error: "Rox status endpoint unavailable", url: "http://127.0.0.1:3457" });
       }
     };
     void poll();
@@ -436,6 +477,22 @@ export default function RoxOrb() {
       cancelled = true;
       if (timer) clearInterval(timer);
     };
+  }, []);
+
+  const runYouTubeCopilot = useCallback(async (message: string) => {
+    setYouTubeCopilot({ message, reply: "Working on it…" });
+    try {
+      const response = await fetch("/api/youtube/control", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+      if (!response.ok) throw new Error("Control request failed");
+      const data = (await response.json()) as { ok: boolean; reply: string; error?: string };
+      setYouTubeCopilot({ message, reply: data.ok ? data.reply : data.error || "Unknown error" });
+    } catch (error) {
+      setYouTubeCopilot({ message, reply: `Could not reach the YouTube control bridge: ${error instanceof Error ? error.message : "unknown error"}.` });
+    }
   }, []);
 
   return (
@@ -469,6 +526,18 @@ export default function RoxOrb() {
             HOST {systemSnapshot.memoryUsedPercent}% RAM · {systemSnapshot.cpuCores} CORES · LOAD {systemSnapshot.loadAverage[0]}
           </div>
         )}
+        <div className={`diagnostic-agent state-${agentActivity.cognitive}`}>
+          <span>AGENT</span>
+          <b>{agentActivity.cognitive.toUpperCase()}</b>
+          {agentActivity.tools && <i title={agentActivity.tools}>⚙ {agentActivity.tools}</i>}
+          {(agentActivity.lessons > 0 || agentActivity.recalled > 0) && (
+            <small>
+              {agentActivity.recalled > 0 ? `recalled ${agentActivity.recalled}` : ""}
+              {agentActivity.recalled > 0 && agentActivity.lessons > 0 ? " · " : ""}
+              {agentActivity.lessons > 0 ? `${agentActivity.lessons} lessons` : ""}
+            </small>
+          )}
+        </div>
       </div>
 
       <div className={`hud hud-voice voice-${voiceState}`} aria-live="polite">
@@ -549,6 +618,13 @@ export default function RoxOrb() {
               <div key={message.id} className={`chat-message chat-${message.role}`}>
                 <span>{message.role === "user" ? "YOU" : "ROX"}</span>
                 <p>{message.text}</p>
+                {message.tools && message.tools.length > 0 && (
+                  <div className="chat-tools">
+                    {message.tools.map((tool) => (
+                      <span key={tool} className="chat-tool-chip">{tool.toUpperCase()}</span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))
           )}
@@ -568,6 +644,90 @@ export default function RoxOrb() {
           />
           <button type="submit" aria-label="Send message">↗</button>
         </form>
+      </section>
+
+      <section
+        className={`chat-panel youtube-panel${youtubePanelOpen ? " is-open" : ""}`}
+        aria-label="YouTube agent"
+      >
+        <div className="chat-panel-header">
+          <span>YT AGENT / CONTROL</span>
+          <button type="button" aria-label="Close YouTube agent panel" onClick={() => setYouTubePanelOpen(false)}>×</button>
+        </div>
+        <div className="youtube-panel-body">
+          {youtubeAgent.state === "online" ? (
+            <>
+              <div className="youtube-status">
+                <span className="youtube-dot" />
+                <span>AGENT ONLINE</span>
+                <small>
+                  {youtubeAgent.setupRequired
+                    ? "Setup mode — YouTube credentials pending"
+                    : youtubeAgent.initialized
+                      ? `${youtubeAgent.agents.length} agents ready`
+                      : "Not fully initialized"}
+                </small>
+              </div>
+              <div className="youtube-actions">
+                <button type="button" className="youtube-action" onClick={() => void runYouTubeCopilot("youtube status")}>
+                  STATUS
+                </button>
+                <button type="button" className="youtube-action" onClick={() => void runYouTubeCopilot("youtube jobs")}>
+                  JOBS
+                </button>
+                <button type="button" className="youtube-action" onClick={() => void runYouTubeCopilot("youtube ideas")}>
+                  IDEAS
+                </button>
+                <button type="button" className="youtube-action" onClick={() => void runYouTubeCopilot("youtube analytics")}>
+                  ANALYTICS
+                </button>
+                <button type="button" className="youtube-action" onClick={() => void runYouTubeCopilot("youtube strategy")}>
+                  STRATEGY
+                </button>
+              </div>
+              <div className={`youtube-copilot${youtubeCopilot ? " has-reply" : ""}`}>
+                {youtubeCopilot && (
+                  <>
+                    <span>ROX &gt; {youtubeCopilot.message}</span>
+                    <p>{youtubeCopilot.reply}</p>
+                  </>
+                )}
+              </div>
+              <iframe
+                src="/api/youtube/proxy"
+                title="YouTube Automation Agent dashboard"
+                className="youtube-frame"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              />
+            </>
+          ) : youtubeAgent.state === "checking" ? (
+            <div className="youtube-status checking">Checking the agent…</div>
+          ) : (
+            <div className="youtube-status offline">
+              <span className="youtube-dot" />
+              <span>AGENT OFFLINE</span>
+              <small>{youtubeAgent.error || "Start the YouTube agent to enable control."}</small>
+            </div>
+          )}
+        </div>
+        <div className="chat-composer youtube-composer">
+          <input
+            placeholder="Ask me to manage your channel…"
+            aria-label="YouTube assistant command"
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                const value = event.currentTarget.value.trim();
+                if (value) {
+                  void runYouTubeCopilot(value);
+                  event.currentTarget.value = "";
+                }
+              }
+            }}
+          />
+          <button type="button" className="youtube-action" aria-label="Send YouTube command" onClick={() => {}}>
+            ↗
+          </button>
+        </div>
       </section>
 
       <div className="hud hud-hint">
@@ -658,6 +818,16 @@ export default function RoxOrb() {
             disabled={camera === "starting"}
           >
             {camera === "starting" ? "INITIALIZING…" : cameraOn ? "GESTURES ON" : "GESTURES OFF"}
+          </button>
+        </div>
+        <div className="hud-row">
+          <button
+            type="button"
+            className={`hud-btn youtube-btn${youtubePanelOpen ? " active" : ""}`}
+            aria-pressed={youtubePanelOpen}
+            onClick={() => setYouTubePanelOpen((open) => !open)}
+          >
+            {youtubeAgent.state === "online" ? "YT AGENT ONLINE" : youtubeAgent.state === "checking" ? "YT AGENT…" : "YT AGENT OFFLINE"}
           </button>
         </div>
         <div className="hud-row">

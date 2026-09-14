@@ -1,0 +1,158 @@
+import { execSync } from "child_process";
+import { mkdir, readFile, writeFile, readdir } from "node:fs/promises";
+import path from "node:path";
+
+const CONFIG = {
+  repoRoot: path.join(process.cwd(), "self_improvement"),
+  registryPath: path.join(process.cwd(), ".rox-data", "repo_registry.json"),
+  graftBin: process.env.PATH?.includes("node_modules") 
+    ? path.join(process.cwd(), "node_modules", ".bin", "graft")
+    : "graft",
+};
+
+export type RepoInfo = {
+  name: string;
+  path: string;
+  discoveredAt: string;
+  lastBuild: string;
+  tools: Array<{ name: string; description: string }>;
+  graftStatus: "idle" | "building" | "ready" | "error";
+};
+
+async function loadRegistry(): Promise<Record<string, RepoInfo>> {
+  try {
+    const raw = await readFile(CONFIG.registryPath, "utf8");
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
+
+async function saveRegistry(registry: Record<string, RepoInfo>): Promise<void> {
+  await mkdir(path.dirname(CONFIG.registryPath), { recursive: true });
+  await writeFile(CONFIG.registryPath, JSON.stringify(registry, null, 2), "utf8");
+}
+
+async function buildGraft(repoPath: string): Promise<{ ok: boolean; output: string }> {
+  try {
+    const output = execSync(`${CONFIG.graftBin} build`, {
+      cwd: repoPath,
+      encoding: "utf8",
+      maxBuffer: 1_000_000,
+      stdio: ["pipe", "pipe", "ignore"], // ignore stderr
+    });
+    return { ok: true, output: output.trim() };
+  } catch (error: unknown) {
+    const err = error as { message: string };
+    return { ok: false, output: `Graft build failed: ${err.message}` };
+  }
+}
+
+async function discoverTools(repoPath: string): Promise<Array<{ name: string; description: string }>> {
+  const tools: Array<{ name: string; description: string }> = [];
+  const entries = await readdir(repoPath, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const searchDirs = [path.join(repoPath, "tools"), repoPath];
+      for (const searchDir of searchDirs) {
+        try {
+          const files = await readdir(searchDir, { withFileTypes: true });
+          for (const file of files) {
+            if (file.isFile() && (file.name.endsWith(".mcp.js") || file.name.startsWith("mcp-"))) {
+              tools.push({ name: file.name, description: "MCP tool found" });
+            }
+          }
+        } catch {
+          // Skip unreadable directories
+        }
+      }
+    }
+  }
+  return tools;
+}
+
+async function processRepo(repoPath: string): Promise<RepoInfo> {
+  const name = path.basename(repoPath);
+  const info: RepoInfo = {
+    name,
+    path: repoPath,
+    discoveredAt: new Date().toISOString(),
+    lastBuild: "never",
+    tools: [],
+    graftStatus: "idle",
+  };
+
+  const graftResult = await buildGraft(repoPath);
+  info.graftStatus = graftResult.ok ? "ready" : "error";
+  info.lastBuild = new Date().toISOString();
+
+  if (graftResult.ok) {
+    const tools = await discoverTools(repoPath);
+    info.tools = tools;
+  }
+
+  return info;
+}
+
+export async function auto_repo_wiring(): Promise<{ processed: number; total: number; registry: Record<string, RepoInfo> }> {
+  const registry = await loadRegistry();
+  const existingNames = new Set(Object.keys(registry));
+  let allRepos: string[] = [];
+
+  try {
+    const entries = await readdir(CONFIG.repoRoot, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory() && !entry.name.startsWith(".")) {
+        allRepos.push(path.join(CONFIG.repoRoot, entry.name));
+      }
+    }
+  } catch {}
+
+  const results: RepoInfo[] = [];
+  for (const repoPath of allRepos) {
+    const name = path.basename(repoPath);
+    if (existingNames.has(name)) continue;
+    try {
+      const info = await processRepo(repoPath);
+      registry[name] = info;
+      results.push(info);
+      console.log(`✅ Discovered and wired: ${name}`);
+    } catch (error: unknown) {
+      console.error(`❌ Failed to process ${name}:`, error);
+      registry[name] = {
+        name,
+        path: repoPath,
+        discoveredAt: new Date().toISOString(),
+        lastBuild: "failed",
+        tools: [],
+        graftStatus: "error",
+      };
+    }
+  }
+
+  await saveRegistry(registry);
+
+  console.log(`🔧 Auto-wired ${results.length} repos: ${results.map(r => r.name).join(", ")}`);
+
+  return { processed: results.length, total: allRepos.length, registry };
+}
+
+export async function list_repos(): Promise<string> {
+  const registry = await loadRegistry();
+  const lines: string[] = ["Discovered Repos:"];
+  for (const [name, info] of Object.entries(registry).sort(([a], [b]) => a.localeCompare(b))) {
+    const status = info.graftStatus === "ready" ? "✅" : info.graftStatus === "error" ? "❌" : "⏳";
+    const tools = info.tools.length ? ` (${info.tools.length} tools)` : "";
+    lines.push(`  ${status} ${name}${tools}`);
+    if (info.lastBuild !== "never") {
+      lines.push(`    📅 Last built: ${new Date(info.lastBuild).toLocaleString()}`);
+    }
+  }
+  return lines.join("\n");
+}
+
+export async function rewire_repos(): Promise<void> {
+  console.log("Re-wiring all repos...");
+  await auto_repo_wiring();
+  console.log("Done.");
+}

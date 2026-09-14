@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: youtube-automation-agent
+    env: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3456
+      - key: DATABASE_URL
+        fromDatabase:
+          name: youtube-automation-db
+          property: connectionString
+      - key: SUPABASE_DB_PASSWORD
+        sync: false
+        # You'll need to set this manually in Render dashboard after creating the database
+        # Get it from Supabase: Settings → Database → Connection string → Password
+      - key: CHANNEL_NAME
+        value: Your Channel Name
+      - key: TARGET_AUDIENCE
+        value: Your target audience
+      - key: YOUTUBE_REGION
+        value: US
+      - key: DEFAULT_PRIVACY_STATUS
+        value: private
+      - key: GLOBAL_RATE_LIMIT_PER_HOUR
+        value: 50
+      - key: MAX_CONCURRENT_JOBS
+        value: 1
+      - key: GENERATION_STAGE_MAX_ATTEMPTS
+        value: 2
+      - key: GENERATION_RETRY_BASE_MS
+        value: 1000
+
+databases:
+  - name: youtube-automation-db
+    plan: free
+    region: oregon
+
+# Note: For YouTube API credentials and AI provider keys,
+# you'll need to add them manually in the Render dashboard
+# under Service → Environment → Environment Variables
+# after creating your Supabase project and getting your API keys.

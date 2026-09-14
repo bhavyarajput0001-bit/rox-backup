@@ -99,7 +99,47 @@ export function calculate(expression: string) {
 
 export function capabilityReport() {
   return [
-    "Online skills available: web search via Exa, webpage reading via Jina Reader, RSS feeds, YouTube transcripts, and GitHub CLI.",
-    "Browser-session skills are installed through OpenCLI but require its Chrome extension and an explicitly logged-in browser session.",
+    "Rox toolkit: web search via Exa, webpage reading via Jina Reader, RSS news, weather via wttr.in.",
+    "Also: open apps/URLs, read/write/list files, run shell commands in a sandbox, and relay to the YouTube agent.",
   ].join(" ");
+}
+
+export async function searchWebCompact(query: string): Promise<{ title: string; summary: string }[]> {
+  const { stdout } = await execFileAsync(
+    "mcporter",
+    ["call", "exa.web_search_exa", `query=${query}`, "numResults=5"],
+    { timeout: 20_000, maxBuffer: 200_000 },
+  );
+  // mcporter prints JSON; extract title/summary items defensively.
+  const raw = stdout.trim();
+  try {
+    const parsed = JSON.parse(raw);
+    const results = Array.isArray(parsed)
+      ? parsed
+      : parsed && typeof parsed === "object"
+        ? (parsed.results ?? parsed.data ?? parsed.output ?? [])
+        : [];
+    if (Array.isArray(results)) {
+      return results
+        .map((item) => ({
+          title: String(item?.title ?? item?.name ?? "Untitled").slice(0, 200),
+          summary: String(item?.summary ?? item?.description ?? item?.snippet ?? "").slice(0, 400),
+        }))
+        .filter((item) => item.title !== "Untitled" || item.summary);
+    }
+  } catch {
+    // Not JSON — fall through to lightweight HTML-ish extraction.
+  }
+  return [];
+}
+
+export async function summarizeUrl(url: string): Promise<string> {
+  if (!isHttpUrl(url)) throw new Error("Only http and https URLs are supported.");
+  const response = await fetch(`https://r.jina.ai/${url}`, {
+    signal: AbortSignal.timeout(20_000),
+    headers: { Accept: "text/plain", "X-Return-Format": "text" },
+  });
+  if (!response.ok) throw new Error(`Webpage reader returned ${response.status}.`);
+  const text = (await response.text()).trim();
+  return text.slice(0, 12_000);
 }

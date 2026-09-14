@@ -36,6 +36,11 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "self_improvement",
+    "graft",
+    "AgencyAgents",
+    "CodebaseMemoryMCP",
+    "OpenMontage"
   ]
 }

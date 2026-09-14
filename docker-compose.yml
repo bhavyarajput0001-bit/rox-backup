@@ -1,0 +1,20 @@
+services:
+  rox:
+    build: .
+    image: rox-orb-ui:latest
+    container_name: rox
+    ports:
+      - "3000:3000"
+    volumes:
+      - rox-memory:/app/.rox-data
+    environment:
+      NODE_ENV: production
+      # Rox falls back to the AI_* provider when Omniroute is unreachable.
+      # Point AI_BASE_URL at a public OpenAI-compatible endpoint to enable
+      # open-ended conversations from anywhere (not just the local LAN).
+      # OMNIROUTE_BASE_URL: http://host.docker.internal:20128/v1
+      # OMNIROUTE_API_KEY: your-key
+    restart: unless-stopped
+
+volumes:
+  rox-memory:

@@ -1,0 +1,10 @@
+{
+  "hermesAgent.command": "hermes",
+  "hermesAgent.useAcp": true,
+  "hermesAgent.commandArgs": [
+    "chat",
+    "-q",
+    "{{prompt}}",
+    "-v"
+  ]
+}
