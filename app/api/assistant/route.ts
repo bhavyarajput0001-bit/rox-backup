@@ -2,6 +2,7 @@ import { runAssistant, streamAssistant, type AssistantTurn } from "@/lib/assista
 import { runRoxAgent } from "@/lib/roxAgent";
 import { recentMemory, remember, lessonCount } from "@/lib/memory";
 import { executeTask as multiAgentExecute, recallAcrossDepartments, initMultiAgent } from "@/lib/agents/multiAgent";
+import { matchQuickCommand, executeQuickCommand, listQuickCommands } from "@/lib/quickCommands";
 
 export async function GET() {
   return Response.json(
@@ -65,6 +66,28 @@ export async function POST(request: Request) {
   }
 
   try {
+    // Check for quick commands first
+    const quickCmd = matchQuickCommand(message);
+    if (quickCmd) {
+      const quickResult = await executeQuickCommand(quickCmd, message);
+      
+      await remember([
+        { role: "user", content: message },
+        { role: "rox", content: quickResult.reply },
+      ]);
+      
+      return Response.json({
+        reply: quickResult.reply,
+        department: "quick",
+        toolCalls: [{ tool: quickCmd.name, args: {}, ok: quickResult.ok, output: quickResult.reply }],
+        recalled: [],
+        learned: false,
+        provider: "local",
+        cognitiveState: "focus",
+        lessonsLearned: await lessonCount(),
+      }, { headers: { "Cache-Control": "no-store" } });
+    }
+
     if (stream) {
       return new Response(await streamAssistant(message, history), {
         headers: { "Cache-Control": "no-store", "Content-Type": "text/event-stream; charset=utf-8", Connection: "keep-alive" },

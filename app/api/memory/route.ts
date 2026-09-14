@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   // GET /api/memory?query=&category=&limit=
   const url = new URL(request.url);
   const query = url.searchParams.get("query");
-  const category = url.searchParams.get("category") as MemoryCategory | null;
+  const category = url.searchParams.get("category") as MemoryCategory | undefined;
   const limit = parseInt(url.searchParams.get("limit") ?? "10");
   
   if (query) {
