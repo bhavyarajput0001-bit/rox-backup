@@ -24,11 +24,17 @@ const BLOCKED_PATTERNS = [
 const ALLOWED_COMMANDS = new Set([
   "cat", "echo", "ls", "find", "grep", "head", "tail", "wc", "sort", "uniq",
   "date", "pwd", "mkdir", "touch", "cp", "mv",
-  "node", "npm", "npx", "python3", "python",  // added python entry
+  "node", "npm", "npx", "python3", "python",
   "git", "curl", "wget",
   "open", "osascript", "plutil", "defaults",
   "which", "whoami", "uname", "df", "du", "ps",
-  "graft" // allow the Graft CLI for self‑improvement
+  "graft",
+  "pmset",   // battery, display sleep, system power
+  "sysctl",  // hardware info (cpu, memory)
+  "screencapture",  // screenshots
+  "scutil",  // computer name
+  "top",     // system monitor
+  "vm_stat", // memory stats
 ]);
 
 function assertSafe(command: string): { binary: string; args: string[] } {
