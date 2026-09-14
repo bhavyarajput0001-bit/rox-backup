@@ -727,7 +727,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   // ═══════════════════════════════════════════════
   // ANIMATION
   // ═══════════════════════════════════════════════
-  const clock = new THREE.Clock();
+  const timer = new THREE.Timer();
   let flickerTimer = 0;
   let rafId = 0;
   let disposed = false;
@@ -740,7 +740,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     rafId = requestAnimationFrame(animate);
     if (!pageVisible || now - lastFrameAt < frameInterval) return;
     lastFrameAt = now;
-    const t = clock.getElapsedTime();
+    const t = timer.getDelta();
 
     // Outer shell rotation
     outerShell.rotation.y += 0.0015;
@@ -861,7 +861,7 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   function onVisibilityChange() {
     pageVisible = document.visibilityState === "visible";
     if (pageVisible) {
-      clock.getDelta();
+      timer.getDelta();
       lastFrameAt = performance.now();
     }
   }

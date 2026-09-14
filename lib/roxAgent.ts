@@ -4,6 +4,7 @@ import { recallLessons, rememberLesson, recentMemory, type LearnedLesson } from 
 import { runYouTubeControl } from "@/lib/youtubeControl";
 import { parseYouTubeCommand, parseLocalYTCommand } from "@/lib/youtubeIntent";
 import { runLocalYTCommand } from "@/lib/youtubeCommands";
+import { initMultiAgent, executeTask, getSystemStatus } from "@/lib/agents/multiAgent";
 import type { AssistantTurn } from "@/lib/assistant";
 
 export type RoxToolName =
@@ -229,6 +230,26 @@ function formatToolCall(call: ToolCallRecord): string {
   return `Tool: ${call.tool}\nArgs: ${args}\nOK: ${call.ok}\nOutput: ${output}`;
 }
 
+function detectDepartment(toolName: string): string {
+  const mapping: Record<string, string> = {
+    shell: "code",
+    read_file: "research",
+    write_file: "content",
+    list_dir: "research",
+    open_app: "media",
+    open_url: "research",
+    web_search: "research",
+    read_webpage: "research",
+    summarize_url: "research",
+    weather: "research",
+    news: "research",
+    calculate: "code",
+    graft_improve: "code",
+    youtube: "youtube",
+  };
+  return mapping[toolName] || "content";
+}
+
 const toolRunners: Record<
   RoxToolName,
   (args: ToolArgs) => Promise<{ ok: boolean; output: string }>
@@ -378,6 +399,13 @@ export async function runRoxAgent(
   request: string,
   history: AssistantTurn[] = [],
 ): Promise<RoxAgentResult> {
+  // Initialize multi-agent system on first run
+  try {
+    await initMultiAgent();
+  } catch (e) {
+    console.error("Multi-agent init failed:", e);
+  }
+
   const recall = (await recallLessons(request, 3)).map((hit) => ({
     task: hit.lesson.task,
     result: hit.lesson.result,
@@ -435,6 +463,14 @@ export async function runRoxAgent(
 
     const runner = toolRunners[toolCall.name];
     const result = await runner(toolCall.args);
+    
+    // Route through multi-agent system for learning
+    const dept = detectDepartment(toolCall.name);
+    await executeTask(
+      `${toolCall.name}(${JSON.stringify(toolCall.args)})`,
+      dept
+    ).catch(() => null);
+    
     toolCalls.push({ tool: toolCall.name, args: toolCall.args, ok: result.ok, output: result.output });
     if (!result.ok && toolCalls.length >= MAX_TOOL_ROUNDS) break;
   }
@@ -453,6 +489,12 @@ export async function runRoxAgent(
     });
     learned = true;
   }
+
+  // Get department stats for enhanced cognitive state
+  let deptStatus: Awaited<ReturnType<typeof getSystemStatus>> | undefined;
+  try {
+    deptStatus = await getSystemStatus();
+  } catch { /* ignore */ }
 
   // Determine cognitive state based on what happened.
   let cognitiveState: RoxAgentResult["cognitiveState"] = "focus";

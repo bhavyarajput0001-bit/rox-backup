@@ -1,7 +1,7 @@
 // Rox → YouTube Automation Agent bridge
 // Reads status from the agent, triggers tasks via its API
 
-const YT_AGENT_BASE = "http://localhost:3456";
+const YT_AGENT_BASE = "http://127.0.0.1:3457";
 const HEADERS = { "Content-Type": "application/json" };
 
 export type YTStatus = {

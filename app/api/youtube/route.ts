@@ -41,11 +41,11 @@ export async function GET(request: Request) {
 
     return Response.json({ error: "Unknown action" }, { status: 400 });
   } catch {
-    return Response.json(
-      { status: "unreachable", error: "YouTube automation agent is not running on localhost:3456" },
-      { status: 503 },
-    );
-  }
+        return Response.json(
+          { status: "unreachable", error: "YouTube automation agent is not running on localhost:3457" },
+          { status: 503 }
+        );
+      }
 }
 
 export async function POST(request: Request) {

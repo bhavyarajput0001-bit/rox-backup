@@ -74,11 +74,31 @@ export async function POST(request: Request) {
     // Initialize multi-agent system
     await initMultiAgent();
 
-    // Execute through multi-agent system
-    const agentResult = await multiAgentExecute(message, preferredDept);
+    // Check if this is a YouTube-related task - use multi-agent for that
+    const normalized = message.toLowerCase();
+    const isYouTubeTask = normalized.includes("youtube") || normalized.includes("yt ") || normalized.includes("video") || normalized.includes("generate video");
 
-    // Also recall from shared memory
-    const crossRecall = await recallAcrossDepartments(message, 3);
+    let agentResult: { assignedDepartment: string; result: { output: string; success: boolean; action: string }; newLessons: number; totalLessons: number } | null = null;
+    let crossRecall: Array<{ lesson: string; department: string; success: boolean }> = [];
+
+    if (isYouTubeTask) {
+      // Use multi-agent for YouTube tasks
+      agentResult = await multiAgentExecute(message, "youtube");
+      crossRecall = await recallAcrossDepartments(message, 3);
+    } else {
+      // Use the main assistant for general tasks (LLM-powered)
+      const assistantResult = await runAssistant(message, history);
+      agentResult = {
+        assignedDepartment: "general",
+        result: {
+          output: assistantResult.reply,
+          success: true,
+          action: `assistant.process(message="${message.slice(0, 100)}")`,
+        },
+        newLessons: 1,
+        totalLessons: await lessonCount(),
+      };
+    }
 
     // Build final response
     const reply = agentResult.result.output;
