@@ -12,3 +12,4 @@ coverage
 .svelte-kit
 turbo
 .cache
+next-env.d.ts

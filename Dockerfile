@@ -1,26 +1,33 @@
-FROM node:20-alpine
-
-# Set working directory
+# Rox — Next.js standalone build (multi-stage, pnpm)
+FROM node:20-alpine AS base
+RUN corepack enable
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# ---- deps ----
+FROM base AS deps
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json next.config.ts ./
+RUN pnpm install --frozen-lockfile --prod=false
 
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
+# ---- build ----
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/.pnpm-store ./pnpm-store
 COPY . .
+RUN pnpm build
 
-# Create necessary directories
+# ---- runtime ----
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3000
+# Standalone output includes only what's needed
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/public ./public
 RUN mkdir -p .rox-data
 
-# Next.js uses port 3000 by default; Dockerfile matches docker-compose mapping
 EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget -qO- http://localhost:3000/api/health || exit 1
 
-# Health check (standalone output has server.js)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/ || exit 1
-
-# Start the application
-CMD ["npm", "start"]
+CMD ["node", "server.js"]

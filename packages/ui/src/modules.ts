@@ -1,4 +1,4 @@
-import { ModuleId, Module } from "@rox/types";
+import { Module } from "@rox/types";
 
 export const MODULES: Module[] = [
   {

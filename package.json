@@ -4,14 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "node .next/standalone/server.js",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "dev:web": "pnpm --filter @rox/web dev",
     "dev:server": "pnpm --filter @rox/server dev",
-    "dev": "pnpm --parallel dev:web dev:server",
+    "dev:apps": "pnpm --parallel dev:web dev:server",
     "build:web": "pnpm --filter @rox/web build",
     "build:server": "pnpm --filter @rox/server build",
-    "build": "pnpm --recursive build",
-    "lint": "pnpm --recursive lint",
-    "typecheck": "pnpm --recursive typecheck"
+    "build:apps": "pnpm --recursive build"
   },
   "engines": {
     "node": ">=20",
@@ -19,11 +22,12 @@
   },
   "packageManager": "pnpm@9.15.0",
   "devDependencies": {
-    "@types/node": "26.5.1",
-    "@types/react": "19.3.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@types/three": "^0.186.0",
     "electron": "^44.3.0",
-    "typescript": "7.0.2"
+    "typescript": "^5.9.0"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.0.1",
