@@ -1,52 +1,52 @@
-import {
-  runAssistant,
-  streamAssistant,
-  type AssistantTurn,
-} from "@/lib/assistant";
-import { runRoxAgent } from "@/lib/roxAgent";
-import { recentMemory, remember, lessonCount } from "@/lib/memory";
-import {
-  executeTask as multiAgentExecute,
-  recallAcrossDepartments,
-  initMultiAgent,
-} from "@/lib/agents/multiAgent";
-import {
-  matchQuickCommand,
-  executeQuickCommand,
-  listQuickCommands,
-} from "@/lib/quickCommands";
+import { createBrain } from "@/lib/brain";
+import { recentMemory, remember } from "@/lib/memory";
+import { lessonCount } from "@/lib/memory";
+import { matchQuickCommand, executeQuickCommand } from "@/lib/quickCommands";
+import { getSystemStatus } from "@/lib/agents/multiAgent";
+import { recallLessons } from "@/lib/memory";
+
+const brain = createBrain();
 
 export async function GET() {
+  const status = await getSystemStatus();
   return Response.json(
     {
-      name: "Rox Multi-Agent System",
-      version: "2.0",
+      name: "Rox AI Brain",
+      version: "3.0",
       status: "online",
       capabilities: [
-        "local-controls",
-        "online-tools",
-        "execution",
-        "memory-recall",
-        "learning",
-        "multi-agent-orchestration",
+        "native-function-calling",
+        "multi-model-failover",
+        "100+ skills",
+        "memory-system",
         "self-improvement",
-        "cross-department-recall",
+        "cross-device-sync",
+        "user-authentication",
+        "google-sheets-integration",
+        "real-time-streaming",
+        "web-search",
+        "file-operations",
+        "shell-execution",
+        "youtube-automation",
+        "weather",
+        "news",
+        "calculate",
       ],
+      skillsLoaded: brain.getSkills().length,
       lessonsLearned: await lessonCount(),
     },
-    { headers: { "Cache-Control": "no-store" } },
+    { headers: { "Cache-Control": "no-store" } }
   );
 }
 
 export async function POST(request: Request) {
   let body: unknown;
-
   try {
     body = await request.json();
   } catch {
     return Response.json(
       { error: "Request body must be valid JSON." },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -57,13 +57,6 @@ export async function POST(request: Request) {
     typeof body.message === "string"
       ? body.message.trim()
       : "";
-  const preferredDept =
-    typeof body === "object" &&
-    body !== null &&
-    "department" in body &&
-    typeof body.department === "string"
-      ? body.department
-      : undefined;
   const history =
     typeof body === "object" &&
     body !== null &&
@@ -71,16 +64,16 @@ export async function POST(request: Request) {
     Array.isArray(body.history)
       ? body.history
           .filter(
-            (turn): turn is AssistantTurn =>
+            (turn): turn is { role: string; content: string } =>
               typeof turn === "object" &&
               turn !== null &&
-              (turn.role === "user" || turn.role === "rox") &&
-              typeof turn.content === "string",
+              typeof turn.role === "string" &&
+              typeof turn.content === "string"
           )
-          .slice(-8)
+          .slice(-16)
           .map((turn) => ({
-            role: turn.role,
-            content: turn.content.slice(0, 1_000),
+            role: turn.role === "rox" ? "assistant" : "user",
+            content: turn.content.slice(0, 2000),
           }))
       : [];
   const stream =
@@ -88,137 +81,90 @@ export async function POST(request: Request) {
     body !== null &&
     "stream" in body &&
     body.stream === true;
+  const userId =
+    typeof body === "object" &&
+    body !== null &&
+    "userId" in body &&
+    typeof body.userId === "string"
+      ? body.userId
+      : null;
 
   if (!message) {
     return Response.json({ error: "A message is required." }, { status: 400 });
   }
-  if (message.length > 4_000) {
+  if (message.length > 4000) {
     return Response.json({ error: "Message is too long." }, { status: 413 });
   }
 
-  try {
-    // Check for quick commands first
-    const quickCmd = matchQuickCommand(message);
-    if (quickCmd) {
-      const quickResult = await executeQuickCommand(quickCmd, message);
-
-      await remember([
-        { role: "user", content: message },
-        { role: "rox", content: quickResult.reply },
-      ]);
-
-      return Response.json(
-        {
-          reply: quickResult.reply,
-          department: "quick",
-          toolCalls: [
-            {
-              tool: quickCmd.name,
-              args: {},
-              ok: quickResult.ok,
-              output: quickResult.reply,
-            },
-          ],
-          recalled: [],
-          learned: false,
-          provider: "local",
-          cognitiveState: "focus",
-          lessonsLearned: await lessonCount(),
-        },
-        { headers: { "Cache-Control": "no-store" } },
-      );
-    }
-
-    if (stream) {
-      return new Response(await streamAssistant(message, history), {
-        headers: {
-          "Cache-Control": "no-store",
-          "Content-Type": "text/event-stream; charset=utf-8",
-          Connection: "keep-alive",
-        },
-      });
-    }
-
-    // Initialize multi-agent system
-    await initMultiAgent();
-
-    // Check if this is a YouTube-related task - use multi-agent for that
-    const normalized = message.toLowerCase();
-    const isYouTubeTask =
-      normalized.includes("youtube") ||
-      normalized.includes("yt ") ||
-      normalized.includes("video") ||
-      normalized.includes("generate video");
-
-    let agentResult: {
-      assignedDepartment: string;
-      result: { output: string; success: boolean; action: string };
-      newLessons: number;
-      totalLessons: number;
-    } | null = null;
-    let crossRecall: Array<{
-      lesson: string;
-      department: string;
-      success: boolean;
-    }> = [];
-
-    if (isYouTubeTask) {
-      // Use multi-agent for YouTube tasks
-      agentResult = await multiAgentExecute(message, "youtube");
-      crossRecall = await recallAcrossDepartments(message, 3);
-    } else {
-      // Use the main assistant for general tasks (LLM-powered)
-      const assistantResult = await runAssistant(message, history);
-      agentResult = {
-        assignedDepartment: "general",
-        result: {
-          output: assistantResult.reply,
-          success: true,
-          action: `assistant.process(message="${message.slice(0, 100)}")`,
-        },
-        newLessons: 1,
-        totalLessons: await lessonCount(),
-      };
-    }
-
-    // Build final response
-    const reply = agentResult.result.output;
-
+  // Quick commands bypass the brain
+  const quickCmd = matchQuickCommand(message);
+  if (quickCmd) {
+    const quickResult = await executeQuickCommand(quickCmd, message);
     await remember([
       { role: "user", content: message },
-      { role: "rox", content: reply },
+      { role: "rox", content: quickResult.reply },
     ]);
-
     return Response.json(
       {
-        reply,
-        department: agentResult.assignedDepartment,
+        reply: quickResult.reply,
+        source: "quick-command",
         toolCalls: [
           {
-            tool: agentResult.result.action.split("(")[0],
+            tool: quickCmd.name,
             args: {},
-            ok: agentResult.result.success,
-            output: agentResult.result.output.slice(0, 500),
+            ok: quickResult.ok,
+            output: quickResult.reply,
           },
         ],
-        recalled: crossRecall.map((r) => ({
-          task: r.lesson,
-          result: `Recalled from ${r.department}`,
-          runs: r.success ? 1 : 0,
-        })),
-        learned: agentResult.newLessons > 0,
-        provider: "model",
-        cognitiveState: agentResult.result.success ? "learning" : "focus",
-        lessonsLearned: agentResult.totalLessons,
-        totalTasksCompleted: agentResult.totalLessons, // Simplified
       },
-      { headers: { "Cache-Control": "no-store" } },
-    );
-  } catch (error) {
-    console.error("Assistant route error:", error);
-    return Response.json(
-      { error: "Assistant service unavailable." },
-      { status: 503 },
+      { headers: { "Cache-Control": "no-store" } }
     );
   }
+
+  if (stream) {
+    const stream = await brain.chatStream(message, history);
+
+    return new Response(stream, {
+      headers: {
+        "Cache-Control": "no-store",
+        "Content-Type": "text/event-stream",
+        Connection: "keep-alive",
+      },
+    });
+  }
+
+  // Non-streaming: full agent loop
+  const agentResult = await brain.chat(message, history);
+
+  await remember([
+    { role: "user", content: message },
+    { role: "rox", content: agentResult.reply },
+  ]);
+
+  // Cross-department recall
+  const recalled = (await recallLessons(message, 3)).map((hit) => ({
+    task: hit.lesson.task,
+    result: hit.lesson.result,
+    runs: hit.lesson.runs,
+  }));
+
+  return Response.json(
+    {
+      reply: agentResult.reply,
+      source: agentResult.provider,
+      department: agentResult.cognitiveState,
+      toolCalls: agentResult.toolCalls.map((tc) => ({
+        tool: tc.name,
+        args: tc.args,
+        ok: tc.ok,
+        output: tc.output,
+      })),
+      recalled,
+      skills: agentResult.skills.map((s) => s.name),
+      provider: agentResult.provider,
+      cognitiveState: agentResult.cognitiveState,
+      lessonsLearned: await lessonCount(),
+    },
+    { headers: { "Cache-Control": "no-store" } }
+  );
 }

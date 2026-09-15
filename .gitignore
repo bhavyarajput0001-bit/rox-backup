@@ -13,3 +13,4 @@ coverage
 turbo
 .cache
 next-env.d.ts
+.vercel
