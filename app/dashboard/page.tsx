@@ -40,57 +40,61 @@ export default function DashboardPage() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+          if (!input.trim() || loading) return;
 
-    const userMessage = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-    setLoading(true);
+          const userMessage = input.trim();
+          setInput("");
+          setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+          setLoading(true);
 
-    try {
-      const token = localStorage.getItem("rox_token");
-      const res = await fetch("/api/assistant", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          history: messages.map((m) => ({
-            role: m.role === "user" ? "user" : "rox",
-            content: m.content,
-          })),
-          stream: false,
-        }),
-      });
+          try {
+            const token = localStorage.getItem("rox_token");
+            if (!token) {
+              router.push("/login");
+              return;
+            }
+            const res = await fetch("/api/assistant", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                message: userMessage,
+                history: messages.map((m) => ({
+                  role: m.role === "user" ? "user" : "rox",
+                  content: m.content,
+                })),
+                stream: false,
+              }),
+            });
 
-      if (!res.ok) {
-        throw new Error("Failed to get response");
-      }
+            if (!res.ok) {
+              throw new Error("Failed to get response");
+            }
 
-      const data = await res.json();
-      
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: data.reply,
-          toolCalls: data.toolCalls,
-        },
-      ]);
-      
-      setCognitiveState(data.cognitiveState || "idle");
-      setProvider(data.provider || "");
-    } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "Sorry, I encountered an error. Please try again." },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
+            const data = await res.json();
+        
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: "assistant",
+                content: data.reply,
+                toolCalls: data.toolCalls,
+              },
+            ]);
+        
+            setCognitiveState(data.cognitiveState || "idle");
+            setProvider(data.provider || "");
+          } catch (error) {
+            setMessages((prev) => [
+              ...prev,
+              { role: "assistant", content: "Sorry, I encountered an error. Please try again." },
+            ]);
+          } finally {
+            setLoading(false);
+          }
+        };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {

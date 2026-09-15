@@ -1,29 +1,16 @@
 /**
  * Rox Brain — Main Entry Point
  *
- * `createBrain(config?)` returns a self-contained agent brain that wraps:
- *   • the agent loop (multi-round tool calling)
- *   • tools (registered tool definitions + runners)
- *   • skills (info metadata)
- *   • providers (LLM failover chain)
- *   • streaming (SSE event helpers)
+ * Integrates the core brain modules:
+ *   • providers.ts — multi-model failover chain
+ *   • systemPrompt.ts — Hermes-style system prompt builder
+ *   • agent.ts — ReAct loop with native function calling and SSE
+ *   • tools.ts — legacy tool registry for backward compat
+ *   • skills.ts — skill discovery from ~/.hermes/skills/
+ *   • streaming.ts — SSE event helpers
  *
- * Usage:
- * ```ts
- * import { createBrain } from "@/lib/brain";
- *
- * const brain = createBrain({ temperature: 0.3 });
- *
- * // Synchronous-ish chat (runs the full agent loop, returns once):
- * const result = await brain.chat("search for next.js 15", []);
- * console.log(result.reply, result.toolCalls);
- *
- * // Streaming chat (returns a ReadableStream for SSE):
- * const stream = brain.chatStream("search for next.js 15", []);
- * return new Response(stream, {
- *   headers: { "Content-Type": "text/event-stream" },
- * });
- * ```
+ * Both the legacy `createBrain()` API and the new typed `runAgent()` /
+ * `streamAgent()` APIs are exported so existing consumers keep working.
  */
 
 import type {
@@ -34,13 +21,10 @@ import type {
   ProviderName,
   SkillInfo,
   ToolCall,
-  ToolDefinition,
 } from "./types";
+import type { ToolDefinition } from "./tools";
 
-import {
-  createSSEStream,
-  type SSEStreamController,
-} from "./streaming";
+import { createSSEStream, type SSEStreamController } from "./streaming";
 import { TOOL_DEFINITIONS, runTool as runBrainTool, openAIToolSchema } from "./tools";
 import { getAllSkills, findRelevantSkills } from "./skills";
 
@@ -53,7 +37,6 @@ export type {
   ProviderName,
   SkillInfo,
   ToolCall,
-  ToolDefinition,
   SSEEvent,
   SSEMetaEvent,
   SSEChunkEvent,
@@ -142,7 +125,7 @@ function buildProviderChain(modelOverride?: string): ProviderEndpoint[] {
       baseUrl: (
         process.env.OMNIROUTE_BASE_URL || "http://127.0.0.1:20128/v1"
       ).replace(/\/$/, ""),
-      apiKey: omniKey,
+      apiKey: process.env.OMNIROUTE_API_KEY!,
       model: modelOverride || process.env.OMNIROUTE_MODEL || "auto/best-coding",
       priority: 80,
     });
@@ -155,7 +138,7 @@ function buildProviderChain(modelOverride?: string): ProviderEndpoint[] {
       baseUrl: (
         process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1"
       ).replace(/\/$/, ""),
-      apiKey: freeKey,
+      apiKey: process.env.FREELLM_API_KEY!,
       model: modelOverride || process.env.FREELLM_MODEL || "auto",
       priority: 60,
     });
@@ -168,7 +151,7 @@ function buildProviderChain(modelOverride?: string): ProviderEndpoint[] {
       baseUrl: (
         process.env.AI_BASE_URL || "https://api.openai.com/v1"
       ).replace(/\/$/, ""),
-      apiKey: legacyKey,
+      apiKey: process.env.AI_API_KEY!,
       model: modelOverride || process.env.AI_MODEL || "gpt-4o-mini",
       priority: 40,
     });
@@ -181,12 +164,6 @@ function buildProviderChain(modelOverride?: string): ProviderEndpoint[] {
 
 /**
  * Default tool definitions that the brain exposes.
- *
- * Tool *runners* (the functions that actually execute) are kept separate
- * here so the index module stays focused on orchestration.  A real
- * implementation would import them from the existing lib/executor,
- * lib/onlineTools, etc.  For now we declare the schemas and a runner
- * dispatch table that delegates to the appropriate module.
  */
 
 const DEFAULT_TOOLS: ToolDefinition[] = ALL_TOOLS.map((t) => ({

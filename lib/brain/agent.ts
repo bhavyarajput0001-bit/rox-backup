@@ -43,6 +43,7 @@ import {
 } from "./systemPrompt";
 import {
   runShell,
+  runShellIn,
   readFileTool,
   writeFileTool,
   listDirTool,
@@ -262,11 +263,8 @@ export function createDefaultToolRegistry(): ToolRegistry {
       run: async (args, ctx) => {
         const command = String(args.command ?? "");
         const cwd = typeof args.cwd === "string" ? args.cwd : "";
-        const result = cwd
-          ? await runShell(`cd ${JSON.stringify(cwd)} && ${command}`, TOOL_TIMEOUT_MS)
-          : await runShell(command, TOOL_TIMEOUT_MS);
         void ctx;
-        return result;
+        return cwd ? runShellIn(cwd, command, TOOL_TIMEOUT_MS) : runShell(command, TOOL_TIMEOUT_MS);
       },
     },
     {
@@ -648,11 +646,17 @@ export async function executeToolCall(
 }
 
 function toolResultMessage(call: ToolCallRecord): ChatMessage {
+  const body = truncateOutput(call.output);
+  // Never echo raw secrets back into the model's context.
+  const redacted = body.replace(
+    /\b(sk-[A-Za-z0-9_-]{8,}|sk-ant-[A-Za-z0-9_-]{8,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})\b/g,
+    "[redacted-secret]",
+  );
   return {
     role: "tool",
     tool_call_id: call.id,
     name: call.name,
-    content: truncateOutput(call.output),
+    content: redacted,
   };
 }
 

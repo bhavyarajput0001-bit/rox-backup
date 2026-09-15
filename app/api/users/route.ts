@@ -1,10 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-  getUserData,
-  saveUserData,
-  createUserData,
-  type UserData,
-} from "@/lib/googleSheets";
+import { handleSync, getActiveDevices, clearAllDevices } from "@/lib/deviceSync";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -17,55 +12,28 @@ export async function GET(request: Request) {
     );
   }
 
-  try {
-    const userData = await getUserData(userId);
-    if (!userData) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
-    }
-    return NextResponse.json({ user: userData });
-  } catch (error) {
-    console.error("Get user error:", error);
-    return NextResponse.json(
-      { error: "Failed to get user data" },
-      { status: 500 }
-    );
-  }
+  const devices = getActiveDevices(userId);
+  return NextResponse.json({ devices });
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, email, name, device, preferences } = body;
+    const { userId, action, device, payload } = body;
 
-    if (!userId || !device) {
+    if (!userId || !action || !device) {
       return NextResponse.json(
-        { error: "userId and device are required" },
+        { error: "userId, action, and device are required" },
         { status: 400 }
       );
     }
 
-    const userData: UserData = {
-      userId,
-      email,
-      name,
-      device,
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-      preferences: preferences || {},
-      conversationHistory: [],
-      toolsUsed: {},
-      skills: [],
-    };
-
-    await saveUserData(userData);
-    return NextResponse.json({ user: userData }, { status: 201 });
+    const result = await handleSync({ userId, action, device, payload });
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("Create user error:", error);
+    console.error("Sync error:", error);
     return NextResponse.json(
-      { error: "Failed to create user" },
+      { error: "Sync failed" },
       { status: 500 }
     );
   }

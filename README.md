@@ -1,149 +1,183 @@
-# ROX
+# Rox Neural Orbital Interface
 
-A futuristic personal AI assistant with an interactive 3D holographic core and multi-agent orchestration.
+A sophisticated AI assistant powered by Next.js, Three.js, and advanced machine learning capabilities.
 
-## 🎯 Features
+## Overview
 
-- **3D Holographic Orb** — Interactive Three.js core with hand-tracking & voice
-- **Multi-Agent System** — 5 specialized departments (Content, Code, Media, Research, YouTube)
-- **83 Quick Commands** — Instant app launching, system control, YouTube, Spotify, search
-- **Native macOS Menu Bar App** — 🤖 icon for one-click access
-- **Self-Learning Memory** — Categorized recall with cross-department knowledge
-- **Graft Integration** — Auto-wires external repos for continuous improvement
-- **Real-time API** — Omniroute + FreeLLM providers with auto-failover
+Rox is a next-generation AI assistant that combines a holographic orbital interface with powerful cognitive processing capabilities. It offers real-time tool calls, memory management, and multi-modal interactions through an intuitive glassmorphism design with an amber/gold theme.
+
+## Key Features
+
+### 🎯 Core Experience
+- **Holographic Orb Interface**: Interactive 3D orbital visualization with hand gesture controls
+- **Real-time AI Chat**: Direct conversation with advanced reasoning and tool execution
+- **Tool Call Visualization**: Live display of which tools are being used
+- **Cognitive State Indicators**: Visual feedback on AI processing states
+
+### 🔐 Authentication
+- **JWT-based Authentication**: Secure session management with token handling
+- **Google Sheets Integration**: User registration and data storage
+- **Device Management**: Multi-device support and session synchronization
+
+### 🎨 Modern Design
+- **Glassmorphism UI**: Beautiful frosted glass effects with amber/gold palette
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Smooth Animations**: Fluid transitions and micro-interactions
+- **Theming Support**: Amber/Gold, Lava Red, and Dark themes
+
+### 🤖 AI Capabilities
+- **Multi-Provider Support**: OpenAI, Anthropic, Omniroute, and FreeLLM
+- **Tool Integration**: 100+ specialized tools including web search, file operations, and more
+- **Memory System**: Persistent conversation history and learned lessons
+- **Self-Improvement**: Continuous learning from interactions
 
 ## Architecture
 
-```
-rox/
-├── app/                    # Next.js 14 app (UI + API routes)
-│   ├── api/
-│   │   ├── assistant/      # Main AI assistant endpoint
-│   │   ├── memory/         # Memory search & management
-│   │   └── multi-agent/    # Department orchestration
-│   ├── components/
-│   │   └── JarvisOrb.tsx   # 3D holographic orb
-│   └── lib/
-│       ├── quickCommands.ts   # 83 pre-built commands
-│       ├── multiAgent.ts      # Department agents
-│       ├── memoryOrg.ts       # Structured memory system
-│       ├── executor.ts        # Safe shell execution
-│       └── onlineTools.ts     # Web search, weather, news
-├── apps/
-│   ├── web/                # Vite + React frontend (alt)
-│   └── server/             # Express API server
-├── packages/
-│   ├── types/              # Shared TypeScript types
-│   └── ui/                 # Zustand store, modules, tools
-├── scripts/
-│   ├── auto-sync.sh        # Git auto-sync every 30min
-│   └── rebuild-memory-index.js
-├── self_improvement/       # External repos for learning
-│   ├── OpenMontage/
-│   ├── CodebaseMemoryMCP/
-│   └── AgencyAgents/
-├── rox_menubar.py          # 🤖 Native macOS menu bar app
-└── .rox-data/              # Persistent memory & lessons
-```
+### Frontend (`apps/web`)
+- **Framework**: React + Vite + TypeScript
+- **Visualization**: Three.js for the orbital interface
+- **State Management**: Zustand for global state
+- **Routing**: Next.js for client-side navigation
 
-## Quick Start
+### Backend (`packages/server`)
+- **Framework**: Next.js API routes
+- **Authentication**: JWT token handling and validation
+- **Brain Module**: `lib/brain/` with `createBrain()` for advanced reasoning
+- **Memory Integration**: Persistent conversation storage and lesson learning
 
+### Database
+- **File-based Storage**: Simple JSON-based user and device management
+- **Google Sheets Integration**: Advanced data sync and user registration
+
+## Technology Stack
+
+### Frontend
+- **Next.js 16.3.5** - React framework
+- **Three.js** - 3D graphics and orbital visualization
+- **Tailwind CSS** - Rapid UI development with glassmorphism
+- **Lucide React** - Icon library
+- **Zustand** - State management
+
+### Backend
+- **Node.js >=20** - JavaScript runtime
+- **TypeScript** - Type-safe development
+- **PostgreSQL/MySQL** - Optional database for production
+- **Google Sheets API** - Data integration
+
+### AI & ML
+- **OpenAI API** - GPT-4 integration
+- **Anthropic API** - Claude integration
+- **FreeLLM** - Open-source models
+- **Custom Tools** - 100+ specialized tools
+
+## Development
+
+### Prerequisites
 ```bash
-# Install dependencies
-cd ~/Downloads/Rox
-npm install
-
-# Start Rox (Next.js on port 3000)
-npm run dev
+node >= 20
+pnpm >= 9
 ```
 
-Open **http://localhost:3000** in your browser.
-
-## 🤖 Native Menu Bar App
-
-No terminal needed! Run the native macOS menu bar app:
-
+### Installation
 ```bash
-# Install once
-pip3 install rumps requests
-
-# Run (add to login items for auto-start)
-python3 rox_menubar.py
+pnpm install
 ```
 
-A **🤖** icon appears in your top menu bar with:
-
-- **Quick Actions**: Open YouTube, Spotify, Terminal, Chrome, VS Code
-- **Search Web**: Prompt → instant results via Rox
-- **System**: Battery, Time, Status
-- **YouTube**: Generate video, script, hashtags, calendar, analytics
-- **Spotify**: Play, Pause, Next, Now Playing
-- **Dev Controls**: Start/Restart/Stop Rox server
-- **Dashboard**: One-click to http://localhost:3000
-
-## Quick Commands (83 total)
-
-Just type in Rox chat or use menu bar:
-
-| Category    | Commands                                                                                                                                                                                                                                                                                                      |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Apps**    | `open youtube`, `open spotify`, `open terminal`, `open vscode`, `open notes`, `open safari`, `open chrome`, `open slack`, `open discord`, `open calculator`, `open maps`, `open photos`, `open finder`, `open calendar`, `open messages`, `open mail`, `open facetime`, `lock screen`, `sleep`, `screensaver` |
-| **YouTube** | `yt status`, `yt jobs`, `yt dashboard`, `yt generate <topic>`, `yt title <topic>`, `yt script <topic>`, `yt ideas`, `yt analytics`, `yt hashtags <topic>`, `yt chapters <topic>`, `yt hook <topic>`, `yt calendar`, `yt compete <channel>`                                                                    |
-| **Spotify** | `spotify play`, `spotify pause`, `spotify next`, `spotify prev`, `spotify volume 50`, `spotify shuffle on`, `spotify repeat one`, `spotify now`, `spotify search <query>`, `spotify queue`                                                                                                                    |
-| **Search**  | `search for <query>`, `weather in <city>`, `news`, `time`                                                                                                                                                                                                                                                     |
-| **System**  | `status`, `help`, `screenshot`, `clipboard`, `disk space`, `memory usage`, `cpu`, `battery`, `whoami`, `hostname`                                                                                                                                                                                             |
-| **Dev**     | `npm run dev`, `npm run build`, `npm install`, `git status`, `git log`, `git diff`, `graft build`, `multi agent status`, `memory status`, `rox rewire`, `rox rebuild memory`                                                                                                                                  |
-| **Files**   | `ls in <path>`, `read <file>`, `create file <name>`, `grep <pattern>`                                                                                                                                                                                                                                         |
-
-## API Endpoints
-
+### Development
 ```bash
-# Health check
-curl http://localhost:3000/api/assistant
-
-# Quick command
-curl -X POST http://localhost:3000/api/assistant \
-  -H "Content-Type: application/json" \
-  -d '{"message":"open youtube"}'
-
-# Memory search
-curl "http://localhost:3000/api/memory?query=coffee"
-
-# Multi-agent
-curl -X POST http://localhost:3000/api/multi-agent \
-  -d '{"message":"generate video about AI", "department":"youtube"}'
+pnpm dev:web   # Start frontend
+pnpm dev:server # Start backend
+pnpm dev:apps  # Start both simultaneously
 ```
 
-## Auto-Sync
-
-Commits auto-push to backup repo every 30 minutes via cron:
-
+### Build
 ```bash
-# View logs
-tail -f ~/.hermes/logs/rox-sync.log
-
-# Manual sync
-bash scripts/auto-sync.sh
+pnpm build:web
+pnpm build:server
+pnpm build:apps
 ```
 
-## Self-Improvement
+### Linting
+```bash
+pnpm lint
+pnpm typecheck
+```
 
-Rox automatically:
+## Pages & Components
 
-1. **Discovers** repos in `self_improvement/`
-2. **Builds** Graft graphs for code understanding
-3. **Registers** MCP tools from those repos
-4. **Learns** from every task execution
-5. **Recalls** past solutions for similar tasks
-6. **Rewires** based on performance metrics
+### Main Application Pages
+1. **`app/login/page.tsx`** - User authentication with JWT token handling
+2. **`app/dashboard/page.tsx`** - Main chat interface with tool visualization
+3. **`app/settings/page.tsx`** - AI provider keys and theme configuration
+4. **`app/devices/page.tsx`** - Connected device management
 
-## Requirements
+### Custom Components
+- **`components/chat/ChatMessage.tsx`** - Individual message display with tool calls
+- **`components/chat/ToolCallIndicator.tsx`** - Real-time tool execution visualization
+- **`components/ui/CognitiveStateBadge.tsx`** - Visual cognitive state indicators
+- **`components/settings/ApiKeyInput.tsx`** - Secure API key management
+- **`components/devices/DeviceCard.tsx`** - Device information and controls
 
-- Node.js >= 20
-- pnpm >= 9 (for workspace commands)
-- Python 3.10+ (for menu bar app)
-- macOS (for native menu bar & system commands)
+## Authentication Flow
+
+1. **Login/Register**: Users authenticate with email/password
+2. **JWT Token**: Secure session token generation and validation
+3. **Device Registration**: Automatic device detection and registration
+4. **Session Management**: Persistent authentication across devices
+5. **Protected Routes**: Dashboard, Settings, and Devices require authentication
+
+## API Routes
+
+- **`app/api/auth/route.ts`** - User authentication and registration
+- **`app/api/assistant/route.ts`** - AI chat and tool execution
+- **`app/api/brain/route.ts`** - Advanced cognitive processing
+- **`app/api/memory/route.ts`** - Conversation history and learning
+
+## Deployment
+
+### Local Development
+```bash
+pnpm dev:apps
+```
+
+### Production Build
+```bash
+pnpm build:apps
+pnpm start
+```
+
+### CI/CD
+See `.github/workflows/` for automated testing and deployment pipelines.
+
+## Features Implementation Notes
+
+### Glassmorphism Design
+- **Backdrop Blur**: Modern frosted glass effects using Tailwind's backdrop-blur
+- **Color Palette**: Amber/gold theme inspired by Rox's original design
+- **Responsive Typography**: Adaptive text sizes for all device types
+
+### Tool Call Visualization
+- **Real-time Updates**: Live tool execution status indicators
+- **Success/Error States**: Visual feedback for tool execution results
+- **Tool Icons**: Contextual icons for different tool types
+
+### Cognitive State Management
+- **Visual Indicators**: Color-coded state badges for AI processing stages
+- **State Transitions**: Smooth animations between different cognitive states
+- **User Feedback**: Clear indication of AI processing progress
+
+## Future Enhancements
+
+- **Voice Control**: Expand voice interaction capabilities
+- **Multi-modal Input**: Support for images, files, and other modalities
+- **Advanced Analytics**: User behavior and interaction insights
+- **Custom Workflows**: User-defined tool sequences and automation
+- **Collaboration**: Multi-user sessions and shared workspaces
 
 ## License
 
-MIT
+MIT License - Free for personal and commercial use.
+
+## Support
+
+For support and issues, please refer to the project's GitHub repository and documentation.
