@@ -1,121 +1,146 @@
 # ROX
 
-A futuristic personal AI assistant with an interactive 3D holographic core.
+A futuristic personal AI assistant with an interactive 3D holographic core and multi-agent orchestration.
+
+## 🎯 Features
+
+- **3D Holographic Orb** — Interactive Three.js core with hand-tracking & voice
+- **Multi-Agent System** — 5 specialized departments (Content, Code, Media, Research, YouTube)
+- **83 Quick Commands** — Instant app launching, system control, YouTube, Spotify, search
+- **Native macOS Menu Bar App** — 🤖 icon for one-click access
+- **Self-Learning Memory** — Categorized recall with cross-department knowledge
+- **Graft Integration** — Auto-wires external repos for continuous improvement
+- **Real-time API** — Omniroute + FreeLLM providers with auto-failover
 
 ## Architecture
 
 ```
 rox/
+├── app/                    # Next.js 14 app (UI + API routes)
+│   ├── api/
+│   │   ├── assistant/      # Main AI assistant endpoint
+│   │   ├── memory/         # Memory search & management
+│   │   └── multi-agent/    # Department orchestration
+│   ├── components/
+│   │   └── JarvisOrb.tsx   # 3D holographic orb
+│   └── lib/
+│       ├── quickCommands.ts   # 83 pre-built commands
+│       ├── multiAgent.ts      # Department agents
+│       ├── memoryOrg.ts       # Structured memory system
+│       ├── executor.ts        # Safe shell execution
+│       └── onlineTools.ts     # Web search, weather, news
 ├── apps/
-│   ├── web/          # React + Three.js frontend (Vite)
-│   └── server/       # Express API with AI orchestration
+│   ├── web/                # Vite + React frontend (alt)
+│   └── server/             # Express API server
 ├── packages/
-│   ├── types/        # Shared TypeScript types
-│   └── ui/           # Zustand store, modules, tools registry
-├── database/         # SQLite migrations (future)
-└── assets/           # Static assets
+│   ├── types/              # Shared TypeScript types
+│   └── ui/                 # Zustand store, modules, tools
+├── scripts/
+│   ├── auto-sync.sh        # Git auto-sync every 30min
+│   └── rebuild-memory-index.js
+├── self_improvement/       # External repos for learning
+│   ├── OpenMontage/
+│   ├── CodebaseMemoryMCP/
+│   └── AgencyAgents/
+├── rox_menubar.py          # 🤖 Native macOS menu bar app
+└── .rox-data/              # Persistent memory & lessons
 ```
 
 ## Quick Start
 
 ```bash
-# Install pnpm if you haven't
-corepack enable
-corepack prepare pnpm@9.15.0 --activate
-
 # Install dependencies
-pnpm install
+cd ~/Downloads/Rox
+npm install
 
-# Copy environment file
-cp .env.example .env
-
-# Start both apps
-pnpm dev
+# Start Rox (Next.js on port 3000)
+npm run dev
 ```
 
-- Frontend: http://localhost:3000
-- Server: http://localhost:4000
+Open **http://localhost:3000** in your browser.
 
-## Commands
+## 🤖 Native Menu Bar App
+
+No terminal needed! Run the native macOS menu bar app:
 
 ```bash
-pnpm dev          # Start dev servers (web + server)
-pnpm build        # Build both apps
-pnpm build:web    # Build frontend only
-pnpm build:server # Build server only
-pnpm lint         # Lint all packages
-pnpm typecheck    # Type check all packages
+# Install once
+pip3 install rumps requests
+
+# Run (add to login items for auto-start)
+python3 rox_menubar.py
 ```
 
-## Adding a Module
+A **🤖** icon appears in your top menu bar with:
+- **Quick Actions**: Open YouTube, Spotify, Terminal, Chrome, VS Code
+- **Search Web**: Prompt → instant results via Rox
+- **System**: Battery, Time, Status
+- **YouTube**: Generate video, script, hashtags, calendar, analytics
+- **Spotify**: Play, Pause, Next, Now Playing
+- **Dev Controls**: Start/Restart/Stop Rox server
+- **Dashboard**: One-click to http://localhost:3000
 
-Edit `packages/ui/src/modules.ts` and add to the `MODULES` array:
+## Quick Commands (83 total)
 
-```typescript
-{
-  id: 'your-module',
-  name: 'Your Module',
-  icon: 'icon-name',  // from lucide-react
-  description: 'Description',
-  capabilities: ['cap1', 'cap2'],
-}
-```
+Just type in Rox chat or use menu bar:
 
-Then add the UI in `apps/web/src/components/`.
+| Category | Commands |
+|----------|----------|
+| **Apps** | `open youtube`, `open spotify`, `open terminal`, `open vscode`, `open notes`, `open safari`, `open chrome`, `open slack`, `open discord`, `open calculator`, `open maps`, `open photos`, `open finder`, `open calendar`, `open messages`, `open mail`, `open facetime`, `lock screen`, `sleep`, `screensaver` |
+| **YouTube** | `yt status`, `yt jobs`, `yt dashboard`, `yt generate <topic>`, `yt title <topic>`, `yt script <topic>`, `yt ideas`, `yt analytics`, `yt hashtags <topic>`, `yt chapters <topic>`, `yt hook <topic>`, `yt calendar`, `yt compete <channel>` |
+| **Spotify** | `spotify play`, `spotify pause`, `spotify next`, `spotify prev`, `spotify volume 50`, `spotify shuffle on`, `spotify repeat one`, `spotify now`, `spotify search <query>`, `spotify queue` |
+| **Search** | `search for <query>`, `weather in <city>`, `news`, `time` |
+| **System** | `status`, `help`, `screenshot`, `clipboard`, `disk space`, `memory usage`, `cpu`, `battery`, `whoami`, `hostname` |
+| **Dev** | `npm run dev`, `npm run build`, `npm install`, `git status`, `git log`, `git diff`, `graft build`, `multi agent status`, `memory status`, `rox rewire`, `rox rebuild memory` |
+| **Files** | `ls in <path>`, `read <file>`, `create file <name>`, `grep <pattern>` |
 
-## Adding an AI Provider
-
-1. Implement `AIProviderInterface` in `apps/server/src/ai/orchestrator.ts`
-2. Add constructor in `AIOrchestrationLayer`
-3. Add key to `.env.example`
-
-```typescript
-class MyProvider implements AIProviderInterface {
-  readonly name = 'my-provider';
-  async chat(messages, options) { /* ... */ }
-  isAvailable() { return !!process.env.MY_PROVIDER_KEY; }
-}
-```
-
-## Adding a Tool
-
-Add to `packages/ui/src/tools.ts`:
-
-```typescript
-{
-  name: 'my_tool',
-  description: 'What it does',
-  inputSchema: { param: 'string' },
-  outputSchema: { result: 'string' },
-  permissions: ['read'],
-}
-```
-
-## Modifying the Rox Core
-
-The 3D core is in `apps/web/src/components/RoxCore.tsx`. It's composed of:
-- `CoreNucleus` — central glowing sphere
-- `EnergyShell` — wireframe icosahedron layers
-- `OrbitalRings` — rotating torus geometries
-- `ParticleField` — instanced particle system
-- `CoreLighting` — point lights with amber colors
-- `CoreEffects` — bloom, fog, etc.
-
-Each state (idle, thinking, researching, etc.) animates different properties. See `useRoxStore.coreState`.
-
-## Changing the Theme
-
-Edit `packages/ui/src/theme.ts` and `apps/web/src/styles/globals.css`. The design system uses CSS custom properties for consistency.
-
-## Building for Production
+## API Endpoints
 
 ```bash
-pnpm build
-cd apps/web && node dist/index.js  # or serve the static build
-cd apps/server && node dist/index.js
+# Health check
+curl http://localhost:3000/api/assistant
+
+# Quick command
+curl -X POST http://localhost:3000/api/assistant \
+  -H "Content-Type: application/json" \
+  -d '{"message":"open youtube"}'
+
+# Memory search
+curl "http://localhost:3000/api/memory?query=coffee"
+
+# Multi-agent
+curl -X POST http://localhost:3000/api/multi-agent \
+  -d '{"message":"generate video about AI", "department":"youtube"}'
 ```
+
+## Auto-Sync
+
+Commits auto-push to backup repo every 30 minutes via cron:
+```bash
+# View logs
+tail -f ~/.hermes/logs/rox-sync.log
+
+# Manual sync
+bash scripts/auto-sync.sh
+```
+
+## Self-Improvement
+
+Rox automatically:
+1. **Discovers** repos in `self_improvement/`
+2. **Builds** Graft graphs for code understanding
+3. **Registers** MCP tools from those repos
+4. **Learns** from every task execution
+5. **Recalls** past solutions for similar tasks
+6. **Rewires** based on performance metrics
 
 ## Requirements
 
 - Node.js >= 20
-- pnpm >= 9
+- pnpm >= 9 (for workspace commands)
+- Python 3.10+ (for menu bar app)
+- macOS (for native menu bar & system commands)
+
+## License
+
+MIT
