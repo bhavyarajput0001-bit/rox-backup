@@ -1,12 +1,7 @@
 {
   "name": "Rox Core",
   "version": "2.0",
-  "capabilities": [
-    "orchestrate",
-    "delegate",
-    "learn",
-    "rewrite"
-  ],
+  "capabilities": ["orchestrate", "delegate", "learn", "rewrite"],
   "createdAt": "2026-09-14T16:50:50.920Z",
   "sessions": 0
 }

@@ -94,7 +94,10 @@ export class HandTracker {
       minTrackingConfidence: 0.6,
     };
     try {
-      this.landmarker = await HandLandmarker.createFromOptions(fileset, options);
+      this.landmarker = await HandLandmarker.createFromOptions(
+        fileset,
+        options,
+      );
     } catch {
       // Some browsers/GPUs reject the GPU delegate — fall back to CPU
       this.landmarker = await HandLandmarker.createFromOptions(fileset, {
@@ -132,8 +135,14 @@ export class HandTracker {
     if (this.video.currentTime === this.lastVideoTime) return;
     this.lastVideoTime = this.video.currentTime;
 
-    const result = this.landmarker.detectForVideo(this.video, performance.now());
-    this.processHands(result.landmarks, result.handedness.map((h) => h[0]?.categoryName ?? "?"));
+    const result = this.landmarker.detectForVideo(
+      this.video,
+      performance.now(),
+    );
+    this.processHands(
+      result.landmarks,
+      result.handedness.map((h) => h[0]?.categoryName ?? "?"),
+    );
     this.drawOverlay(result.landmarks);
   };
 
@@ -182,7 +191,11 @@ export class HandTracker {
     }
 
     const mode: GestureMode =
-      pinchedGrabs.length >= 2 ? "zoom" : pinchedGrabs.length === 1 ? "spin" : "idle";
+      pinchedGrabs.length >= 2
+        ? "zoom"
+        : pinchedGrabs.length === 1
+          ? "spin"
+          : "idle";
 
     // Reset reference points on any mode change to avoid jumps
     if (mode !== this.prevMode) {

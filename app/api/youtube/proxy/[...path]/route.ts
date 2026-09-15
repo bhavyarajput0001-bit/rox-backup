@@ -45,7 +45,10 @@ async function proxy(request: Request): Promise<Response> {
     if (value) headers[name] = value;
   }
 
-  const body = request.method === "POST" || request.method === "PUT" ? await request.arrayBuffer() : null;
+  const body =
+    request.method === "POST" || request.method === "PUT"
+      ? await request.arrayBuffer()
+      : null;
 
   let response: Response;
   try {
@@ -57,7 +60,8 @@ async function proxy(request: Request): Promise<Response> {
       redirect: "manual",
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "agent unreachable";
+    const message =
+      error instanceof Error ? error.message : "agent unreachable";
     return Response.json({ ok: false, error: message }, { status: 502 });
   }
 
@@ -65,26 +69,40 @@ async function proxy(request: Request): Promise<Response> {
 
   // HTML / JS / CSS: rewrite root-relative references to the agent so they
   // route back through this proxy when the dashboard runs inside Rox.
-  if (contentType.includes("text/html") || contentType.includes("javascript") || contentType.includes("text/css")) {
+  if (
+    contentType.includes("text/html") ||
+    contentType.includes("javascript") ||
+    contentType.includes("text/css")
+  ) {
     const text = await response.text();
 
     // 1. Absolute references to the agent's own host → proxy prefix
-    let rewritten = text.replace(new RegExp(`https?://[^"'\\s]*(?:localhost|\\.local)[^"'\\s]*`, "g"), (match) => {
-      try {
-        const u = new URL(match);
-        if (u.port === new URL(agentUrl).port || u.hostname === "localhost" || u.hostname.endsWith(".local")) {
-          return PROXY_PREFIX;
+    let rewritten = text.replace(
+      new RegExp(`https?://[^"'\\s]*(?:localhost|\\.local)[^"'\\s]*`, "g"),
+      (match) => {
+        try {
+          const u = new URL(match);
+          if (
+            u.port === new URL(agentUrl).port ||
+            u.hostname === "localhost" ||
+            u.hostname.endsWith(".local")
+          ) {
+            return PROXY_PREFIX;
+          }
+        } catch {
+          // Not a URL — leave as-is
         }
-      } catch {
-        // Not a URL — leave as-is
-      }
-      return match;
-    });
+        return match;
+      },
+    );
 
     // 2. Root-relative paths (/api/..., /app.js, /styles.css) → proxy prefix
-    rewritten = rewritten.replace(/(["'`])(\/)(?!(api\/youtube\/proxy|api\/youtube\/control))/g, (match, quote: string) => {
-      return `${quote}${PROXY_PREFIX}/`;
-    });
+    rewritten = rewritten.replace(
+      /(["'`])(\/)(?!(api\/youtube\/proxy|api\/youtube\/control))/g,
+      (match, quote: string) => {
+        return `${quote}${PROXY_PREFIX}/`;
+      },
+    );
 
     // 3. JS fetch/axios/XHR/XDomainRequest calls with "/..." → proxy prefix
     rewritten = rewritten.replace(
@@ -93,7 +111,10 @@ async function proxy(request: Request): Promise<Response> {
     );
 
     // 4. Form actions
-    rewritten = rewritten.replace(/(<form[^>]*action=["'`])\//g, `$1${PROXY_PREFIX}/`);
+    rewritten = rewritten.replace(
+      /(<form[^>]*action=["'`])\//g,
+      `$1${PROXY_PREFIX}/`,
+    );
 
     return new Response(rewritten, {
       status: response.status,

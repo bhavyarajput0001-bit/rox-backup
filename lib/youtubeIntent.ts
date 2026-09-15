@@ -20,7 +20,9 @@ export function parseLocalYTCommand(message: string): LocalYTCommand | null {
   const ytMatch = normalized.match(/^(?:yt|youtube)\s+(.+)$/);
   if (!ytMatch) {
     // Also match: "make a youtube script about X", "generate youtube title for X"
-    const genMatch = normalized.match(/(?:make|generate|create|write|design|build)\s+(?:a\s+)?(?:youtube\s+)?(script|title|description|tags|seo|thumbnail|ideas|calendar|hook|chapters|hashtags|caption|outline|research|compete|plan)\s+(?:about|on|for|of)\s+(.+)/);
+    const genMatch = normalized.match(
+      /(?:make|generate|create|write|design|build)\s+(?:a\s+)?(?:youtube\s+)?(script|title|description|tags|seo|thumbnail|ideas|calendar|hook|chapters|hashtags|caption|outline|research|compete|plan)\s+(?:about|on|for|of)\s+(.+)/,
+    );
     if (genMatch) {
       const subCmd = genMatch[1];
       const topic = genMatch[2].trim();
@@ -85,7 +87,9 @@ function buildCommand(subCmd: string, topic: string): LocalYTCommand | null {
 
 // ── Remote command parser (requires YouTube agent running) ────────
 
-export function parseYouTubeCommand(message: string): YouTubeControlCommand | null {
+export function parseYouTubeCommand(
+  message: string,
+): YouTubeControlCommand | null {
   const normalized = message.toLowerCase().trim();
   if (!normalized.includes("youtube")) return null;
 
@@ -98,22 +102,32 @@ export function parseYouTubeCommand(message: string): YouTubeControlCommand | nu
   // --- Intents that take arguments first (more specific) ---
   if (has("publishable") || has("what is the status of")) {
     const contentId = normalized.match(/content\s+([a-zA-Z0-9_-]+)/)?.[1];
-    if (contentId) return { command: "publishable", contentId: contentId.toLowerCase() };
+    if (contentId)
+      return { command: "publishable", contentId: contentId.toLowerCase() };
   }
 
   if (has("publish")) {
-    const contentId = normalized.match(/(?:publish|publishable)\s+(?:content\s+)?([a-zA-Z0-9_-]+)/)?.[1];
-    if (contentId) return { command: "publish", contentId: contentId.toLowerCase() };
+    const contentId = normalized.match(
+      /(?:publish|publishable)\s+(?:content\s+)?([a-zA-Z0-9_-]+)/,
+    )?.[1];
+    if (contentId)
+      return { command: "publish", contentId: contentId.toLowerCase() };
   }
 
   if (has("approve")) {
-    const contentId = normalized.match(/approve\s+(?:content\s+)?([a-zA-Z0-9_-]+)/)?.[1];
-    if (contentId) return { command: "approve", contentId: contentId.toLowerCase() };
+    const contentId = normalized.match(
+      /approve\s+(?:content\s+)?([a-zA-Z0-9_-]+)/,
+    )?.[1];
+    if (contentId)
+      return { command: "approve", contentId: contentId.toLowerCase() };
   }
 
   if (has("reject")) {
-    const contentId = normalized.match(/reject\s+(?:content\s+)?([a-zA-Z0-9_-]+)/)?.[1];
-    if (contentId) return { command: "reject", contentId: contentId.toLowerCase() };
+    const contentId = normalized.match(
+      /reject\s+(?:content\s+)?([a-zA-Z0-9_-]+)/,
+    )?.[1];
+    if (contentId)
+      return { command: "reject", contentId: contentId.toLowerCase() };
   }
 
   if (has("job")) {
@@ -122,38 +136,68 @@ export function parseYouTubeCommand(message: string): YouTubeControlCommand | nu
   }
 
   // --- Generation ---
-  if (has("generate") || has("make a video") || has("create a video") || has("produce a video")) {
-    const topic = normalized.match(/(?:video|one|something)\s+(?:about|on|for)\s+(.+)/)?.[1]?.trim();
+  if (
+    has("generate") ||
+    has("make a video") ||
+    has("create a video") ||
+    has("produce a video")
+  ) {
+    const topic = normalized
+      .match(/(?:video|one|something)\s+(?:about|on|for)\s+(.+)/)?.[1]
+      ?.trim();
     let style: string | undefined;
-    const styleMatch = normalized.match(/(?:in|using|with)\s+(tutorial|explainer|list|review|story|educational|informative|engaging|professional|ethereal)\s+style/);
+    const styleMatch = normalized.match(
+      /(?:in|using|with)\s+(tutorial|explainer|list|review|story|educational|informative|engaging|professional|ethereal)\s+style/,
+    );
     if (styleMatch) style = styleMatch[1];
     let length: "short" | "medium" | "long" | undefined;
-    if (has("short video") || /short\s+video|make a short/.test(normalized)) length = "short";
-    else if (has("long video") || /long\s+video|make a long/.test(normalized)) length = "long";
+    if (has("short video") || /short\s+video|make a short/.test(normalized))
+      length = "short";
+    else if (has("long video") || /long\s+video|make a long/.test(normalized))
+      length = "long";
     else if (has("medium")) length = "medium";
     return { command: "generate", topic: topic || undefined, style, length };
   }
 
   // --- Operator / autonomous ---
-  if (has("autonomous operator") || has("run autonomously") || has("run the operator") || has("autopilot")) {
-    if (has("stop") || has("pause")) return { command: "operator", action: "pause" };
-    if (has("start") || has("run") || has("launch")) return { command: "operator", action: "start" };
+  if (
+    has("autonomous operator") ||
+    has("run autonomously") ||
+    has("run the operator") ||
+    has("autopilot")
+  ) {
+    if (has("stop") || has("pause"))
+      return { command: "operator", action: "pause" };
+    if (has("start") || has("run") || has("launch"))
+      return { command: "operator", action: "start" };
     return { command: "operator", action: "start" };
   }
   if (has("operator")) {
-    return { command: "operator", action: has("pause") || has("stop") ? "pause" : "start" };
+    return {
+      command: "operator",
+      action: has("pause") || has("stop") ? "pause" : "start",
+    };
   }
 
   // --- Read-only reports ---
   if (has("schedule") || has("upcoming")) return { command: "schedule" };
-  if (has("analytics") || has("performance") || has("metrics")) return { command: "analytics" };
+  if (has("analytics") || has("performance") || has("metrics"))
+    return { command: "analytics" };
   if (has("strategy") || has("channel plan")) return { command: "strategy" };
   if (has("ideas") || has("content ideas")) return { command: "ideas" };
   if (has("jobs")) return { command: "jobs" };
 
   // --- Generic / status / dashboard ---
-  if (has("dashboard") || has("open the panel") || has("show me the dashboard")) return { command: "dashboard" };
-  if (has("status") || has("online") || has("connected") || has("is it up") || has("health")) return { command: "status" };
+  if (has("dashboard") || has("open the panel") || has("show me the dashboard"))
+    return { command: "dashboard" };
+  if (
+    has("status") ||
+    has("online") ||
+    has("connected") ||
+    has("is it up") ||
+    has("health")
+  )
+    return { command: "status" };
 
   return null;
 }

@@ -3,14 +3,17 @@ version: 1.0
 author: Hermes Agent
 
 # Auto-Repo Discovery and Wiring for Rox
+
 # Detects new repos in ~/Downloads/Rox/self_improvement/ and auto-wires them
 
 ## When to use
+
 - When Rox starts a new session and there are new repos in `~/Downloads/Rox/self_improvement/`
 - When you add a new repo and want Rox to automatically discover and wire it
 - When you want Rox to maintain a persistent registry of all discovered repos and their capabilities
 
 ## What it does
+
 1. **Repo Discovery** – Scans `~/Downloads/Rox/self_improvement/` for git repos
 2. **Graft Graph Build** – Runs `graft build` for each repo to create self‑improvement data
 3. **Tool Registration** – Inspects each repo for MCP tools/skills and registers them automatically
@@ -18,6 +21,7 @@ author: Hermes Agent
 5. **Registry Management** – Maintains `.rox-data/repo_registry.json` with repo metadata
 
 ## How it works
+
 - On first run, it builds the registry from scratch
 - On subsequent runs, it diffs against the registry and processes only new/added repos
 - For each repo, it:
@@ -28,6 +32,7 @@ author: Hermes Agent
   - Updates the registry with repo metadata (name, path, last build time, tool count)
 
 ## Safety & Guardrails
+
 - Only scans the designated `self_improvement/` folder – no other directories
 - Refuses repos with no MCP tools/skills (logs warning but continues)
 - Records all actions in memory for auditability
@@ -45,6 +50,7 @@ author: Hermes Agent
 **Rox:** Detects the new repo on next run, wires it automatically, and confirms.
 
 ## Dependencies
+
 - `graft` CLI installed globally (`npm install -g @nanonets/graft`)
 - Git repos in `~/Downloads/Rox/self_improvement/`
 - MCP tools in repo root or `tools/` directory

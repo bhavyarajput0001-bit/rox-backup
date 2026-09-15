@@ -132,7 +132,12 @@ body:has(.palette-lava[aria-pressed="true"]) {
   inset: 8% 48%;
   border: 0;
   border-radius: 0;
-  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--hud-bright) 22%, transparent), transparent);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--hud-bright) 22%, transparent),
+    transparent
+  );
   filter: blur(4px);
   animation: hologram-beam 1.4s ease-in-out infinite alternate;
   opacity: calc(0.18 + var(--voice-energy) * 0.82);
@@ -140,22 +145,37 @@ body:has(.palette-lava[aria-pressed="true"]) {
 
 .voice-hologram.voice-speaking .hologram-ring {
   border-color: color-mix(in srgb, var(--hud-hot) 42%, transparent);
-  box-shadow: 0 0 40px color-mix(in srgb, var(--hud-bright) 20%, transparent) inset;
+  box-shadow: 0 0 40px color-mix(in srgb, var(--hud-bright) 20%, transparent)
+    inset;
 }
 
 @keyframes hologram-drift {
-  from { transform: rotate(0deg) scale(0.96); }
-  to { transform: rotate(360deg) scale(1.04); }
+  from {
+    transform: rotate(0deg) scale(0.96);
+  }
+  to {
+    transform: rotate(360deg) scale(1.04);
+  }
 }
 
 @keyframes hologram-drift-reverse {
-  from { transform: rotate(58deg) scale(1.03); }
-  to { transform: rotate(-302deg) scale(0.94); }
+  from {
+    transform: rotate(58deg) scale(1.03);
+  }
+  to {
+    transform: rotate(-302deg) scale(0.94);
+  }
 }
 
 @keyframes hologram-beam {
-  from { opacity: 0.28; transform: scaleY(0.72); }
-  to { opacity: 0.85; transform: scaleY(1.12); }
+  from {
+    opacity: 0.28;
+    transform: scaleY(0.72);
+  }
+  to {
+    opacity: 0.85;
+    transform: scaleY(1.12);
+  }
 }
 
 /* ——— HUD ——— */
@@ -192,7 +212,9 @@ body:has(.palette-lava[aria-pressed="true"]) {
   border: 1px solid transparent;
   background: transparent;
   color: var(--hud-bright);
-  font: bold 9px "Courier New", monospace;
+  font:
+    bold 9px "Courier New",
+    monospace;
   letter-spacing: 0.1em;
   cursor: pointer;
 }
@@ -201,7 +223,8 @@ body:has(.palette-lava[aria-pressed="true"]) {
   border-color: var(--hud-hot);
   background: color-mix(in srgb, var(--hud-mid) 35%, transparent);
   color: var(--hud-hot);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--hud-bright) 25%, transparent) inset;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--hud-bright) 25%, transparent)
+    inset;
 }
 
 .cinematic-console {
@@ -227,15 +250,21 @@ body:has(.palette-lava[aria-pressed="true"]) {
   border: 1px solid color-mix(in srgb, var(--hud-bright) 65%, transparent);
   border-radius: 50%;
   background: rgba(8, 0, 0, 0.72);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--hud-mid) 30%, transparent), 0 0 0 4px rgba(0, 0, 0, 0.28);
+  box-shadow:
+    0 0 16px color-mix(in srgb, var(--hud-mid) 30%, transparent),
+    0 0 0 4px rgba(0, 0, 0, 0.28);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .chat-launcher:hover,
 .chat-launcher.is-open {
   transform: translateX(-50%) scale(1.08);
-  box-shadow: 0 0 24px color-mix(in srgb, var(--hud-bright) 60%, transparent), 0 0 0 4px rgba(0, 0, 0, 0.28);
+  box-shadow:
+    0 0 24px color-mix(in srgb, var(--hud-bright) 60%, transparent),
+    0 0 0 4px rgba(0, 0, 0, 0.28);
 }
 
 .chat-launcher-core {
@@ -262,22 +291,32 @@ body:has(.palette-lava[aria-pressed="true"]) {
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--hud-bright) 48%, transparent);
   border-radius: 18px;
-  background: linear-gradient(145deg, rgba(22, 7, 2, 0.78), rgba(3, 2, 2, 0.64));
-  box-shadow: 0 0 45px color-mix(in srgb, var(--hud-mid) 24%, transparent), inset 0 0 28px rgba(255, 170, 48, 0.06);
+  background: linear-gradient(
+    145deg,
+    rgba(22, 7, 2, 0.78),
+    rgba(3, 2, 2, 0.64)
+  );
+  box-shadow:
+    0 0 45px color-mix(in srgb, var(--hud-mid) 24%, transparent),
+    inset 0 0 28px rgba(255, 170, 48, 0.06);
   backdrop-filter: blur(16px);
   opacity: 0;
   pointer-events: none;
   --chat-x: 0px;
   --chat-y: 0px;
-  transform: translate(calc(-50% + var(--chat-x)), calc(-45% + var(--chat-y))) scale(0.92);
+  transform: translate(calc(-50% + var(--chat-x)), calc(-45% + var(--chat-y)))
+    scale(0.92);
   transform-origin: center bottom;
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
 }
 
 .chat-panel.is-open {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(calc(-50% + var(--chat-x)), calc(-50% + var(--chat-y))) scale(1);
+  transform: translate(calc(-50% + var(--chat-x)), calc(-50% + var(--chat-y)))
+    scale(1);
 }
 
 .chat-panel-header {
@@ -286,7 +325,8 @@ body:has(.palette-lava[aria-pressed="true"]) {
   align-items: center;
   flex: 0 0 auto;
   padding: 13px 15px;
-  border-bottom: 1px solid color-mix(in srgb, var(--hud-bright) 22%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--hud-bright) 22%, transparent);
   color: var(--hud-hot);
   font-size: 9px;
   letter-spacing: 0.16em;
@@ -294,13 +334,17 @@ body:has(.palette-lava[aria-pressed="true"]) {
   user-select: none;
 }
 
-.chat-panel-header:active { cursor: grabbing; }
+.chat-panel-header:active {
+  cursor: grabbing;
+}
 
 .chat-panel-header button {
   border: 0;
   background: transparent;
   color: var(--hud-hot);
-  font: 20px/1 "Courier New", monospace;
+  font:
+    20px/1 "Courier New",
+    monospace;
   cursor: pointer;
 }
 
@@ -373,10 +417,14 @@ body:has(.palette-lava[aria-pressed="true"]) {
   padding: 9px 10px;
   background: rgba(0, 0, 0, 0.32);
   color: var(--hud-hot);
-  font: 11px "Courier New", monospace;
+  font:
+    11px "Courier New",
+    monospace;
 }
 
-.chat-composer input:focus { border-color: var(--hud-hot); }
+.chat-composer input:focus {
+  border-color: var(--hud-hot);
+}
 
 .chat-composer button {
   width: 36px;
@@ -389,8 +437,14 @@ body:has(.palette-lava[aria-pressed="true"]) {
 }
 
 @keyframes chat-rise {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .cinematic-orbit-label {
@@ -446,8 +500,14 @@ body:has(.palette-lava[aria-pressed="true"]) {
 }
 
 @keyframes cinematic-pulse {
-  from { transform: scale(0.72); opacity: 0.5; }
-  to { transform: scale(1.2); opacity: 1; }
+  from {
+    transform: scale(0.72);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.2);
+    opacity: 1;
+  }
 }
 
 .ui-cinematic .hud-title,
@@ -503,7 +563,8 @@ body:has(.palette-lava[aria-pressed="true"]) {
   width: 184px;
   padding: 10px;
   border-left: 1px solid color-mix(in srgb, var(--hud-bright) 42%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--hud-bright) 18%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--hud-bright) 18%, transparent);
   background: linear-gradient(90deg, transparent, rgba(8, 0, 0, 0.48));
   display: flex;
   flex-direction: column;
@@ -523,7 +584,8 @@ body:has(.palette-lava[aria-pressed="true"]) {
 
 .control-heading {
   padding-bottom: 5px;
-  border-bottom: 1px solid color-mix(in srgb, var(--hud-bright) 28%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--hud-bright) 28%, transparent);
 }
 
 .control-heading span,
@@ -657,7 +719,11 @@ body:has(.palette-lava[aria-pressed="true"]) {
   padding: 9px 10px;
   border-left: 2px solid var(--hud-bright);
   border-top: 1px solid color-mix(in srgb, var(--hud-bright) 28%, transparent);
-  background: linear-gradient(90deg, color-mix(in srgb, var(--hud-mid) 14%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--hud-mid) 14%, transparent),
+    transparent
+  );
   text-shadow: 0 0 7px color-mix(in srgb, var(--hud-bright) 55%, transparent);
 }
 
@@ -714,8 +780,14 @@ body:has(.palette-lava[aria-pressed="true"]) {
 }
 
 @keyframes voice-pulse {
-  from { transform: scale(0.7); opacity: 0.55; }
-  to { transform: scale(1.3); opacity: 1; }
+  from {
+    transform: scale(0.7);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 1;
+  }
 }
 
 .diagnostic-grid {
@@ -790,7 +862,9 @@ body:has(.palette-lava[aria-pressed="true"]) {
   border-radius: 3px;
   background: rgba(8, 8, 8, 0.58);
   color: var(--hud-bright);
-  font: bold 10px/1 "Courier New", monospace;
+  font:
+    bold 10px/1 "Courier New",
+    monospace;
   letter-spacing: 0.08em;
   cursor: pointer;
 }

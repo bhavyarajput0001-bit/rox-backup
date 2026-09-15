@@ -19,14 +19,23 @@ export async function GET(request: Request) {
     if (action === "dashboard" || !action) {
       const status = await getAgentStatus();
       let dashboard = null;
-      try { dashboard = await getAgentDashboard(); } catch {}
+      try {
+        dashboard = await getAgentDashboard();
+      } catch {}
       let analytics = null;
-      try { analytics = await getAnalytics(); } catch {}
+      try {
+        analytics = await getAnalytics();
+      } catch {}
       let schedule = null;
-      try { schedule = await getSchedule(); } catch {}
-      return Response.json({ status, dashboard, analytics, schedule }, {
-        headers: { "Cache-Control": "no-store" },
-      });
+      try {
+        schedule = await getSchedule();
+      } catch {}
+      return Response.json(
+        { status, dashboard, analytics, schedule },
+        {
+          headers: { "Cache-Control": "no-store" },
+        },
+      );
     }
 
     if (action === "analytics") {
@@ -41,11 +50,14 @@ export async function GET(request: Request) {
 
     return Response.json({ error: "Unknown action" }, { status: 400 });
   } catch {
-        return Response.json(
-          { status: "unreachable", error: "YouTube automation agent is not running on localhost:3457" },
-          { status: 503 }
-        );
-      }
+    return Response.json(
+      {
+        status: "unreachable",
+        error: "YouTube automation agent is not running on localhost:3457",
+      },
+      { status: 503 },
+    );
+  }
 }
 
 export async function POST(request: Request) {
@@ -53,19 +65,31 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Request body must be valid JSON." }, { status: 400 });
+    return Response.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 },
+    );
   }
 
   const command =
-    typeof body === "object" && body !== null && "command" in body && typeof body.command === "string"
+    typeof body === "object" &&
+    body !== null &&
+    "command" in body &&
+    typeof body.command === "string"
       ? body.command.trim().toLowerCase()
       : "";
   const topic =
-    typeof body === "object" && body !== null && "topic" in body && typeof body.topic === "string"
+    typeof body === "object" &&
+    body !== null &&
+    "topic" in body &&
+    typeof body.topic === "string"
       ? body.topic.trim()
       : "";
   const jobId =
-    typeof body === "object" && body !== null && "jobId" in body && typeof body.jobId === "string"
+    typeof body === "object" &&
+    body !== null &&
+    "jobId" in body &&
+    typeof body.jobId === "string"
       ? body.jobId.trim()
       : "";
 
@@ -101,7 +125,10 @@ export async function POST(request: Request) {
       case "cancel-job":
       case "stop-job": {
         if (!jobId) {
-          return Response.json({ error: "jobId is required for cancel-job" }, { status: 400 });
+          return Response.json(
+            { error: "jobId is required for cancel-job" },
+            { status: 400 },
+          );
         }
         result = await cancelJob(jobId);
         break;
@@ -122,7 +149,10 @@ export async function POST(request: Request) {
         break;
       }
       default:
-        return Response.json({ error: `Unknown command: ${command}` }, { status: 400 });
+        return Response.json(
+          { error: `Unknown command: ${command}` },
+          { status: 400 },
+        );
     }
     return Response.json(result, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {

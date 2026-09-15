@@ -14,11 +14,7 @@
     "action": "generic.process(task=\"what can you do?\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "what",
-      "can",
-      "you"
-    ],
+    "keywords": ["what", "can", "you"],
     "timestamp": "2026-09-14T17:30:59.258Z"
   },
   {
@@ -36,11 +32,7 @@
     "action": "generic.process(task=\"what can you do\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "what",
-      "can",
-      "you"
-    ],
+    "keywords": ["what", "can", "you"],
     "timestamp": "2026-09-14T17:57:08.001Z"
   },
   {
@@ -49,10 +41,7 @@
     "action": "generic.process(task=\"system status\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "system",
-      "status"
-    ],
+    "keywords": ["system", "status"],
     "timestamp": "2026-09-14T17:57:08.009Z"
   },
   {
@@ -61,10 +50,7 @@
     "action": "generic.process(task=\"system status\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "system",
-      "status"
-    ],
+    "keywords": ["system", "status"],
     "timestamp": "2026-09-14T18:39:20.965Z"
   },
   {
@@ -73,10 +59,7 @@
     "action": "generic.process(task=\"system status\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "system",
-      "status"
-    ],
+    "keywords": ["system", "status"],
     "timestamp": "2026-09-14T18:59:44.789Z"
   },
   {
@@ -85,9 +68,7 @@
     "action": "generic.process(task=\"hello\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "hello"
-    ],
+    "keywords": ["hello"],
     "timestamp": "2026-09-14T19:02:20.325Z"
   },
   {
@@ -96,11 +77,7 @@
     "action": "generic.process(task=\"what is the weather\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "what",
-      "the",
-      "weather"
-    ],
+    "keywords": ["what", "the", "weather"],
     "timestamp": "2026-09-14T19:02:34.848Z"
   }
 ]

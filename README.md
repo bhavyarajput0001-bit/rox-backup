@@ -72,6 +72,7 @@ python3 rox_menubar.py
 ```
 
 A **🤖** icon appears in your top menu bar with:
+
 - **Quick Actions**: Open YouTube, Spotify, Terminal, Chrome, VS Code
 - **Search Web**: Prompt → instant results via Rox
 - **System**: Battery, Time, Status
@@ -84,15 +85,15 @@ A **🤖** icon appears in your top menu bar with:
 
 Just type in Rox chat or use menu bar:
 
-| Category | Commands |
-|----------|----------|
-| **Apps** | `open youtube`, `open spotify`, `open terminal`, `open vscode`, `open notes`, `open safari`, `open chrome`, `open slack`, `open discord`, `open calculator`, `open maps`, `open photos`, `open finder`, `open calendar`, `open messages`, `open mail`, `open facetime`, `lock screen`, `sleep`, `screensaver` |
-| **YouTube** | `yt status`, `yt jobs`, `yt dashboard`, `yt generate <topic>`, `yt title <topic>`, `yt script <topic>`, `yt ideas`, `yt analytics`, `yt hashtags <topic>`, `yt chapters <topic>`, `yt hook <topic>`, `yt calendar`, `yt compete <channel>` |
-| **Spotify** | `spotify play`, `spotify pause`, `spotify next`, `spotify prev`, `spotify volume 50`, `spotify shuffle on`, `spotify repeat one`, `spotify now`, `spotify search <query>`, `spotify queue` |
-| **Search** | `search for <query>`, `weather in <city>`, `news`, `time` |
-| **System** | `status`, `help`, `screenshot`, `clipboard`, `disk space`, `memory usage`, `cpu`, `battery`, `whoami`, `hostname` |
-| **Dev** | `npm run dev`, `npm run build`, `npm install`, `git status`, `git log`, `git diff`, `graft build`, `multi agent status`, `memory status`, `rox rewire`, `rox rebuild memory` |
-| **Files** | `ls in <path>`, `read <file>`, `create file <name>`, `grep <pattern>` |
+| Category    | Commands                                                                                                                                                                                                                                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Apps**    | `open youtube`, `open spotify`, `open terminal`, `open vscode`, `open notes`, `open safari`, `open chrome`, `open slack`, `open discord`, `open calculator`, `open maps`, `open photos`, `open finder`, `open calendar`, `open messages`, `open mail`, `open facetime`, `lock screen`, `sleep`, `screensaver` |
+| **YouTube** | `yt status`, `yt jobs`, `yt dashboard`, `yt generate <topic>`, `yt title <topic>`, `yt script <topic>`, `yt ideas`, `yt analytics`, `yt hashtags <topic>`, `yt chapters <topic>`, `yt hook <topic>`, `yt calendar`, `yt compete <channel>`                                                                    |
+| **Spotify** | `spotify play`, `spotify pause`, `spotify next`, `spotify prev`, `spotify volume 50`, `spotify shuffle on`, `spotify repeat one`, `spotify now`, `spotify search <query>`, `spotify queue`                                                                                                                    |
+| **Search**  | `search for <query>`, `weather in <city>`, `news`, `time`                                                                                                                                                                                                                                                     |
+| **System**  | `status`, `help`, `screenshot`, `clipboard`, `disk space`, `memory usage`, `cpu`, `battery`, `whoami`, `hostname`                                                                                                                                                                                             |
+| **Dev**     | `npm run dev`, `npm run build`, `npm install`, `git status`, `git log`, `git diff`, `graft build`, `multi agent status`, `memory status`, `rox rewire`, `rox rebuild memory`                                                                                                                                  |
+| **Files**   | `ls in <path>`, `read <file>`, `create file <name>`, `grep <pattern>`                                                                                                                                                                                                                                         |
 
 ## API Endpoints
 
@@ -116,6 +117,7 @@ curl -X POST http://localhost:3000/api/multi-agent \
 ## Auto-Sync
 
 Commits auto-push to backup repo every 30 minutes via cron:
+
 ```bash
 # View logs
 tail -f ~/.hermes/logs/rox-sync.log
@@ -127,6 +129,7 @@ bash scripts/auto-sync.sh
 ## Self-Improvement
 
 Rox automatically:
+
 1. **Discovers** repos in `self_improvement/`
 2. **Builds** Graft graphs for code understanding
 3. **Registers** MCP tools from those repos

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Send, Sparkles, PenLine, Search, Cpu } from 'lucide-react';
-import { useRoxStore } from '@rox/ui/store';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Send, Sparkles, PenLine, Search, Cpu } from "lucide-react";
+import { useRoxStore } from "@rox/ui/store";
 
 export default function RightPanel() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const addMessage = useRoxStore((s) => s.addMessage);
   const setCoreState = useRoxStore((s) => s.setCoreState);
   const messages = useRoxStore((s) => s.messages);
@@ -13,26 +13,26 @@ export default function RightPanel() {
     e?.preventDefault();
     if (!input.trim()) return;
 
-    addMessage({ role: 'user', content: input });
-    setCoreState('thinking');
-    setInput('');
+    addMessage({ role: "user", content: input });
+    setCoreState("thinking");
+    setInput("");
 
     // Simulate response
     setTimeout(() => {
-      setCoreState('success');
+      setCoreState("success");
       addMessage({
-        role: 'assistant',
-        content: `I received your request: "${input}". In the full version, this would connect to an AI provider and return a real response.`
+        role: "assistant",
+        content: `I received your request: "${input}". In the full version, this would connect to an AI provider and return a real response.`,
       });
-      setTimeout(() => setCoreState('idle'), 1500);
+      setTimeout(() => setCoreState("idle"), 1500);
     }, 2000);
   };
 
   const quickActions = [
-    { icon: Sparkles, label: 'Summarize', action: 'summarize' },
-    { icon: PenLine, label: 'Create', action: 'create' },
-    { icon: Search, label: 'Analyze', action: 'analyze' },
-    { icon: Cpu, label: 'Generate', action: 'generate' },
+    { icon: Sparkles, label: "Summarize", action: "summarize" },
+    { icon: PenLine, label: "Create", action: "create" },
+    { icon: Search, label: "Analyze", action: "analyze" },
+    { icon: Cpu, label: "Generate", action: "generate" },
   ];
 
   return (
@@ -43,15 +43,21 @@ export default function RightPanel() {
       className="glass-panel rounded-[var(--radius-lg)] p-5 flex flex-col gap-4"
     >
       <div>
-        <h2 className="text-rox-amber text-sm font-medium tracking-wider mb-1">ROX</h2>
+        <h2 className="text-rox-amber text-sm font-medium tracking-wider mb-1">
+          ROX
+        </h2>
         <p className="text-rox-text text-xs">Good Morning, User</p>
-        <p className="text-rox-gray text-xs mt-1">Let&apos;s turn your ideas into reality.</p>
+        <p className="text-rox-gray text-xs mt-1">
+          Let&apos;s turn your ideas into reality.
+        </p>
       </div>
 
       {/* Chat messages */}
       <div className="flex-1 overflow-y-auto space-y-3 min-h-[100px] max-h-48">
         {messages.length === 0 && (
-          <p className="text-rox-dim text-xs text-center py-4">Ask Rox anything...</p>
+          <p className="text-rox-dim text-xs text-center py-4">
+            Ask Rox anything...
+          </p>
         )}
         {messages.map((msg) => (
           <motion.div
@@ -59,9 +65,9 @@ export default function RightPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`p-3 rounded-xl text-xs ${
-              msg.role === 'user'
-                ? 'bg-rox-amber/10 border border-rox-amber/20 text-rox-text'
-                : 'bg-white/5 text-rox-gray'
+              msg.role === "user"
+                ? "bg-rox-amber/10 border border-rox-amber/20 text-rox-text"
+                : "bg-white/5 text-rox-gray"
             }`}
           >
             {msg.content}
@@ -92,11 +98,13 @@ export default function RightPanel() {
         {quickActions.map((action) => (
           <motion.button
             key={action.label}
-            whileHover={{ scale: 1.05, borderColor: 'rgba(255,150,40,0.4)' }}
+            whileHover={{ scale: 1.05, borderColor: "rgba(255,150,40,0.4)" }}
             whileTap={{ scale: 0.95 }}
             className="flex flex-col items-center gap-1 p-2 rounded-xl bg-white/5 border border-transparent hover:border-rox-amber/30 transition-all"
             onClick={() => {
-              setInput(action.action.charAt(0).toUpperCase() + action.action.slice(1));
+              setInput(
+                action.action.charAt(0).toUpperCase() + action.action.slice(1),
+              );
             }}
           >
             <action.icon size={14} className="text-rox-amber" />

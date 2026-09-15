@@ -27,10 +27,7 @@
   {
     "id": "legacy_lesson_1789384591542_82xjj",
     "category": "general",
-    "tags": [
-      "safari",
-      "app"
-    ],
+    "tags": ["safari", "app"],
     "content": "open Safari\n\nAction: open_app({\"app\":\"Safari\"})\n\nResult: open_app: Launched Safari.",
     "context": "Learned from task: open Safari",
     "confidence": 0.6,
@@ -45,15 +42,7 @@
   {
     "id": "legacy_lesson_1789384632977_yxy3u",
     "category": "research",
-    "tags": [
-      "search",
-      "react",
-      "server",
-      "components",
-      "2024",
-      "web",
-      "query"
-    ],
+    "tags": ["search", "react", "server", "components", "2024", "web", "query"],
     "content": "search for React Server Components 2024\n\nAction: web_search({\"query\":\"React Server Components 2024\"})\n\nResult: web_search: Title: Server Components - React\nURL: https://react.dev/reference/rsc/server-components\nPublished: N/A\nAuthor: N/A\nHighlights:\n---\ntitle: Se",
     "context": "Learned from task: search for React Server Components 2024",
     "confidence": 0.6,
@@ -68,10 +57,7 @@
   {
     "id": "legacy_lesson_1789384677670_ahrgw",
     "category": "general",
-    "tags": [
-      "calculate",
-      "expression"
-    ],
+    "tags": ["calculate", "expression"],
     "content": "what is 42 * 17?\n\nAction: calculate({\"expression\":\"42 * 17\"})\n\nResult: calculate: = 714",
     "context": "Learned from task: what is 42 * 17?",
     "confidence": 0.6,
@@ -112,12 +98,7 @@
   {
     "id": "legacy_lesson_1789392307221_exvat",
     "category": "general",
-    "tags": [
-      "time",
-      "shell",
-      "command",
-      "date"
-    ],
+    "tags": ["time", "shell", "command", "date"],
     "content": "what time is it?\n\nAction: shell({\"command\":\"date\"})\n\nResult: shell: Mon Sep 14 18:55:04 IST 2026",
     "context": "Learned from task: what time is it?",
     "confidence": 0.6,
@@ -132,11 +113,7 @@
   {
     "id": "legacy_lesson_1789394421117_1q5yf",
     "category": "general",
-    "tags": [
-      "2+2",
-      "calculate",
-      "expression"
-    ],
+    "tags": ["2+2", "calculate", "expression"],
     "content": "what is 2+2?\n\nAction: calculate({\"expression\":\"2 + 2\"})\n\nResult: calculate: = 4",
     "context": "Learned from task: what is 2+2?",
     "confidence": 0.6,
@@ -201,12 +178,7 @@
   {
     "id": "legacy_lesson_1789402835028_94nsd",
     "category": "general",
-    "tags": [
-      "time",
-      "shell",
-      "command",
-      "date"
-    ],
+    "tags": ["time", "shell", "command", "date"],
     "content": "what time is it\n\nAction: shell({\"command\":\"date\"})\n\nResult: shell: Mon Sep 14 21:50:32 IST 2026",
     "context": "Learned from task: what time is it",
     "confidence": 0.6,
@@ -247,13 +219,7 @@
   {
     "id": "legacy_lesson_1789402907242_2hw0m",
     "category": "youtube",
-    "tags": [
-      "generate",
-      "youtube",
-      "script",
-      "productivity",
-      "command"
-    ],
+    "tags": ["generate", "youtube", "script", "productivity", "command"],
     "content": "generate a youtube script about productivity\n\nAction: youtube({\"command\":\"generate productivity\"})\n\nResult: youtube: No YouTube command intent recognized.",
     "context": "Learned from task: generate a youtube script about productivity",
     "confidence": 0.6,
@@ -268,10 +234,7 @@
   {
     "id": "legacy_lesson_1789403231820_zcszl",
     "category": "youtube",
-    "tags": [
-      "youtube",
-      "command"
-    ],
+    "tags": ["youtube", "command"],
     "content": "youtube status\n\nAction: youtube({\"command\":\"status\"}) -> shell({\"command\":\"python3 -c \\\"\\nimport urllib.request, socket\\n# is anything listening on 3457?\\ns = socket.socket(); s.setti) -> shell({\"command\":\"curl -sS -m 3 -D - http://127.0.0.1:3457/ 2>&1 | head -40; echo '===='; curl -sS -m 3 -D - http://127.0.0.1:) -> youtube({\"command\":\"analytics\"})\n\nResult: youtube: No YouTube command intent recognized. | shell: spawn python3 ENOENT | shell: spawn curl ENOENT | youtube: No YouTube command intent recognized.",
     "context": "Learned from task: youtube status",
     "confidence": 1,
@@ -312,11 +275,7 @@
   {
     "id": "legacy_lesson_1789403338313_cmb1v",
     "category": "youtube",
-    "tags": [
-      "youtube",
-      "analytics",
-      "command"
-    ],
+    "tags": ["youtube", "analytics", "command"],
     "content": "youtube analytics\n\nAction: youtube({\"command\":\"analytics\"}) -> youtube({\"command\":\"status\"}) -> shell({\"command\":\"curl -s http://localhost:3457/ 2>&1; echo \\\"---\\\"; curl -s http://localhost:3457/status 2>&1; echo \\\"---\\\"; ) -> youtube({\"command\":\"jobs\"})\n\nResult: youtube: No YouTube command intent recognized. | youtube: No YouTube command intent recognized. | shell: spawn curl ENOENT | youtube: No YouTube command intent recognized.",
     "context": "Learned from task: youtube analytics",
     "confidence": 0.7,
@@ -496,13 +455,7 @@
   {
     "id": "transcript_1789413144905_up02",
     "category": "youtube",
-    "tags": [
-      "name",
-      "youtube",
-      "args",
-      "command",
-      "analytics"
-    ],
+    "tags": ["name", "youtube", "args", "command", "analytics"],
     "content": "{\"name\":\"youtube\",\"args\":{\"command\":\"analytics\"}}",
     "context": "Important assistant response",
     "confidence": 0.6,
@@ -516,14 +469,7 @@
   {
     "id": "transcript_1789413144905_1wzw",
     "category": "youtube",
-    "tags": [
-      "youtube",
-      "task",
-      "generate",
-      "youtube",
-      "title",
-      "coffee"
-    ],
+    "tags": ["youtube", "task", "generate", "youtube", "title", "coffee"],
     "content": "YouTube task: generate a youtube title about coffee...",
     "context": "Important assistant response",
     "confidence": 0.6,
@@ -559,14 +505,7 @@
   {
     "id": "transcript_1789413144905_35lq",
     "category": "research",
-    "tags": [
-      "researched",
-      "search",
-      "for",
-      "react",
-      "performance",
-      "tips"
-    ],
+    "tags": ["researched", "search", "for", "react", "performance", "tips"],
     "content": "Researched: search for React performance tips...",
     "context": "Important assistant response",
     "confidence": 0.6,
@@ -580,12 +519,7 @@
   {
     "id": "transcript_1789413144905_0yk8",
     "category": "youtube",
-    "tags": [
-      "youtube",
-      "task",
-      "youtube",
-      "status"
-    ],
+    "tags": ["youtube", "task", "youtube", "status"],
     "content": "YouTube task: youtube status...",
     "context": "Important assistant response",
     "confidence": 0.6,
@@ -599,14 +533,7 @@
   {
     "id": "transcript_1789413144905_j1mk",
     "category": "youtube",
-    "tags": [
-      "youtube",
-      "task",
-      "youtube",
-      "generate",
-      "video",
-      "rust"
-    ],
+    "tags": ["youtube", "task", "youtube", "generate", "video", "rust"],
     "content": "YouTube task: youtube generate video about rust...",
     "context": "Important assistant response",
     "confidence": 0.6,
@@ -2796,11 +2723,7 @@
   {
     "id": "mem_1789413198134_tpjny",
     "category": "general",
-    "tags": [
-      "memory",
-      "organization",
-      "task"
-    ],
+    "tags": ["memory", "organization", "task"],
     "content": "User asked to update and organize memory for better recall",
     "context": "New task from user",
     "confidence": 0.8,

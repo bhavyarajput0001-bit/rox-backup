@@ -1,9 +1,11 @@
 # Rox Memory System Documentation
 
 ## Overview
+
 Rox uses a structured memory system with categorized recall for better context awareness.
 
 ## Directory Structure
+
 ```
 .rox-data/
 ├── memory.json           # Raw transcript of conversations
@@ -24,21 +26,24 @@ Rox uses a structured memory system with categorized recall for better context a
 ```
 
 ## Memory Categories
-| Category | Description |
-|----------|-------------|
-| `youtube` | YouTube automation, titles, scripts, videos |
-| `content` | Writing, blogging, copy, emails |
-| `code` | File operations, shell commands, development |
-| `media` | Image, audio, video generation |
-| `research` | Web search, analysis, information gathering |
-| `general` | Time, calculations, status, help |
-| `skills` | Tools, learning, self-improvement |
-| `preferences` | User preferences and settings |
+
+| Category      | Description                                  |
+| ------------- | -------------------------------------------- |
+| `youtube`     | YouTube automation, titles, scripts, videos  |
+| `content`     | Writing, blogging, copy, emails              |
+| `code`        | File operations, shell commands, development |
+| `media`       | Image, audio, video generation               |
+| `research`    | Web search, analysis, information gathering  |
+| `general`     | Time, calculations, status, help             |
+| `skills`      | Tools, learning, self-improvement            |
+| `preferences` | User preferences and settings                |
 
 ## API Endpoints
 
 ### GET /api/memory
+
 Returns memory overview with stats.
+
 ```json
 {
   "totalItems": 37,
@@ -48,7 +53,9 @@ Returns memory overview with stats.
 ```
 
 ### GET /api/memory?query=coffee
+
 Search memory by keywords.
+
 ```json
 {
   "items": [...],
@@ -57,7 +64,9 @@ Search memory by keywords.
 ```
 
 ### GET /api/memory?category=youtube
+
 Get all items in a category.
+
 ```json
 {
   "items": [...],
@@ -66,7 +75,9 @@ Get all items in a category.
 ```
 
 ### POST /api/memory
+
 Add new memory item.
+
 ```json
 {
   "content": "User asked about coffee habits",
@@ -84,4 +95,5 @@ Add new memory item.
 4. **Recall**: Cross-department recall finds related memories
 
 ## Auto-Sync
+
 Memory is synced every 30 minutes via cron job to git backup.

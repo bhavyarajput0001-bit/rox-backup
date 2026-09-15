@@ -1,4 +1,9 @@
-import { queryMemory, getMemoryStats, getMemory, addMemory } from "@/lib/memoryOrg";
+import {
+  queryMemory,
+  getMemoryStats,
+  getMemory,
+  addMemory,
+} from "@/lib/memoryOrg";
 import type { MemoryCategory } from "@/lib/memoryOrg";
 
 export async function GET(request: Request) {
@@ -13,7 +18,8 @@ export async function GET(request: Request) {
   // GET /api/memory?query=&category=&limit=
   const url = new URL(request.url);
   const query = url.searchParams.get("query");
-  const category = url.searchParams.get("category") as MemoryCategory | undefined;
+  const category = url.searchParams.get("category") as
+    MemoryCategory | undefined;
   const limit = parseInt(url.searchParams.get("limit") ?? "10");
 
   if (query) {
@@ -61,7 +67,13 @@ export async function POST(request: Request) {
   const context = b.context ? String(b.context) : undefined;
   const references = Array.isArray(b.references) ? b.references : undefined;
 
-  const result = await addMemory({ content, category, tags, context, references });
+  const result = await addMemory({
+    content,
+    category,
+    tags,
+    context,
+    references,
+  });
 
   return Response.json({
     success: true,

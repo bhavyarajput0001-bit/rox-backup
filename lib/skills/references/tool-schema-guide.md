@@ -30,13 +30,13 @@ Define tools using OpenAI-compatible function calling schema.
   parameters: {
     type: "object",
     properties: {
-      command: { 
-        type: "string", 
-        description: "Shell command to execute" 
+      command: {
+        type: "string",
+        description: "Shell command to execute"
       },
-      cwd: { 
-        type: "string", 
-        description: "Optional working directory" 
+      cwd: {
+        type: "string",
+        description: "Optional working directory"
       }
     },
     required: ["command"]
@@ -47,6 +47,7 @@ Define tools using OpenAI-compatible function calling schema.
 ## Tool Call Format
 
 The LLM returns JSON like:
+
 ```json
 {
   "name": "shell",
@@ -57,6 +58,7 @@ The LLM returns JSON like:
 ```
 
 Parse with:
+
 ```typescript
 const parsed = JSON.parse(text);
 const toolName = parsed.name;
@@ -70,6 +72,7 @@ Always wrap tool execution in try/catch.
 ## Safety
 
 Sandbox shell commands:
+
 - Allow-listed binaries only (cat, ls, grep, node, npm, git, etc.)
 - Block destructive patterns (rm -rf /, sudo, mkfs, dd)
 - Enforce max buffer (2MB) and timeout (10s default)

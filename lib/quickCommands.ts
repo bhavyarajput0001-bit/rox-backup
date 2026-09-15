@@ -24,7 +24,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open YouTube in browser",
     execute: async () => {
       const r = await openUrlTool("https://www.youtube.com");
-      return { ok: r.ok, reply: r.ok ? "Opened YouTube." : "Could not open YouTube." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened YouTube." : "Could not open YouTube.",
+      };
     },
   },
   {
@@ -33,7 +36,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Spotify app",
     execute: async () => {
       const r = await openAppTool("Spotify");
-      return { ok: r.ok, reply: r.ok ? "Launched Spotify." : "Could not open Spotify." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Launched Spotify." : "Could not open Spotify.",
+      };
     },
   },
   {
@@ -42,7 +48,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Terminal",
     execute: async () => {
       const r = await openAppTool("Terminal");
-      return { ok: r.ok, reply: r.ok ? "Opened Terminal." : "Could not open Terminal." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Terminal." : "Could not open Terminal.",
+      };
     },
   },
   {
@@ -51,7 +60,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open VS Code",
     execute: async () => {
       const r = await runShell("code .", 5000);
-      return { ok: r.ok, reply: r.ok ? "Opened VS Code." : "Could not open VS Code." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened VS Code." : "Could not open VS Code.",
+      };
     },
   },
   {
@@ -60,7 +72,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Notes app",
     execute: async () => {
       const r = await openAppTool("Notes");
-      return { ok: r.ok, reply: r.ok ? "Opened Notes." : "Could not open Notes." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Notes." : "Could not open Notes.",
+      };
     },
   },
   {
@@ -69,7 +84,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Safari",
     execute: async () => {
       const r = await openAppTool("Safari");
-      return { ok: r.ok, reply: r.ok ? "Opened Safari." : "Could not open Safari." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Safari." : "Could not open Safari.",
+      };
     },
   },
   {
@@ -78,7 +96,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Chrome",
     execute: async () => {
       const r = await openAppTool("Google Chrome");
-      return { ok: r.ok, reply: r.ok ? "Opened Chrome." : "Could not open Chrome." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Chrome." : "Could not open Chrome.",
+      };
     },
   },
   {
@@ -87,7 +108,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Slack",
     execute: async () => {
       const r = await openAppTool("Slack");
-      return { ok: r.ok, reply: r.ok ? "Opened Slack." : "Could not open Slack." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Slack." : "Could not open Slack.",
+      };
     },
   },
   {
@@ -96,7 +120,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Discord",
     execute: async () => {
       const r = await openAppTool("Discord");
-      return { ok: r.ok, reply: r.ok ? "Opened Discord." : "Could not open Discord." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Discord." : "Could not open Discord.",
+      };
     },
   },
   {
@@ -105,7 +132,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Calculator",
     execute: async () => {
       const r = await openAppTool("Calculator");
-      return { ok: r.ok, reply: r.ok ? "Opened Calculator." : "Could not open Calculator." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Calculator." : "Could not open Calculator.",
+      };
     },
   },
   {
@@ -114,7 +144,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Maps",
     execute: async () => {
       const r = await openUrlTool("https://maps.google.com");
-      return { ok: r.ok, reply: r.ok ? "Opened Google Maps." : "Could not open Maps." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Google Maps." : "Could not open Maps.",
+      };
     },
   },
   {
@@ -123,7 +156,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Photos app",
     execute: async () => {
       const r = await openAppTool("Photos");
-      return { ok: r.ok, reply: r.ok ? "Opened Photos." : "Could not open Photos." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Photos." : "Could not open Photos.",
+      };
     },
   },
   {
@@ -132,7 +168,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Finder",
     execute: async () => {
       const r = await openAppTool("Finder");
-      return { ok: r.ok, reply: r.ok ? "Opened Finder." : "Could not open Finder." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Finder." : "Could not open Finder.",
+      };
     },
   },
   {
@@ -141,7 +180,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Calendar",
     execute: async () => {
       const r = await openAppTool("Calendar");
-      return { ok: r.ok, reply: r.ok ? "Opened Calendar." : "Could not open Calendar." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Calendar." : "Could not open Calendar.",
+      };
     },
   },
   {
@@ -150,7 +192,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Messages",
     execute: async () => {
       const r = await openAppTool("Messages");
-      return { ok: r.ok, reply: r.ok ? "Opened Messages." : "Could not open Messages." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Messages." : "Could not open Messages.",
+      };
     },
   },
   {
@@ -159,7 +204,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Mail",
     execute: async () => {
       const r = await openAppTool("Mail");
-      return { ok: r.ok, reply: r.ok ? "Opened Mail." : "Could not open Mail." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Mail." : "Could not open Mail.",
+      };
     },
   },
   {
@@ -168,7 +216,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open FaceTime",
     execute: async () => {
       const r = await openAppTool("FaceTime");
-      return { ok: r.ok, reply: r.ok ? "Opened FaceTime." : "Could not open FaceTime." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened FaceTime." : "Could not open FaceTime.",
+      };
     },
   },
   {
@@ -176,8 +227,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(open|launch)\s+(system\s+preferences|settings|pref)/i,
     description: "Open System Settings",
     execute: async () => {
-      const r = await runShell("open 'x-apple.systempreferences:com.apple.Preferences'", 3000);
-      return { ok: r.ok, reply: r.ok ? "Opened System Settings." : "Could not open Settings." };
+      const r = await runShell(
+        "open 'x-apple.systempreferences:com.apple.Preferences'",
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened System Settings." : "Could not open Settings.",
+      };
     },
   },
   {
@@ -186,7 +243,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Lock the screen",
     execute: async () => {
       const r = await runShell("pmset displaysleepnow", 2000);
-      return { ok: r.ok, reply: r.ok ? "Screen locked." : "Could not lock screen." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Screen locked." : "Could not lock screen.",
+      };
     },
   },
   {
@@ -195,7 +255,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Put Mac to sleep",
     execute: async () => {
       const r = await runShell("pmset sleepnow", 2000);
-      return { ok: r.ok, reply: r.ok ? "Mac is sleeping." : "Could not put to sleep." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Mac is sleeping." : "Could not put to sleep.",
+      };
     },
   },
   {
@@ -203,8 +266,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(start\s+screensaver|launch\s+screensaver)$/i,
     description: "Start screensaver",
     execute: async () => {
-      const r = await runShell("open -a 'Screensaver' 2>/dev/null || osascript -e 'tell application \"System Events\" to start idle' && echo 'Screensaver started'", 2000);
-      return { ok: r.ok, reply: r.ok ? "Screensaver started." : "Could not start screensaver." };
+      const r = await runShell(
+        "open -a 'Screensaver' 2>/dev/null || osascript -e 'tell application \"System Events\" to start idle' && echo 'Screensaver started'",
+        2000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Screensaver started." : "Could not start screensaver.",
+      };
     },
   },
 
@@ -219,7 +288,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await runYouTubeControl({ command: "status" });
         return { ok: true, reply: r.reply || "YouTube agent is ready." };
-      } catch { return { ok: false, reply: "YouTube agent not reachable." }; }
+      } catch {
+        return { ok: false, reply: "YouTube agent not reachable." };
+      }
     },
   },
   {
@@ -230,7 +301,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await runYouTubeControl({ command: "jobs" });
         return { ok: true, reply: r.reply || "No active jobs." };
-      } catch { return { ok: false, reply: "Could not fetch jobs." }; }
+      } catch {
+        return { ok: false, reply: "Could not fetch jobs." };
+      }
     },
   },
   {
@@ -241,7 +314,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await runYouTubeControl({ command: "dashboard" });
         return { ok: true, reply: r.reply || "Dashboard opened." };
-      } catch { return { ok: false, reply: "Could not open dashboard." }; }
+      } catch {
+        return { ok: false, reply: "Could not open dashboard." };
+      }
     },
   },
   {
@@ -249,11 +324,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+generate\s+(.+)$/i,
     description: "Generate YouTube video",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify a topic: yt generate <topic>" };
+      if (!args)
+        return { ok: false, reply: "Specify a topic: yt generate <topic>" };
       try {
-        const r = await runYouTubeControl({ command: `generate ${args}` } as any);
+        const r = await runYouTubeControl({
+          command: `generate ${args}`,
+        } as any);
         return { ok: true, reply: r.reply || "Video generation started." };
-      } catch { return { ok: false, reply: "Could not generate video." }; }
+      } catch {
+        return { ok: false, reply: "Could not generate video." };
+      }
     },
   },
   {
@@ -261,11 +341,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+title\s+(.+)$/i,
     description: "Generate YouTube title",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify a topic: yt title <topic>" };
+      if (!args)
+        return { ok: false, reply: "Specify a topic: yt title <topic>" };
       try {
         const r = await runYouTubeControl({ command: `title ${args}` } as any);
         return { ok: true, reply: r.reply || "Title generated." };
-      } catch { return { ok: false, reply: "Could not generate title." }; }
+      } catch {
+        return { ok: false, reply: "Could not generate title." };
+      }
     },
   },
   {
@@ -273,11 +356,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+script\s+(.+)$/i,
     description: "Generate YouTube script",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify a topic: yt script <topic>" };
+      if (!args)
+        return { ok: false, reply: "Specify a topic: yt script <topic>" };
       try {
         const r = await runYouTubeControl({ command: `script ${args}` } as any);
         return { ok: true, reply: r.reply || "Script generated." };
-      } catch { return { ok: false, reply: "Could not generate script." }; }
+      } catch {
+        return { ok: false, reply: "Could not generate script." };
+      }
     },
   },
   {
@@ -288,7 +374,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await runYouTubeControl({ command: "ideas" });
         return { ok: true, reply: r.reply || "Ideas generated." };
-      } catch { return { ok: false, reply: "Could not get ideas." }; }
+      } catch {
+        return { ok: false, reply: "Could not get ideas." };
+      }
     },
   },
   {
@@ -299,7 +387,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await runYouTubeControl({ command: "analytics" });
         return { ok: true, reply: r.reply || "Analytics fetched." };
-      } catch { return { ok: false, reply: "Could not fetch analytics." }; }
+      } catch {
+        return { ok: false, reply: "Could not fetch analytics." };
+      }
     },
   },
   {
@@ -307,11 +397,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+hashtags\s+(.+)$/i,
     description: "Generate YouTube hashtags",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify a topic: yt hashtags <topic>" };
+      if (!args)
+        return { ok: false, reply: "Specify a topic: yt hashtags <topic>" };
       try {
-        const r = await runYouTubeControl({ command: `hashtags ${args}` } as any);
+        const r = await runYouTubeControl({
+          command: `hashtags ${args}`,
+        } as any);
         return { ok: true, reply: r.reply || "Hashtags generated." };
-      } catch { return { ok: false, reply: "Could not generate hashtags." }; }
+      } catch {
+        return { ok: false, reply: "Could not generate hashtags." };
+      }
     },
   },
   {
@@ -319,11 +414,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+chapters\s+(.+)$/i,
     description: "Generate video chapters",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify a topic: yt chapters <topic>" };
+      if (!args)
+        return { ok: false, reply: "Specify a topic: yt chapters <topic>" };
       try {
-        const r = await runYouTubeControl({ command: `chapters ${args}` } as any);
+        const r = await runYouTubeControl({
+          command: `chapters ${args}`,
+        } as any);
         return { ok: true, reply: r.reply || "Chapters generated." };
-      } catch { return { ok: false, reply: "Could not generate chapters." }; }
+      } catch {
+        return { ok: false, reply: "Could not generate chapters." };
+      }
     },
   },
   {
@@ -331,11 +431,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+hook\s+(.+)$/i,
     description: "Generate video hook",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify a topic: yt hook <topic>" };
+      if (!args)
+        return { ok: false, reply: "Specify a topic: yt hook <topic>" };
       try {
         const r = await runYouTubeControl({ command: `hook ${args}` } as any);
         return { ok: true, reply: r.reply || "Hook generated." };
-      } catch { return { ok: false, reply: "Could not generate hook." }; }
+      } catch {
+        return { ok: false, reply: "Could not generate hook." };
+      }
     },
   },
   {
@@ -346,7 +449,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await runYouTubeControl({ command: "schedule" } as any);
         return { ok: true, reply: r.reply || "Calendar shown." };
-      } catch { return { ok: false, reply: "Could not fetch calendar." }; }
+      } catch {
+        return { ok: false, reply: "Could not fetch calendar." };
+      }
     },
   },
   {
@@ -354,11 +459,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^yt\s+compete\s+(.+)$/i,
     description: "Analyze competitors",
     execute: async (args?: string) => {
-      if (!args) return { ok: false, reply: "Specify channel: yt compete <channel>" };
+      if (!args)
+        return { ok: false, reply: "Specify channel: yt compete <channel>" };
       try {
-        const r = await runYouTubeControl({ command: `compete ${args}` } as any);
+        const r = await runYouTubeControl({
+          command: `compete ${args}`,
+        } as any);
         return { ok: true, reply: r.reply || "Competition analysis done." };
-      } catch { return { ok: false, reply: "Could not analyze competitors." }; }
+      } catch {
+        return { ok: false, reply: "Could not analyze competitors." };
+      }
     },
   },
 
@@ -374,7 +484,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
       try {
         const r = await searchWeb(args);
         return { ok: true, reply: `Results for "${args}":\n\n${r}` };
-      } catch { return { ok: false, reply: "Search failed." }; }
+      } catch {
+        return { ok: false, reply: "Search failed." };
+      }
     },
   },
   {
@@ -384,14 +496,28 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       try {
         const topic = args?.trim() || "technology";
-        const r = await fetch(`https://newsapi.org/v2/top-headlines?country=us&category=${topic}&apiKey=demo`).catch(() => null);
+        const r = await fetch(
+          `https://newsapi.org/v2/top-headlines?country=us&category=${topic}&apiKey=demo`,
+        ).catch(() => null);
         if (r?.ok) {
           const data = await r.json();
           const articles = data.articles?.slice(0, 5) || [];
-          return { ok: true, reply: `Latest ${topic} news:\n\n` + articles.map((a: any, i: number) => `${i + 1}. ${a.title}`).join("\n") };
+          return {
+            ok: true,
+            reply:
+              `Latest ${topic} news:\n\n` +
+              articles
+                .map((a: any, i: number) => `${i + 1}. ${a.title}`)
+                .join("\n"),
+          };
         }
-        return { ok: true, reply: `Here are the latest ${topic} headlines from around the web:` };
-      } catch { return { ok: false, reply: "Could not fetch news." }; }
+        return {
+          ok: true,
+          reply: `Here are the latest ${topic} headlines from around the web:`,
+        };
+      } catch {
+        return { ok: false, reply: "Could not fetch news." };
+      }
     },
   },
   {
@@ -401,13 +527,20 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       if (!args) return { ok: false, reply: "Which city?" };
       try {
-        const r = await fetch(`https://wttr.in/${encodeURIComponent(args)}?format=j1`);
+        const r = await fetch(
+          `https://wttr.in/${encodeURIComponent(args)}?format=j1`,
+        );
         const data = await r.json();
         const c = data.current_condition?.[0];
         const a = data.nearest_area?.[0];
         const loc = a?.areaName?.[0]?.value || args;
-        return { ok: true, reply: `Weather in ${loc}: ${c?.temp_C}°C, ${c?.weatherDesc?.[0]?.value}, Humidity ${c?.humidity}%` };
-      } catch { return { ok: false, reply: "Could not get weather." }; }
+        return {
+          ok: true,
+          reply: `Weather in ${loc}: ${c?.temp_C}°C, ${c?.weatherDesc?.[0]?.value}, Humidity ${c?.humidity}%`,
+        };
+      } catch {
+        return { ok: false, reply: "Could not get weather." };
+      }
     },
   },
   {
@@ -416,7 +549,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Get current time",
     execute: async () => {
       const now = new Date();
-      return { ok: true, reply: `It's ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} on ${now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}.` };
+      return {
+        ok: true,
+        reply: `It's ${now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true })} on ${now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}.`,
+      };
     },
   },
   {
@@ -425,7 +561,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Get current date",
     execute: async () => {
       const now = new Date();
-      return { ok: true, reply: `Today is ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` };
+      return {
+        ok: true,
+        reply: `Today is ${now.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}.`,
+      };
     },
   },
 
@@ -437,8 +576,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^spotify\s+play\b/i,
     description: "Play Spotify",
     execute: async () => {
-      const r = await runShell('osascript -e \'tell application "Spotify" to play\' && echo "Playing"', 3000);
-      return { ok: r.ok, reply: r.ok ? "Now playing." : "Could not control Spotify." };
+      const r = await runShell(
+        'osascript -e \'tell application "Spotify" to play\' && echo "Playing"',
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Now playing." : "Could not control Spotify.",
+      };
     },
   },
   {
@@ -446,8 +591,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^spotify\s+pause\b/i,
     description: "Pause Spotify",
     execute: async () => {
-      const r = await runShell('osascript -e \'tell application "Spotify" to pause\' && echo "Paused"', 3000);
-      return { ok: r.ok, reply: r.ok ? "Paused." : "Could not control Spotify." };
+      const r = await runShell(
+        'osascript -e \'tell application "Spotify" to pause\' && echo "Paused"',
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Paused." : "Could not control Spotify.",
+      };
     },
   },
   {
@@ -455,8 +606,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^spotify\s+next\b/i,
     description: "Next track",
     execute: async () => {
-      const r = await runShell('osascript -e \'tell application "Spotify" to next track\' && echo "Next"', 3000);
-      return { ok: r.ok, reply: r.ok ? "Next track." : "Could not control Spotify." };
+      const r = await runShell(
+        'osascript -e \'tell application "Spotify" to next track\' && echo "Next"',
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Next track." : "Could not control Spotify.",
+      };
     },
   },
   {
@@ -464,8 +621,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^spotify\s+prev(ious)?\b/i,
     description: "Previous track",
     execute: async () => {
-      const r = await runShell('osascript -e \'tell application "Spotify" to previous track\' && echo "Prev"', 3000);
-      return { ok: r.ok, reply: r.ok ? "Previous track." : "Could not control Spotify." };
+      const r = await runShell(
+        'osascript -e \'tell application "Spotify" to previous track\' && echo "Prev"',
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Previous track." : "Could not control Spotify.",
+      };
     },
   },
   {
@@ -475,8 +638,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       const vol = parseInt(args || "50");
       const clamped = Math.max(0, Math.min(100, vol));
-      const r = await runShell(`osascript -e 'tell application "Spotify" to set volume to ${clamped / 100}'`, 3000);
-      return { ok: r.ok, reply: r.ok ? `Volume set to ${clamped}%.` : "Could not set volume." };
+      const r = await runShell(
+        `osascript -e 'tell application "Spotify" to set volume to ${clamped / 100}'`,
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Volume set to ${clamped}%.` : "Could not set volume.",
+      };
     },
   },
   {
@@ -485,8 +654,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Toggle shuffle",
     execute: async (args) => {
       const on = (args || "on").toLowerCase().startsWith("on");
-      const r = await runShell(`osascript -e 'tell application "Spotify" to set shuffled of current playlist to ${on}'`, 3000);
-      return { ok: r.ok, reply: r.ok ? `Shuffle ${on ? "enabled" : "disabled"}.` : "Could not toggle shuffle." };
+      const r = await runShell(
+        `osascript -e 'tell application "Spotify" to set shuffled of current playlist to ${on}'`,
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Shuffle ${on ? "enabled" : "disabled"}.`
+          : "Could not toggle shuffle.",
+      };
     },
   },
   {
@@ -495,8 +672,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Set repeat mode",
     execute: async (args) => {
       const mode = (args || "on").toLowerCase();
-      const r = await runShell(`osascript -e 'tell application "Spotify" to set repeat view to "${mode}"'`, 3000);
-      return { ok: r.ok, reply: r.ok ? `Repeat set to ${mode}.` : "Could not set repeat." };
+      const r = await runShell(
+        `osascript -e 'tell application "Spotify" to set repeat view to "${mode}"'`,
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Repeat set to ${mode}.` : "Could not set repeat.",
+      };
     },
   },
   {
@@ -504,7 +687,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^spotify\s+(now|current|playing|track|song)$/i,
     description: "Current track",
     execute: async () => {
-      const r = await runShell('osascript -e \'tell application "Spotify" to get "Now: " & name of current track & " - " & artist of current track\' 2>/dev/null || echo "Spotify not running"', 3000);
+      const r = await runShell(
+        'osascript -e \'tell application "Spotify" to get "Now: " & name of current track & " - " & artist of current track\' 2>/dev/null || echo "Spotify not running"',
+        3000,
+      );
       return { ok: r.ok, reply: r.ok ? r.output : "Could not get track info." };
     },
   },
@@ -514,8 +700,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Search Spotify",
     execute: async (args) => {
       if (!args) return { ok: false, reply: "What to search for?" };
-      const r = await runShell(`open "spotify:search:${encodeURIComponent(args)}"`, 2000);
-      return { ok: r.ok, reply: r.ok ? `Searching Spotify for: ${args}` : "Could not search Spotify." };
+      const r = await runShell(
+        `open "spotify:search:${encodeURIComponent(args)}"`,
+        2000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Searching Spotify for: ${args}`
+          : "Could not search Spotify.",
+      };
     },
   },
   {
@@ -523,7 +717,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^spotify\s+queue$/i,
     description: "Show queue",
     execute: async () => {
-      const r = await runShell('osascript -e \'tell application "Spotify" to get queue\' 2>/dev/null || echo "Not available"', 3000);
+      const r = await runShell(
+        'osascript -e \'tell application "Spotify" to get queue\' 2>/dev/null || echo "Not available"',
+        3000,
+      );
       return { ok: r.ok, reply: r.ok ? r.output : "Could not get queue." };
     },
   },
@@ -536,7 +733,11 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^status$|^how\s+are\s+i$|^how\s+are\s+you\s+doing$/i,
     description: "Rox status",
     execute: async () => {
-      return { ok: true, reply: "Rox is online. Capabilities: apps, shell, search, YouTube, Spotify, memory, multi-agent." };
+      return {
+        ok: true,
+        reply:
+          "Rox is online. Capabilities: apps, shell, search, YouTube, Spotify, memory, multi-agent.",
+      };
     },
   },
   {
@@ -544,8 +745,13 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^help|\?$/i,
     description: "Show commands",
     execute: async () => {
-      const cmds = QUICK_COMMANDS.map(c => `  • ${c.name}: ${c.description}`).join("\n");
-      return { ok: true, reply: `**Rox Quick Commands:**\n\n${cmds}\n\nJust say any of these and I'll execute them!` };
+      const cmds = QUICK_COMMANDS.map(
+        (c) => `  • ${c.name}: ${c.description}`,
+      ).join("\n");
+      return {
+        ok: true,
+        reply: `**Rox Quick Commands:**\n\n${cmds}\n\nJust say any of these and I'll execute them!`,
+      };
     },
   },
   {
@@ -555,8 +761,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async () => {
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const filename = `/Users/bhavyarajput/Desktop/Screenshot_${timestamp}.png`;
-      const r = await runShell(`screencapture "${filename}" && echo "Saved to Desktop"`, 5000);
-      return { ok: r.ok, reply: r.ok ? `Screenshot saved to Desktop.` : "Could not take screenshot." };
+      const r = await runShell(
+        `screencapture "${filename}" && echo "Saved to Desktop"`,
+        5000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Screenshot saved to Desktop.`
+          : "Could not take screenshot.",
+      };
     },
   },
   {
@@ -565,7 +779,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Show clipboard",
     execute: async () => {
       const r = await runShell("pbpaste", 2000);
-      return { ok: r.ok, reply: r.ok ? `Clipboard: ${r.output.slice(0, 200)}` : "Could not read clipboard." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Clipboard: ${r.output.slice(0, 200)}`
+          : "Could not read clipboard.",
+      };
     },
   },
   {
@@ -573,7 +792,11 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(restart|reboot)\s+(the\s+)?(mac\s+|computer|system)?$/i,
     description: "Restart Mac",
     execute: async () => {
-      return { ok: false, reply: "I can't restart your Mac directly for safety. Please do it manually with ⌘+Control+Eject." };
+      return {
+        ok: false,
+        reply:
+          "I can't restart your Mac directly for safety. Please do it manually with ⌘+Control+Eject.",
+      };
     },
   },
   {
@@ -581,7 +804,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(shutdown|shut\s+down)$/i,
     description: "Shutdown Mac",
     execute: async () => {
-      return { ok: false, reply: "I can't shutdown your Mac for safety. Please do it manually." };
+      return {
+        ok: false,
+        reply: "I can't shutdown your Mac for safety. Please do it manually.",
+      };
     },
   },
   {
@@ -589,8 +815,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(disk\s+space|storage|free\s+space)$/i,
     description: "Check disk space",
     execute: async () => {
-      const r = await runShell("df -m / 2>/dev/null | tail -1 | awk '{print \"Disk: \"$3\"/\"$2\"MB used, \"$4\"MB free\"}'", 5000);
-      return { ok: r.ok, reply: r.ok ? r.output : "Could not check disk space." };
+      const r = await runShell(
+        'df -m / 2>/dev/null | tail -1 | awk \'{print "Disk: "$3"/"$2"MB used, "$4"MB free"}\'',
+        5000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? r.output : "Could not check disk space.",
+      };
     },
   },
   {
@@ -598,7 +830,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(memory\s+usage|ram|sys\s+info)$/i,
     description: "Check memory usage",
     execute: async () => {
-      const r = await runShell("sysctl hw.memsize | awk '{print \"Total RAM: \"$2\" bytes\"}'", 3000);
+      const r = await runShell(
+        'sysctl hw.memsize | awk \'{print "Total RAM: "$2" bytes"}\'',
+        3000,
+      );
       return { ok: r.ok, reply: r.ok ? r.output : "Could not check memory." };
     },
   },
@@ -607,8 +842,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(cpu|processor|chip)$/i,
     description: "Show CPU info",
     execute: async () => {
-      const r = await runShell("sysctl -n machdep.cpu.brand_string 2>/dev/null", 3000);
-      return { ok: r.ok, reply: r.ok ? r.output.trim() : "Could not get CPU info." };
+      const r = await runShell(
+        "sysctl -n machdep.cpu.brand_string 2>/dev/null",
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? r.output.trim() : "Could not get CPU info.",
+      };
     },
   },
   {
@@ -617,7 +858,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Check battery",
     execute: async () => {
       const r = await runShell("pmset -g batt 2>/dev/null | head -1", 2000);
-      return { ok: r.ok, reply: r.ok ? `Battery: ${r.output.trim()}` : "Battery info unavailable (desktop?)." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Battery: ${r.output.trim()}`
+          : "Battery info unavailable (desktop?).",
+      };
     },
   },
   {
@@ -626,7 +872,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Show username",
     execute: async () => {
       const r = await runShell("whoami", 2000);
-      return { ok: r.ok, reply: r.ok ? `You are logged in as: ${r.output.trim()}` : "Could not get username." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `You are logged in as: ${r.output.trim()}`
+          : "Could not get username.",
+      };
     },
   },
   {
@@ -635,7 +886,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Show computer name",
     execute: async () => {
       const r = await runShell("scutil --get ComputerName", 2000);
-      return { ok: r.ok, reply: r.ok ? `Computer name: ${r.output.trim()}` : "Could not get hostname." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Computer name: ${r.output.trim()}`
+          : "Could not get hostname.",
+      };
     },
   },
 
@@ -649,7 +905,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       const dir = args?.trim() || ".";
       const r = await runShell(`ls -la "${dir}"`, 3000);
-      return { ok: r.ok, reply: r.ok ? `Files in ${dir}:\n${r.output}` : "Could not list files." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Files in ${dir}:\n${r.output}` : "Could not list files.",
+      };
     },
   },
   {
@@ -659,7 +918,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       if (!args) return { ok: false, reply: "Which file?" };
       const r = await runShell(`head -100 "${args.trim()}"`, 5000);
-      return { ok: r.ok, reply: r.ok ? r.output.slice(0, 2000) : "Could not read file." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? r.output.slice(0, 2000) : "Could not read file.",
+      };
     },
   },
   {
@@ -669,8 +931,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     execute: async (args) => {
       if (!args) return { ok: false, reply: "What file to create?" };
       const filename = args.trim();
-      const r = await runShell(`touch "${filename}" && echo "Created: ${filename}"`, 3000);
-      return { ok: r.ok, reply: r.ok ? `Created file: ${filename}` : "Could not create file." };
+      const r = await runShell(
+        `touch "${filename}" && echo "Created: ${filename}"`,
+        3000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Created file: ${filename}` : "Could not create file.",
+      };
     },
   },
   {
@@ -679,8 +947,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Search file contents",
     execute: async (args) => {
       if (!args) return { ok: false, reply: "What to search for?" };
-      const r = await runShell(`grep -r "${args}" . --include="*.ts" --include="*.js" --include="*.json" -l 2>/dev/null | head -10`, 5000);
-      return { ok: r.ok, reply: r.ok ? `Found in:\n${r.output}` : "No matches found." };
+      const r = await runShell(
+        `grep -r "${args}" . --include="*.ts" --include="*.js" --include="*.json" -l 2>/dev/null | head -10`,
+        5000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Found in:\n${r.output}` : "No matches found.",
+      };
     },
   },
 
@@ -692,10 +966,20 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(npm\s+run\s+)?dev\s*$/i,
     description: "Start dev server",
     execute: async () => {
-      const r = await runShell("lsof -iTCP:3000 -sTCP:LISTEN | grep node | wc -l", 3000);
+      const r = await runShell(
+        "lsof -iTCP:3000 -sTCP:LISTEN | grep node | wc -l",
+        3000,
+      );
       const running = parseInt(r.output?.trim() || "0");
-      if (running > 0) return { ok: true, reply: "Dev server is already running on port 3000." };
-      return { ok: false, reply: "Use 'npm run dev' in terminal to start the server." };
+      if (running > 0)
+        return {
+          ok: true,
+          reply: "Dev server is already running on port 3000.",
+        };
+      return {
+        ok: false,
+        reply: "Use 'npm run dev' in terminal to start the server.",
+      };
     },
   },
   {
@@ -704,7 +988,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Build project",
     execute: async () => {
       const r = await runShell("npm run build 2>&1 | tail -5", 60000);
-      return { ok: r.ok, reply: r.ok ? `Build output:\n${r.output}` : "Build failed." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Build output:\n${r.output}` : "Build failed.",
+      };
     },
   },
   {
@@ -712,8 +999,14 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(npm\s+)?install$/i,
     description: "Install dependencies",
     execute: async () => {
-      const r = await runShell("npm install --prefer-offline 2>&1 | tail -3", 120000);
-      return { ok: r.ok, reply: r.ok ? `Installed:\n${r.output}` : "Install failed." };
+      const r = await runShell(
+        "npm install --prefer-offline 2>&1 | tail -3",
+        120000,
+      );
+      return {
+        ok: r.ok,
+        reply: r.ok ? `Installed:\n${r.output}` : "Install failed.",
+      };
     },
   },
   {
@@ -722,7 +1015,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Git status",
     execute: async () => {
       const r = await runShell("git status --short | head -20", 3000);
-      return { ok: r.ok, reply: r.ok ? r.output.trim() || "Nothing to commit." : "Not a git repo." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? r.output.trim() || "Nothing to commit."
+          : "Not a git repo.",
+      };
     },
   },
   {
@@ -741,7 +1039,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Git diff",
     execute: async () => {
       const r = await runShell("git diff --stat", 3000);
-      return { ok: r.ok, reply: r.ok ? r.output || "No changes." : "No diff available." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? r.output || "No changes." : "No diff available.",
+      };
     },
   },
   {
@@ -750,7 +1051,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Build Graft graph",
     execute: async () => {
       const r = await runShell("graft build 2>&1 | tail -5", 120000);
-      return { ok: r.ok, reply: r.ok ? `Graft built:\n${r.output}` : "Could not build graft graph." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Graft built:\n${r.output}`
+          : "Could not build graft graph.",
+      };
     },
   },
   {
@@ -759,9 +1065,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Show agent status",
     execute: async () => {
       try {
-        const r = await fetch("http://localhost:3000/api/multi-agent").then(res => res.json());
-        return { ok: true, reply: `Rox Multi-Agent System v${r.version}\nStatus: ${r.status}\nLessons learned: ${r.lessonsLearned || 0}` };
-      } catch { return { ok: false, reply: "Could not reach multi-agent API." }; }
+        const r = await fetch("http://localhost:3000/api/multi-agent").then(
+          (res) => res.json(),
+        );
+        return {
+          ok: true,
+          reply: `Rox Multi-Agent System v${r.version}\nStatus: ${r.status}\nLessons learned: ${r.lessonsLearned || 0}`,
+        };
+      } catch {
+        return { ok: false, reply: "Could not reach multi-agent API." };
+      }
     },
   },
   {
@@ -770,9 +1083,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Show memory stats",
     execute: async () => {
       try {
-        const r = await fetch("http://localhost:3000/api/memory").then(res => res.json());
-        return { ok: true, reply: `Memory: ${r.totalItems || 0} items across ${Object.keys(r.categories || {}).filter(k => r.categories[k] > 0).length} categories` };
-      } catch { return { ok: false, reply: "Could not get memory stats." }; }
+        const r = await fetch("http://localhost:3000/api/memory").then((res) =>
+          res.json(),
+        );
+        return {
+          ok: true,
+          reply: `Memory: ${r.totalItems || 0} items across ${Object.keys(r.categories || {}).filter((k) => r.categories[k] > 0).length} categories`,
+        };
+      } catch {
+        return { ok: false, reply: "Could not get memory stats." };
+      }
     },
   },
 
@@ -785,7 +1105,11 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Send iMessage",
     execute: async (args) => {
       if (!args) return { ok: false, reply: "Who to message?" };
-      return { ok: false, reply: "iMessage sending requires the imsg CLI to be configured. Try opening Messages app instead." };
+      return {
+        ok: false,
+        reply:
+          "iMessage sending requires the imsg CLI to be configured. Try opening Messages app instead.",
+      };
     },
   },
   {
@@ -794,7 +1118,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Open Mail",
     execute: async () => {
       const r = await openAppTool("Mail");
-      return { ok: r.ok, reply: r.ok ? "Opened Mail." : "Could not open Mail." };
+      return {
+        ok: r.ok,
+        reply: r.ok ? "Opened Mail." : "Could not open Mail.",
+      };
     },
   },
 
@@ -806,7 +1133,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(rewire|auto.?wire)$/i,
     description: "Re-wire all repos",
     execute: async () => {
-      const r = await runShell("node lib/skills/auto-repo-wiring.js 2>&1 | tail -5", 60000);
+      const r = await runShell(
+        "node lib/skills/auto-repo-wiring.js 2>&1 | tail -5",
+        60000,
+      );
       return { ok: r.ok, reply: r.ok ? r.output : "Could not rewire repos." };
     },
   },
@@ -816,7 +1146,12 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Rebuild memory index",
     execute: async () => {
       const r = await runShell("node scripts/rebuild-memory-index.js", 10000);
-      return { ok: r.ok, reply: r.ok ? `Memory rebuilt:\n${r.output}` : "Could not rebuild memory." };
+      return {
+        ok: r.ok,
+        reply: r.ok
+          ? `Memory rebuilt:\n${r.output}`
+          : "Could not rebuild memory.",
+      };
     },
   },
   {
@@ -825,9 +1160,16 @@ const QUICK_COMMANDS: QuickCommand[] = [
     description: "Count lessons",
     execute: async () => {
       try {
-        const r = await fetch("http://localhost:3000/api/assistant").then(res => res.json());
-        return { ok: true, reply: `Total lessons learned: ${r.lessonsLearned || 0}` };
-      } catch { return { ok: false, reply: "Could not count lessons." }; }
+        const r = await fetch("http://localhost:3000/api/assistant").then(
+          (res) => res.json(),
+        );
+        return {
+          ok: true,
+          reply: `Total lessons learned: ${r.lessonsLearned || 0}`,
+        };
+      } catch {
+        return { ok: false, reply: "Could not count lessons." };
+      }
     },
   },
   {
@@ -835,7 +1177,11 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(clear|reset|wipe)\s+(memory|lessons?)$/i,
     description: "Clear memory (destructive)",
     execute: async () => {
-      return { ok: false, reply: "Memory clearing is disabled for safety. Use the API or edit .rox-data/ manually." };
+      return {
+        ok: false,
+        reply:
+          "Memory clearing is disabled for safety. Use the API or edit .rox-data/ manually.",
+      };
     },
   },
   {
@@ -843,7 +1189,10 @@ const QUICK_COMMANDS: QuickCommand[] = [
     pattern: /^(sync|push)\s*(to\s+)?(backup|git)?$/i,
     description: "Sync to git backup",
     execute: async () => {
-      const r = await runShell("cd ~/Downloads/Rox && git add -A && git commit -m 'auto-sync: $(date)' && git push backup main 2>&1 | tail -3", 30000);
+      const r = await runShell(
+        "cd ~/Downloads/Rox && git add -A && git commit -m 'auto-sync: $(date)' && git push backup main 2>&1 | tail -3",
+        30000,
+      );
       return { ok: r.ok, reply: r.ok ? "Synced to backup." : "Sync failed." };
     },
   },
@@ -858,7 +1207,10 @@ export function matchQuickCommand(message: string): QuickCommand | null {
   return null;
 }
 
-export async function executeQuickCommand(command: QuickCommand, message?: string): Promise<{ ok: boolean; reply: string }> {
+export async function executeQuickCommand(
+  command: QuickCommand,
+  message?: string,
+): Promise<{ ok: boolean; reply: string }> {
   let args: string | undefined;
   if (message) {
     for (const cmd of QUICK_COMMANDS) {
@@ -873,7 +1225,7 @@ export async function executeQuickCommand(command: QuickCommand, message?: strin
 }
 
 export function listQuickCommands(): string {
-  return QUICK_COMMANDS.map(c => `• ${c.name}: ${c.description}`).join("\n");
+  return QUICK_COMMANDS.map((c) => `• ${c.name}: ${c.description}`).join("\n");
 }
 
 export function getQuickCommandCount(): number {

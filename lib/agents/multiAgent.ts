@@ -1,6 +1,6 @@
 /**
  * Rox Multi-Agent System
- * 
+ *
  * Architecture:
  * - Central Orchestrator Agent (Rox Core)
  * - Department Agents: Content, Code, Media, Research, YouTube
@@ -10,7 +10,10 @@
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
-import { runYouTubeControl, type YouTubeControlCommand } from "../youtubeControl";
+import {
+  runYouTubeControl,
+  type YouTubeControlCommand,
+} from "../youtubeControl";
 import { parseYouTubeCommand, parseLocalYTCommand } from "../youtubeIntent";
 import { runLocalYTCommand, type LocalYTCommand } from "../youtubeCommands";
 import { searchWeb } from "../onlineTools";
@@ -54,7 +57,10 @@ const REWIRING_LOG_PATH = path.join(AGENTS_DIR, "rewiring_log.json");
 
 // ─── Initialization ───────────────────────────────────────────────────────────
 
-export async function initMultiAgent(): Promise<{ departments: string[]; orchestrator: string }> {
+export async function initMultiAgent(): Promise<{
+  departments: string[];
+  orchestrator: string;
+}> {
   // Create directory structure
   await mkdir(AGENTS_DIR, { recursive: true });
   for (const dept of ["content", "code", "media", "research", "youtube"]) {
@@ -104,7 +110,9 @@ export async function initMultiAgent(): Promise<{ departments: string[]; orchest
 
 // ─── Department Registry ───────────────────────────────────────────────────────
 
-async function loadDepartmentRegistry(): Promise<Record<string, DepartmentConfig>> {
+async function loadDepartmentRegistry(): Promise<
+  Record<string, DepartmentConfig>
+> {
   try {
     const raw = await readFile(DEPARTMENT_REGISTRY_PATH, "utf8");
     return JSON.parse(raw);
@@ -113,7 +121,9 @@ async function loadDepartmentRegistry(): Promise<Record<string, DepartmentConfig
   }
 }
 
-async function saveDepartmentRegistry(registry: Record<string, DepartmentConfig>): Promise<void> {
+async function saveDepartmentRegistry(
+  registry: Record<string, DepartmentConfig>,
+): Promise<void> {
   await writeFile(DEPARTMENT_REGISTRY_PATH, JSON.stringify(registry, null, 2));
 }
 
@@ -130,34 +140,37 @@ export async function executeTask(
 }> {
   const startTime = Date.now();
   const taskId = `task_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-  
+
   // Detect best department for task
   const dept = preferredDept || detectDepartment(task);
-  
+
   // Execute using department-specific logic
   const result = await executeInDepartment(taskId, dept, task);
-  
+
   // Measure performance
   result.latencyMs = Date.now() - startTime;
-  
+
   // Store result
   await storeTaskResult(result);
-  
+
   // Learn from execution
   const newLessons = await learnFromTask(task, result);
-  
+
   // Update department stats
   await updateDepartmentStats(dept, result);
-  
+
   // Check if we should rewire based on performance
   if (result.latencyMs > 30_000 || !result.success) {
     await analyzeAndRewire(task, dept, result);
   }
-  
+
   // Load registry to get totals
   const registry = await loadDepartmentRegistry();
-  const totalLessons = Object.values(registry).reduce((sum, d) => sum + d.lessonsLearned, 0);
-  
+  const totalLessons = Object.values(registry).reduce(
+    (sum, d) => sum + d.lessonsLearned,
+    0,
+  );
+
   return {
     assignedDepartment: dept,
     result,
@@ -190,12 +203,16 @@ async function executeInDepartment(
 
 // ─── Department Handlers ───────────────────────────────────────────────────────
 
-async function handleContentTask(taskId: string, task: string): Promise<TaskResult> {
+async function handleContentTask(
+  taskId: string,
+  task: string,
+): Promise<TaskResult> {
   const startTime = Date.now();
   const action = `content.generate(task="${task.slice(0, 100)}")`;
 
   // Use local FreeLLM to generate content
-  const FREELLM_URL = process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1";
+  const FREELLM_URL =
+    process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1";
   const FREELLM_KEY = process.env.FREELLM_API_KEY || "";
   const model = process.env.FREELLM_MODEL || "auto";
 
@@ -227,8 +244,11 @@ async function handleContentTask(taskId: string, task: string): Promise<TaskResu
     });
 
     if (response.ok) {
-      const data = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
-      output = data.choices?.[0]?.message?.content?.trim() || "Content generated.";
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+      };
+      output =
+        data.choices?.[0]?.message?.content?.trim() || "Content generated.";
     } else {
       output = `Could not generate content (LLM unavailable).`;
     }
@@ -248,12 +268,17 @@ async function handleContentTask(taskId: string, task: string): Promise<TaskResu
   };
 }
 
-async function handleCodeTask(taskId: string, task: string): Promise<TaskResult> {
+async function handleCodeTask(
+  taskId: string,
+  task: string,
+): Promise<TaskResult> {
   const startTime = Date.now();
   const action = `code.execute(task="${task.slice(0, 100)}")`;
 
   // Try to extract and run a shell command
-  const commandMatch = task.match(/(?:run|execute|run\s+(?:the\s+)?)(?:command|code)?\s*[:"]?\s*(.+?)(?:[";]|$)/i);
+  const commandMatch = task.match(
+    /(?:run|execute|run\s+(?:the\s+)?)(?:command|code)?\s*[:"]?\s*(.+?)(?:[";]|$)/i,
+  );
   if (commandMatch) {
     const cmd = commandMatch[1].trim();
     const result = await runShell(cmd, 15_000);
@@ -282,12 +307,16 @@ async function handleCodeTask(taskId: string, task: string): Promise<TaskResult>
   };
 }
 
-async function handleMediaTask(taskId: string, task: string): Promise<TaskResult> {
+async function handleMediaTask(
+  taskId: string,
+  task: string,
+): Promise<TaskResult> {
   const startTime = Date.now();
   const action = `media.generate(task="${task.slice(0, 100)}")`;
 
   // Use FreeLLM to generate media descriptions/concepts
-  const FREELLM_URL = process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1";
+  const FREELLM_URL =
+    process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1";
   const FREELLM_KEY = process.env.FREELLM_API_KEY || "";
   const model = process.env.FREELLM_MODEL || "auto";
 
@@ -319,8 +348,12 @@ async function handleMediaTask(taskId: string, task: string): Promise<TaskResult
     });
 
     if (response.ok) {
-      const data = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
-      output = data.choices?.[0]?.message?.content?.trim() || "Media concept generated.";
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+      };
+      output =
+        data.choices?.[0]?.message?.content?.trim() ||
+        "Media concept generated.";
     } else {
       output = `Could not generate media concept (LLM unavailable).`;
     }
@@ -340,7 +373,10 @@ async function handleMediaTask(taskId: string, task: string): Promise<TaskResult
   };
 }
 
-async function handleResearchTask(taskId: string, task: string): Promise<TaskResult> {
+async function handleResearchTask(
+  taskId: string,
+  task: string,
+): Promise<TaskResult> {
   const startTime = Date.now();
   const action = `research.search(query="${task.slice(0, 100)}")`;
 
@@ -367,7 +403,10 @@ async function handleResearchTask(taskId: string, task: string): Promise<TaskRes
   };
 }
 
-async function handleYoutubeTask(taskId: string, task: string): Promise<TaskResult> {
+async function handleYoutubeTask(
+  taskId: string,
+  task: string,
+): Promise<TaskResult> {
   const startTime = Date.now();
 
   // Try local YouTube command first
@@ -460,32 +499,55 @@ function handleGenericTask(taskId: string, task: string): TaskResult {
 
 function detectDepartment(task: string): string {
   const normalized = task.toLowerCase();
-  
+
   // YouTube specific
-  if (normalized.includes("youtube") || normalized.includes("yt ") || normalized.includes("video")) {
+  if (
+    normalized.includes("youtube") ||
+    normalized.includes("yt ") ||
+    normalized.includes("video")
+  ) {
     return "youtube";
   }
-  
+
   // Media specific
-  if (normalized.includes("image") || normalized.includes("audio") || normalized.includes("generate video")) {
+  if (
+    normalized.includes("image") ||
+    normalized.includes("audio") ||
+    normalized.includes("generate video")
+  ) {
     return "media";
   }
-  
+
   // Content specific
-  if (normalized.includes("title") || normalized.includes("script") || normalized.includes("blog") || normalized.includes("write")) {
+  if (
+    normalized.includes("title") ||
+    normalized.includes("script") ||
+    normalized.includes("blog") ||
+    normalized.includes("write")
+  ) {
     return "content";
   }
-  
+
   // Research specific
-  if (normalized.includes("search") || normalized.includes("read") || normalized.includes("find") || normalized.includes("analyze")) {
+  if (
+    normalized.includes("search") ||
+    normalized.includes("read") ||
+    normalized.includes("find") ||
+    normalized.includes("analyze")
+  ) {
     return "research";
   }
-  
+
   // Code specific
-  if (normalized.includes("file") || normalized.includes("code") || normalized.includes("run") || normalized.includes("command")) {
+  if (
+    normalized.includes("file") ||
+    normalized.includes("code") ||
+    normalized.includes("run") ||
+    normalized.includes("command")
+  ) {
     return "code";
   }
-  
+
   return "general";
 }
 
@@ -493,22 +555,25 @@ function detectDepartment(task: string): string {
 
 async function storeTaskResult(result: TaskResult): Promise<void> {
   let results: TaskResult[] = [];
-  
+
   try {
     const raw = await readFile(TASK_RESULTS_PATH, "utf8");
     results = JSON.parse(raw);
   } catch {
     // Fresh start
   }
-  
+
   results.push(result);
   // Keep last 500 results
   results = results.slice(-500);
-  
+
   await writeFile(TASK_RESULTS_PATH, JSON.stringify(results, null, 2));
 }
 
-async function learnFromTask(task: string, result: TaskResult): Promise<number> {
+async function learnFromTask(
+  task: string,
+  result: TaskResult,
+): Promise<number> {
   const lessonsPath = path.join(AGENTS_DIR, result.department, "lessons.json");
   let lessons: Array<{
     id: string;
@@ -519,21 +584,22 @@ async function learnFromTask(task: string, result: TaskResult): Promise<number> 
     keywords: string[];
     timestamp: string;
   }> = [];
-  
+
   try {
     const raw = await readFile(lessonsPath, "utf8");
     lessons = JSON.parse(raw);
   } catch {
     // Fresh start
   }
-  
+
   // Extract keywords
-  const keywords = task.toLowerCase()
+  const keywords = task
+    .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter((w) => w.length > 2)
     .slice(0, 10);
-  
+
   // Add lesson
   const lesson = {
     id: `lesson_${result.taskId}`,
@@ -544,18 +610,21 @@ async function learnFromTask(task: string, result: TaskResult): Promise<number> 
     keywords,
     timestamp: result.timestamp,
   };
-  
+
   lessons.push(lesson);
   lessons = lessons.slice(-200); // Keep last 200 lessons per department
-  
+
   await writeFile(lessonsPath, JSON.stringify(lessons, null, 2));
-  
+
   return 1; // One lesson added
 }
 
-async function updateDepartmentStats(department: string, result: TaskResult): Promise<void> {
+async function updateDepartmentStats(
+  department: string,
+  result: TaskResult,
+): Promise<void> {
   const registry = await loadDepartmentRegistry();
-  
+
   if (!registry[department]) {
     registry[department] = {
       name: department.charAt(0).toUpperCase() + department.slice(1),
@@ -569,14 +638,18 @@ async function updateDepartmentStats(department: string, result: TaskResult): Pr
       lastActive: "never",
     };
   }
-  
+
   const dept = registry[department];
   dept.tasksCompleted += 1;
   dept.successRate = parseFloat(
-    ((dept.successRate * (dept.tasksCompleted - 1) + (result.success ? 1 : 0)) / dept.tasksCompleted).toFixed(2)
+    (
+      (dept.successRate * (dept.tasksCompleted - 1) +
+        (result.success ? 1 : 0)) /
+      dept.tasksCompleted
+    ).toFixed(2),
   );
   dept.lastActive = new Date().toISOString();
-  
+
   // Count lessons
   const lessonsPath = path.join(AGENTS_DIR, department, "lessons.json");
   try {
@@ -586,13 +659,17 @@ async function updateDepartmentStats(department: string, result: TaskResult): Pr
   } catch {
     // No lessons yet
   }
-  
+
   await saveDepartmentRegistry(registry);
 }
 
 // ─── Self-Rewiring Analysis ────────────────────────────────────────────────────
 
-async function analyzeAndRewire(task: string, department: string, result: TaskResult): Promise<void> {
+async function analyzeAndRewire(
+  task: string,
+  department: string,
+  result: TaskResult,
+): Promise<void> {
   let rewireHistory: Array<{
     timestamp: string;
     task: string;
@@ -600,18 +677,20 @@ async function analyzeAndRewire(task: string, department: string, result: TaskRe
     issue: string;
     actionTaken: string;
   }> = [];
-  
+
   try {
     const raw = await readFile(REWIRING_LOG_PATH, "utf8");
     rewireHistory = JSON.parse(raw);
   } catch {
     // Fresh start
   }
-  
+
   // Log the analysis
   const issue = result.latencyMs > 30_000 ? "high_latency" : "execution_failed";
-  const actionTaken = result.success ? "retry_with_timeout" : "switch_department";
-  
+  const actionTaken = result.success
+    ? "retry_with_timeout"
+    : "switch_department";
+
   rewireHistory.push({
     timestamp: new Date().toISOString(),
     task,
@@ -619,21 +698,26 @@ async function analyzeAndRewire(task: string, department: string, result: TaskRe
     issue,
     actionTaken,
   });
-  
+
   // Keep last 100 entries
   rewireHistory = rewireHistory.slice(-100);
-  
+
   await writeFile(REWIRING_LOG_PATH, JSON.stringify(rewireHistory, null, 2));
 }
 
 // ─── Cross-Department Recall ───────────────────────────────────────────────────
 
-export async function recallAcrossDepartments(query: string, limit = 5): Promise<Array<{
-  department: string;
-  lesson: string;
-  success: boolean;
-  similarity: number;
-}>> {
+export async function recallAcrossDepartments(
+  query: string,
+  limit = 5,
+): Promise<
+  Array<{
+    department: string;
+    lesson: string;
+    success: boolean;
+    similarity: number;
+  }>
+> {
   const registry = await loadDepartmentRegistry();
   const results: Array<{
     department: string;
@@ -641,14 +725,14 @@ export async function recallAcrossDepartments(query: string, limit = 5): Promise
     success: boolean;
     similarity: number;
   }> = [];
-  
+
   // Search all departments' lessons
   for (const dept of Object.keys(registry)) {
     const lessonsPath = path.join(AGENTS_DIR, dept, "lessons.json");
     try {
       const raw = await readFile(lessonsPath, "utf8");
       const lessons = JSON.parse(raw);
-      
+
       for (const lesson of lessons) {
         const similarity = calculateSimilarity(query, lesson.task);
         if (similarity > 0.3) {
@@ -664,22 +748,30 @@ export async function recallAcrossDepartments(query: string, limit = 5): Promise
       // No lessons for this department
     }
   }
-  
+
   // Sort by similarity and limit
-  return results
-    .sort((a, b) => b.similarity - a.similarity)
-    .slice(0, limit);
+  return results.sort((a, b) => b.similarity - a.similarity).slice(0, limit);
 }
 
 function calculateSimilarity(query: string, text: string): number {
-  const queryWords = new Set(query.toLowerCase().split(/\s+/).filter((w) => w.length > 2));
-  const textWords = new Set(text.toLowerCase().split(/\s+/).filter((w) => w.length > 2));
-  
+  const queryWords = new Set(
+    query
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 2),
+  );
+  const textWords = new Set(
+    text
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 2),
+  );
+
   let matches = 0;
   for (const word of queryWords) {
     if (textWords.has(word)) matches++;
   }
-  
+
   return matches / Math.max(queryWords.size, textWords.size, 1);
 }
 
@@ -693,10 +785,10 @@ export async function getSystemStatus(): Promise<{
 }> {
   const registry = await loadDepartmentRegistry();
   const departments = Object.values(registry);
-  
+
   let totalTasks = 0;
   let totalSuccess = 0;
-  
+
   try {
     const raw = await readFile(TASK_RESULTS_PATH, "utf8");
     const results: TaskResult[] = JSON.parse(raw);
@@ -705,9 +797,10 @@ export async function getSystemStatus(): Promise<{
   } catch {
     // No results yet
   }
-  
-  const avgSuccessRate = totalTasks > 0 ? (totalSuccess / totalTasks * 100).toFixed(1) : "0";
-  
+
+  const avgSuccessRate =
+    totalTasks > 0 ? ((totalSuccess / totalTasks) * 100).toFixed(1) : "0";
+
   return {
     orchestrator: "Rox Core v2.0",
     departments,
@@ -725,7 +818,7 @@ if (typeof require !== "undefined" && require.main === module) {
       console.log("✅ Multi-Agent System Initialized");
       console.log(`   Orchestrator: ${init.orchestrator}`);
       console.log(`   Departments: ${init.departments.join(", ")}`);
-      
+
       // Show status
       return getSystemStatus();
     })
@@ -735,7 +828,9 @@ if (typeof require !== "undefined" && require.main === module) {
       console.log(`   Avg Success Rate: ${status.avgSuccessRate}%`);
       console.log("\n🏢 Departments:");
       for (const dept of status.departments) {
-        console.log(`   ${dept.name}: ${dept.tasksCompleted} tasks, ${dept.successRate}% success`);
+        console.log(
+          `   ${dept.name}: ${dept.tasksCompleted} tasks, ${dept.successRate}% success`,
+        );
       }
     })
     .catch(console.error);

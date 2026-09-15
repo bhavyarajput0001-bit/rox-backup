@@ -1,1 +1,236 @@
-[{"id":"lesson_1789384586588_gaf9s","task":"read /Users/bhavyarajput/Downloads/Rox/package.json","keywords":["read","users","bhavyarajput","downloads","rox","package","json","file","path"],"action":"read_file({\"file_path\":\"/Users/bhavyarajput/Downloads/Rox/package.json\"}) -> read_file({\"file_path\":\"/Users/bhavyarajput/Downloads/Rox/package.json\"})","result":"read_file: {\n  \"name\": \"rox-orb-ui\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"sta | read_file: {\n  \"name\": \"rox-orb-ui\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"sta","learnedAt":"2026-09-14T11:16:26.588Z","runs":1},{"id":"lesson_1789384591542_82xjj","task":"open Safari","keywords":["safari","app"],"action":"open_app({\"app\":\"Safari\"})","result":"open_app: Launched Safari.","learnedAt":"2026-09-14T11:16:31.542Z","runs":1},{"id":"lesson_1789384632977_yxy3u","task":"search for React Server Components 2024","keywords":["search","react","server","components","2024","web","query"],"action":"web_search({\"query\":\"React Server Components 2024\"})","result":"web_search: Title: Server Components - React\nURL: https://react.dev/reference/rsc/server-components\nPublished: N/A\nAuthor: N/A\nHighlights:\n---\ntitle: Se","learnedAt":"2026-09-14T11:17:12.977Z","runs":1},{"id":"lesson_1789384677670_ahrgw","task":"what is 42 * 17?","keywords":["calculate","expression"],"action":"calculate({\"expression\":\"42 * 17\"})","result":"calculate: = 714","learnedAt":"2026-09-14T11:17:57.670Z","runs":1},{"id":"lesson_1789392298330_bdu7t","task":"generate a youtube title about morning coffee habits","keywords":["generate","youtube","title","morning","coffee","habits","command","web","search","query","popular","titles"],"action":"youtube({\"command\":\"generate morning coffee habits\"}) -> web_search({\"query\":\"popular YouTube titles morning coffee habits\"})","result":"youtube: No YouTube command intent recognized. | web_search: Title: Fix your morning routine with this coffee rule #morningroutine #healthyhabits - YouTube\nURL: https://www.youtube.com/shorts/XwuAnKhH-","learnedAt":"2026-09-14T13:24:58.330Z","runs":1},{"id":"lesson_1789392307221_exvat","task":"what time is it?","keywords":["time","shell","command","date"],"action":"shell({\"command\":\"date\"})","result":"shell: Mon Sep 14 18:55:04 IST 2026","learnedAt":"2026-09-14T13:25:07.221Z","runs":1},{"id":"lesson_1789394421117_1q5yf","task":"what is 2+2?","keywords":["2+2","calculate","expression"],"action":"calculate({\"expression\":\"2 + 2\"})","result":"calculate: = 4","learnedAt":"2026-09-14T14:00:21.117Z","runs":1},{"id":"lesson_1789402395882_ftlzb","task":"generate youtube script about productivity","keywords":["generate","youtube","script","productivity","command","web","search","query"],"action":"youtube({\"command\":\"generate productivity\"}) -> web_search({\"query\":\"productivity youtube script\"})","result":"youtube: No YouTube command intent recognized. | web_search: Title: Productivity YouTube Script Generator - Sumera AI\nURL: https://sumera.io/for/productivity\nPublished: N/A\nAuthor: SUMERA\nHighlights:\nP","learnedAt":"2026-09-14T16:13:15.882Z","runs":1},{"id":"lesson_1789402397881_i5ftb","task":"yt title about coffee","keywords":["title","coffee","youtube","command","generate","web","search","query","morning","routine"],"action":"web_search({\"query\":\"YouTube title ideas about coffee morning routine\"}) -> youtube({\"command\":\"generate coffee\"}) -> web_search({\"query\":\"YouTube title ideas coffee morning routine\"})","result":"web_search: Title: YouTube Title Formulas That Actually Get Clicks: 12 Proven Patterns\nURL: https://www.overseeros.com/blog/youtube-title-formulas-that- | youtube: No YouTube command intent recognized. | web_search: Title: YouTube Title Formulas That Actually Get Clicks: 12 Proven Patterns\nURL: https://www.overseeros.com/blog/youtube-title-formulas-that-","learnedAt":"2026-09-14T16:25:26.978Z","runs":3},{"id":"lesson_1789402835028_94nsd","task":"what time is it","keywords":["time","shell","command","date"],"action":"shell({\"command\":\"date\"})","result":"shell: Mon Sep 14 21:50:32 IST 2026","learnedAt":"2026-09-14T16:20:35.028Z","runs":1},{"id":"lesson_1789402877555_hv7dn","task":"yt title about morning routine","keywords":["title","morning","routine","web","search","query","best","youtube","video","titles","high","click"],"action":"web_search({\"query\":\"best YouTube video titles about morning routine high click-through\"})","result":"web_search: Title: Lifestyle YouTube Titles — Formulas That Get Clicks in 2026 — Titles.video\nURL: https://titles.video/lifestyle-youtube-titles\nPublish","learnedAt":"2026-09-14T16:21:17.556Z","runs":1},{"id":"lesson_1789402907242_2hw0m","task":"generate a youtube script about productivity","keywords":["generate","youtube","script","productivity","command"],"action":"youtube({\"command\":\"generate productivity\"})","result":"youtube: No YouTube command intent recognized.","learnedAt":"2026-09-14T16:21:47.242Z","runs":1},{"id":"lesson_1789403231820_zcszl","task":"youtube status","keywords":["youtube","command"],"action":"youtube({\"command\":\"status\"}) -> shell({\"command\":\"python3 -c \\\"\\nimport urllib.request, socket\\n# is anything listening on 3457?\\ns = socket.socket(); s.setti) -> shell({\"command\":\"curl -sS -m 3 -D - http://127.0.0.1:3457/ 2>&1 | head -40; echo '===='; curl -sS -m 3 -D - http://127.0.0.1:) -> youtube({\"command\":\"analytics\"})","result":"youtube: No YouTube command intent recognized. | shell: spawn python3 ENOENT | shell: spawn curl ENOENT | youtube: No YouTube command intent recognized.","learnedAt":"2026-09-14T16:32:34.395Z","runs":5},{"id":"lesson_1789403333206_onezp","task":"youtube jobs","keywords":["youtube","jobs","command","shell","curl","http","localhost","3457","echo","service","not","reachable"],"action":"youtube({\"command\":\"jobs\"}) -> shell({\"command\":\"curl -s http://localhost:3457/jobs 2>&1; echo \\\"---\\\"; curl -s http://localhost:3457/ 2>&1 | head -50; echo ) -> youtube({\"command\":\"jobs\"}) -> shell({\"command\":\"curl -sS http://localhost:3457/ 2>&1; echo \\\"\\\"; echo \\\"=== /jobs ===\\\"; curl -sS -w \\\"\\\\nHTTP:%{http_code}\\)","result":"youtube: No YouTube command intent recognized. | shell: curl: option -50;: is unknown\ncurl: try 'curl --help' or 'curl --manual' for more information | youtube: No YouTube command intent recognized. | shell: \"\nHTTP:000\n\"\ncurl: Can't open 'CP:LISTEN'\ncurl: try 'curl --help' or 'curl --manual' for more information\ncurl: (26) Failed to open/read loc","learnedAt":"2026-09-14T16:31:08.403Z","runs":2},{"id":"lesson_1789403338313_cmb1v","task":"youtube analytics","keywords":["youtube","analytics","command"],"action":"youtube({\"command\":\"analytics\"}) -> youtube({\"command\":\"status\"}) -> shell({\"command\":\"curl -s http://localhost:3457/ 2>&1; echo \\\"---\\\"; curl -s http://localhost:3457/status 2>&1; echo \\\"---\\\"; ) -> youtube({\"command\":\"jobs\"})","result":"youtube: No YouTube command intent recognized. | youtube: No YouTube command intent recognized. | shell: spawn curl ENOENT | youtube: No YouTube command intent recognized.","learnedAt":"2026-09-14T16:31:29.971Z","runs":2},{"id":"lesson_1789403496442_uwdxb","task":"youtube schedule","keywords":["youtube","schedule","command","shell","curl","dev","null","http","code","size","download","localhost"],"action":"youtube({\"command\":\"schedule\"}) -> youtube({\"command\":\"status\"}) -> shell({\"command\":\"curl -s -o /dev/null -w \\\"HTTP %{http_code} size=%{size_download}\\\\n\\\" http://localhost:3457/ ; echo \\\"---\\\") -> shell({\"command\":\"python3 -c \\\"\\nimport urllib.request, json\\nurls = [\\n  'http://localhost:3457/',\\n  'http://localhost:3457/)","result":"youtube: No YouTube command intent recognized. | youtube: No YouTube command intent recognized. | shell: spawn curl ENOENT | shell: spawn python3 ENOENT","learnedAt":"2026-09-14T16:31:36.442Z","runs":1}]
+[
+  {
+    "id": "lesson_1789384586588_gaf9s",
+    "task": "read /Users/bhavyarajput/Downloads/Rox/package.json",
+    "keywords": [
+      "read",
+      "users",
+      "bhavyarajput",
+      "downloads",
+      "rox",
+      "package",
+      "json",
+      "file",
+      "path"
+    ],
+    "action": "read_file({\"file_path\":\"/Users/bhavyarajput/Downloads/Rox/package.json\"}) -> read_file({\"file_path\":\"/Users/bhavyarajput/Downloads/Rox/package.json\"})",
+    "result": "read_file: {\n  \"name\": \"rox-orb-ui\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"sta | read_file: {\n  \"name\": \"rox-orb-ui\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"sta",
+    "learnedAt": "2026-09-14T11:16:26.588Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789384591542_82xjj",
+    "task": "open Safari",
+    "keywords": ["safari", "app"],
+    "action": "open_app({\"app\":\"Safari\"})",
+    "result": "open_app: Launched Safari.",
+    "learnedAt": "2026-09-14T11:16:31.542Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789384632977_yxy3u",
+    "task": "search for React Server Components 2024",
+    "keywords": [
+      "search",
+      "react",
+      "server",
+      "components",
+      "2024",
+      "web",
+      "query"
+    ],
+    "action": "web_search({\"query\":\"React Server Components 2024\"})",
+    "result": "web_search: Title: Server Components - React\nURL: https://react.dev/reference/rsc/server-components\nPublished: N/A\nAuthor: N/A\nHighlights:\n---\ntitle: Se",
+    "learnedAt": "2026-09-14T11:17:12.977Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789384677670_ahrgw",
+    "task": "what is 42 * 17?",
+    "keywords": ["calculate", "expression"],
+    "action": "calculate({\"expression\":\"42 * 17\"})",
+    "result": "calculate: = 714",
+    "learnedAt": "2026-09-14T11:17:57.670Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789392298330_bdu7t",
+    "task": "generate a youtube title about morning coffee habits",
+    "keywords": [
+      "generate",
+      "youtube",
+      "title",
+      "morning",
+      "coffee",
+      "habits",
+      "command",
+      "web",
+      "search",
+      "query",
+      "popular",
+      "titles"
+    ],
+    "action": "youtube({\"command\":\"generate morning coffee habits\"}) -> web_search({\"query\":\"popular YouTube titles morning coffee habits\"})",
+    "result": "youtube: No YouTube command intent recognized. | web_search: Title: Fix your morning routine with this coffee rule #morningroutine #healthyhabits - YouTube\nURL: https://www.youtube.com/shorts/XwuAnKhH-",
+    "learnedAt": "2026-09-14T13:24:58.330Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789392307221_exvat",
+    "task": "what time is it?",
+    "keywords": ["time", "shell", "command", "date"],
+    "action": "shell({\"command\":\"date\"})",
+    "result": "shell: Mon Sep 14 18:55:04 IST 2026",
+    "learnedAt": "2026-09-14T13:25:07.221Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789394421117_1q5yf",
+    "task": "what is 2+2?",
+    "keywords": ["2+2", "calculate", "expression"],
+    "action": "calculate({\"expression\":\"2 + 2\"})",
+    "result": "calculate: = 4",
+    "learnedAt": "2026-09-14T14:00:21.117Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789402395882_ftlzb",
+    "task": "generate youtube script about productivity",
+    "keywords": [
+      "generate",
+      "youtube",
+      "script",
+      "productivity",
+      "command",
+      "web",
+      "search",
+      "query"
+    ],
+    "action": "youtube({\"command\":\"generate productivity\"}) -> web_search({\"query\":\"productivity youtube script\"})",
+    "result": "youtube: No YouTube command intent recognized. | web_search: Title: Productivity YouTube Script Generator - Sumera AI\nURL: https://sumera.io/for/productivity\nPublished: N/A\nAuthor: SUMERA\nHighlights:\nP",
+    "learnedAt": "2026-09-14T16:13:15.882Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789402397881_i5ftb",
+    "task": "yt title about coffee",
+    "keywords": [
+      "title",
+      "coffee",
+      "youtube",
+      "command",
+      "generate",
+      "web",
+      "search",
+      "query",
+      "morning",
+      "routine"
+    ],
+    "action": "web_search({\"query\":\"YouTube title ideas about coffee morning routine\"}) -> youtube({\"command\":\"generate coffee\"}) -> web_search({\"query\":\"YouTube title ideas coffee morning routine\"})",
+    "result": "web_search: Title: YouTube Title Formulas That Actually Get Clicks: 12 Proven Patterns\nURL: https://www.overseeros.com/blog/youtube-title-formulas-that- | youtube: No YouTube command intent recognized. | web_search: Title: YouTube Title Formulas That Actually Get Clicks: 12 Proven Patterns\nURL: https://www.overseeros.com/blog/youtube-title-formulas-that-",
+    "learnedAt": "2026-09-14T16:25:26.978Z",
+    "runs": 3
+  },
+  {
+    "id": "lesson_1789402835028_94nsd",
+    "task": "what time is it",
+    "keywords": ["time", "shell", "command", "date"],
+    "action": "shell({\"command\":\"date\"})",
+    "result": "shell: Mon Sep 14 21:50:32 IST 2026",
+    "learnedAt": "2026-09-14T16:20:35.028Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789402877555_hv7dn",
+    "task": "yt title about morning routine",
+    "keywords": [
+      "title",
+      "morning",
+      "routine",
+      "web",
+      "search",
+      "query",
+      "best",
+      "youtube",
+      "video",
+      "titles",
+      "high",
+      "click"
+    ],
+    "action": "web_search({\"query\":\"best YouTube video titles about morning routine high click-through\"})",
+    "result": "web_search: Title: Lifestyle YouTube Titles — Formulas That Get Clicks in 2026 — Titles.video\nURL: https://titles.video/lifestyle-youtube-titles\nPublish",
+    "learnedAt": "2026-09-14T16:21:17.556Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789402907242_2hw0m",
+    "task": "generate a youtube script about productivity",
+    "keywords": ["generate", "youtube", "script", "productivity", "command"],
+    "action": "youtube({\"command\":\"generate productivity\"})",
+    "result": "youtube: No YouTube command intent recognized.",
+    "learnedAt": "2026-09-14T16:21:47.242Z",
+    "runs": 1
+  },
+  {
+    "id": "lesson_1789403231820_zcszl",
+    "task": "youtube status",
+    "keywords": ["youtube", "command"],
+    "action": "youtube({\"command\":\"status\"}) -> shell({\"command\":\"python3 -c \\\"\\nimport urllib.request, socket\\n# is anything listening on 3457?\\ns = socket.socket(); s.setti) -> shell({\"command\":\"curl -sS -m 3 -D - http://127.0.0.1:3457/ 2>&1 | head -40; echo '===='; curl -sS -m 3 -D - http://127.0.0.1:) -> youtube({\"command\":\"analytics\"})",
+    "result": "youtube: No YouTube command intent recognized. | shell: spawn python3 ENOENT | shell: spawn curl ENOENT | youtube: No YouTube command intent recognized.",
+    "learnedAt": "2026-09-14T16:32:34.395Z",
+    "runs": 5
+  },
+  {
+    "id": "lesson_1789403333206_onezp",
+    "task": "youtube jobs",
+    "keywords": [
+      "youtube",
+      "jobs",
+      "command",
+      "shell",
+      "curl",
+      "http",
+      "localhost",
+      "3457",
+      "echo",
+      "service",
+      "not",
+      "reachable"
+    ],
+    "action": "youtube({\"command\":\"jobs\"}) -> shell({\"command\":\"curl -s http://localhost:3457/jobs 2>&1; echo \\\"---\\\"; curl -s http://localhost:3457/ 2>&1 | head -50; echo ) -> youtube({\"command\":\"jobs\"}) -> shell({\"command\":\"curl -sS http://localhost:3457/ 2>&1; echo \\\"\\\"; echo \\\"=== /jobs ===\\\"; curl -sS -w \\\"\\\\nHTTP:%{http_code}\\)",
+    "result": "youtube: No YouTube command intent recognized. | shell: curl: option -50;: is unknown\ncurl: try 'curl --help' or 'curl --manual' for more information | youtube: No YouTube command intent recognized. | shell: \"\nHTTP:000\n\"\ncurl: Can't open 'CP:LISTEN'\ncurl: try 'curl --help' or 'curl --manual' for more information\ncurl: (26) Failed to open/read loc",
+    "learnedAt": "2026-09-14T16:31:08.403Z",
+    "runs": 2
+  },
+  {
+    "id": "lesson_1789403338313_cmb1v",
+    "task": "youtube analytics",
+    "keywords": ["youtube", "analytics", "command"],
+    "action": "youtube({\"command\":\"analytics\"}) -> youtube({\"command\":\"status\"}) -> shell({\"command\":\"curl -s http://localhost:3457/ 2>&1; echo \\\"---\\\"; curl -s http://localhost:3457/status 2>&1; echo \\\"---\\\"; ) -> youtube({\"command\":\"jobs\"})",
+    "result": "youtube: No YouTube command intent recognized. | youtube: No YouTube command intent recognized. | shell: spawn curl ENOENT | youtube: No YouTube command intent recognized.",
+    "learnedAt": "2026-09-14T16:31:29.971Z",
+    "runs": 2
+  },
+  {
+    "id": "lesson_1789403496442_uwdxb",
+    "task": "youtube schedule",
+    "keywords": [
+      "youtube",
+      "schedule",
+      "command",
+      "shell",
+      "curl",
+      "dev",
+      "null",
+      "http",
+      "code",
+      "size",
+      "download",
+      "localhost"
+    ],
+    "action": "youtube({\"command\":\"schedule\"}) -> youtube({\"command\":\"status\"}) -> shell({\"command\":\"curl -s -o /dev/null -w \\\"HTTP %{http_code} size=%{size_download}\\\\n\\\" http://localhost:3457/ ; echo \\\"---\\\") -> shell({\"command\":\"python3 -c \\\"\\nimport urllib.request, json\\nurls = [\\n  'http://localhost:3457/',\\n  'http://localhost:3457/)",
+    "result": "youtube: No YouTube command intent recognized. | youtube: No YouTube command intent recognized. | shell: spawn curl ENOENT | shell: spawn python3 ENOENT",
+    "learnedAt": "2026-09-14T16:31:36.442Z",
+    "runs": 1
+  }
+]

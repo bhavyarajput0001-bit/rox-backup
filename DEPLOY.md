@@ -1,6 +1,7 @@
 # Rox Deployment Commands
 
 ## Quick Start (Terminal)
+
 ```bash
 cd ~/Downloads/Rox
 npm run dev
@@ -13,6 +14,7 @@ Then open: http://localhost:3000
 ## All Available Commands
 
 ### Development
+
 ```bash
 # Start dev server (port 3000)
 cd ~/Downloads/Rox && npm run dev
@@ -28,6 +30,7 @@ npm run lint
 ```
 
 ### API Testing
+
 ```bash
 # Health check
 curl http://localhost:3000/api/assistant
@@ -47,6 +50,7 @@ curl -X POST http://localhost:3000/api/assistant \
 ```
 
 ### Memory & Agents
+
 ```bash
 # Check memory stats
 curl http://localhost:3000/api/memory
@@ -60,18 +64,19 @@ curl -X POST http://localhost:3000/api/multi-agent \
 
 ## Background Services Already Running
 
-| Service | Port | Status |
-|---------|------|--------|
-| Rox Dev Server | 3000 | ✅ Running |
-| Backend API | 4000 | ✅ Running |
+| Service         | Port  | Status     |
+| --------------- | ----- | ---------- |
+| Rox Dev Server  | 3000  | ✅ Running |
+| Backend API     | 4000  | ✅ Running |
 | Omniroute Proxy | 20128 | ✅ Running |
-| FreeLLM | 31415 | ✅ Running |
-| YouTube Agent | 3457 | ✅ Running |
-| OpenDesign MCP | - | ✅ Running |
+| FreeLLM         | 31415 | ✅ Running |
+| YouTube Agent   | 3457  | ✅ Running |
+| OpenDesign MCP  | -     | ✅ Running |
 
 ---
 
 ## One-Liner to Start Everything
+
 ```bash
 cd ~/Downloads/Rox && npm run dev
 ```

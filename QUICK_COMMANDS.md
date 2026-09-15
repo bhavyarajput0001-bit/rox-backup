@@ -3,6 +3,7 @@
 **83 pre-built commands** that Rox can execute instantly without going through the LLM.
 
 ## 📱 App Launchers (18 commands)
+
 ```
 open youtube          → https://www.youtube.com
 open spotify          → Launch Spotify app
@@ -28,6 +29,7 @@ open screensaver      → Start screensaver
 ```
 
 ## 🎬 YouTube Commands (13 commands)
+
 ```
 yt status             → Check agent status
 yt jobs               → List active jobs
@@ -45,6 +47,7 @@ yt compete <channel>  → Analyze competitors
 ```
 
 ## 🔍 Search & Info (4 commands)
+
 ```
 search for React tips → Web search via Exa
 news                  → Latest tech headlines
@@ -53,6 +56,7 @@ time                  → Current time & date
 ```
 
 ## 🎵 Spotify Commands (10 commands)
+
 ```
 spotify play          → Resume playback
 spotify pause         → Pause playback
@@ -67,6 +71,7 @@ spotify queue         → Show queue
 ```
 
 ## 💻 System Commands (12 commands)
+
 ```
 status                → Check Rox status
 help                  → Show all commands
@@ -83,6 +88,7 @@ grep search for react → Search files
 ```
 
 ## 🛠️ Development Commands (7 commands)
+
 ```
 npm run dev           → Check dev server
 npm run build         → Build project
@@ -98,6 +104,7 @@ rox rebuild memory    → Rebuild memory index
 ```
 
 ## 📁 File Commands (4 commands)
+
 ```
 ls in /Users/...      → List directory
 read /path/file.txt   → Read file
@@ -106,19 +113,23 @@ grep search pattern   → Search file contents
 ```
 
 ## 🚫 Safety Commands (2 commands)
+
 ```
 restart mac           → Returns safety warning
 shutdown mac          → Returns safety warning
 ```
 
 ## How It Works
+
 1. User types a command
 2. Rox matches it against 83 pre-built patterns
 3. Executes instantly (no LLM call = sub-second response)
 4. Result is logged to memory for future recall
 
 ## Adding New Commands
+
 Edit `lib/quickCommands.ts` and add a new entry:
+
 ```ts
 {
   name: "command_name",

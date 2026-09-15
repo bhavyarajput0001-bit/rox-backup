@@ -1,4 +1,8 @@
-import { runYouTubeControl, youtubeAgentInfo, type YouTubeControlCommand } from "@/lib/youtubeControl";
+import {
+  runYouTubeControl,
+  youtubeAgentInfo,
+  type YouTubeControlCommand,
+} from "@/lib/youtubeControl";
 import { runLocalYTCommand, type LocalYTCommand } from "@/lib/youtubeCommands";
 
 const LOCAL_COMMANDS = [
@@ -57,12 +61,18 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return Response.json({ ok: false, error: "Request body must be valid JSON." }, { status: 400 });
+    return Response.json(
+      { ok: false, error: "Request body must be valid JSON." },
+      { status: 400 },
+    );
   }
 
   const command = (body as { command?: string })?.command;
   if (!command || typeof command !== "string") {
-    return Response.json({ ok: false, error: "A command is required." }, { status: 400 });
+    return Response.json(
+      { ok: false, error: "A command is required." },
+      { status: 400 },
+    );
   }
 
   const payload = body as Record<string, unknown>;
@@ -71,7 +81,10 @@ export async function POST(request: Request) {
   if (LOCAL_COMMANDS.includes(command)) {
     const localCmd = buildLocalCommand(command, payload);
     if (!localCmd) {
-      return Response.json({ ok: false, error: `Invalid arguments for ${command}.` }, { status: 400 });
+      return Response.json(
+        { ok: false, error: `Invalid arguments for ${command}.` },
+        { status: 400 },
+      );
     }
     const result = await runLocalYTCommand(localCmd);
     return Response.json(result, { headers: { "Cache-Control": "no-store" } });
@@ -95,7 +108,9 @@ export async function POST(request: Request) {
         topic: typeof payload.topic === "string" ? payload.topic : undefined,
         style: typeof payload.style === "string" ? payload.style : undefined,
         length:
-          payload.length === "short" || payload.length === "long" || payload.length === "medium"
+          payload.length === "short" ||
+          payload.length === "long" ||
+          payload.length === "medium"
             ? payload.length
             : undefined,
       };
@@ -107,29 +122,45 @@ export async function POST(request: Request) {
     case "reject": {
       const contentId = String(payload.contentId ?? payload.jobId ?? "");
       if (!contentId)
-        return Response.json({ ok: false, error: `${command} requires a contentId.` }, { status: 400 });
+        return Response.json(
+          { ok: false, error: `${command} requires a contentId.` },
+          { status: 400 },
+        );
       parsed = { command, contentId } as YouTubeControlCommand;
       break;
     }
     case "operator":
-      parsed = { command: "operator", action: payload.action === "pause" ? "pause" : "start" };
+      parsed = {
+        command: "operator",
+        action: payload.action === "pause" ? "pause" : "start",
+      };
       break;
     default:
-      return Response.json({ ok: false, error: `Unknown command: ${command}` }, { status: 400 });
+      return Response.json(
+        { ok: false, error: `Unknown command: ${command}` },
+        { status: 400 },
+      );
   }
 
   const result = await runYouTubeControl(parsed);
   return Response.json(result, { headers: { "Cache-Control": "no-store" } });
 }
 
-function buildLocalCommand(command: string, payload: Record<string, unknown>): LocalYTCommand | null {
+function buildLocalCommand(
+  command: string,
+  payload: Record<string, unknown>,
+): LocalYTCommand | null {
   const topic = typeof payload.topic === "string" ? payload.topic.trim() : "";
   const niche = typeof payload.niche === "string" ? payload.niche.trim() : "";
-  const style = typeof payload.style === "string" ? payload.style.trim() : undefined;
-  const length = typeof payload.length === "string" ? payload.length.trim() : undefined;
+  const style =
+    typeof payload.style === "string" ? payload.style.trim() : undefined;
+  const length =
+    typeof payload.length === "string" ? payload.length.trim() : undefined;
   const count = typeof payload.count === "number" ? payload.count : undefined;
-  const duration = typeof payload.duration === "string" ? payload.duration.trim() : undefined;
-  const platform = typeof payload.platform === "string" ? payload.platform.trim() : undefined;
+  const duration =
+    typeof payload.duration === "string" ? payload.duration.trim() : undefined;
+  const platform =
+    typeof payload.platform === "string" ? payload.platform.trim() : undefined;
 
   switch (command) {
     case "yt_script":

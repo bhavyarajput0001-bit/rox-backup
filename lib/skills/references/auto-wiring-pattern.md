@@ -36,7 +36,7 @@ Automatic discovery and registration of tools from external repos.
 1. **Scan** `self_improvement/` for subdirectories
 2. **Skip** if already in registry
 3. **Build** Graft graph for new repos
-4. **Discover** MCP tools (*.mcp.js, mcp-* files)
+4. **Discover** MCP tools (_.mcp.js, mcp-_ files)
 5. **Register** tools via `tool_describe`
 6. **Log** lesson in memory
 
@@ -50,6 +50,7 @@ Automatic discovery and registration of tools from external repos.
 ## Manual Rebuild
 
 If registry shows `error` but graph exists:
+
 ```bash
 cd ~/Downloads/Rox/self_improvement/<repo>
 node ../../node_modules/.bin/graft build

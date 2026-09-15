@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { CoreState, UserSettings, ModuleId, Task } from '@rox/types';
+import { create } from "zustand";
+import type { CoreState, UserSettings, ModuleId, Task } from "@rox/types";
 
 interface RoxStore {
   // Core state
@@ -31,16 +31,21 @@ interface RoxStore {
   setActiveModule: (mod: ModuleId | null) => void;
 
   // Messages
-  messages: Array<{ role: 'user' | 'assistant'; content: string; id: string; timestamp: string }>;
-  addMessage: (msg: { role: 'user' | 'assistant'; content: string }) => void;
+  messages: Array<{
+    role: "user" | "assistant";
+    content: string;
+    id: string;
+    timestamp: string;
+  }>;
+  addMessage: (msg: { role: "user" | "assistant"; content: string }) => void;
   clearMessages: () => void;
 }
 
 export const useRoxStore = create<RoxStore>((set) => ({
-  coreState: 'idle',
+  coreState: "idle",
   setCoreState: (state) => set({ coreState: state }),
 
-  activeNav: 'home',
+  activeNav: "home",
   setActiveNav: (nav) => set({ activeNav: nav }),
 
   focusMode: false,
@@ -49,15 +54,15 @@ export const useRoxStore = create<RoxStore>((set) => ({
   autoRotate: true,
   setAutoRotate: (auto) => set({ autoRotate: auto }),
 
-  userName: 'User',
+  userName: "User",
   setUserName: (name) => set({ userName: name }),
 
   settings: {
-    theme: 'dark' as const,
-    aiProvider: 'openai' as const,
-    model: 'gpt-4o-mini',
+    theme: "dark" as const,
+    aiProvider: "openai" as const,
+    model: "gpt-4o-mini",
     animationsEnabled: true,
-    quality: 'high' as const,
+    quality: "high" as const,
     soundEnabled: false,
     shortcuts: {},
   },
@@ -81,7 +86,11 @@ export const useRoxStore = create<RoxStore>((set) => ({
     set((s) => ({
       messages: [
         ...s.messages,
-        { ...msg, id: crypto.randomUUID(), timestamp: new Date().toISOString() },
+        {
+          ...msg,
+          id: crypto.randomUUID(),
+          timestamp: new Date().toISOString(),
+        },
       ],
     })),
   clearMessages: () => set({ messages: [] }),

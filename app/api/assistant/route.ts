@@ -1,8 +1,20 @@
-import { runAssistant, streamAssistant, type AssistantTurn } from "@/lib/assistant";
+import {
+  runAssistant,
+  streamAssistant,
+  type AssistantTurn,
+} from "@/lib/assistant";
 import { runRoxAgent } from "@/lib/roxAgent";
 import { recentMemory, remember, lessonCount } from "@/lib/memory";
-import { executeTask as multiAgentExecute, recallAcrossDepartments, initMultiAgent } from "@/lib/agents/multiAgent";
-import { matchQuickCommand, executeQuickCommand, listQuickCommands } from "@/lib/quickCommands";
+import {
+  executeTask as multiAgentExecute,
+  recallAcrossDepartments,
+  initMultiAgent,
+} from "@/lib/agents/multiAgent";
+import {
+  matchQuickCommand,
+  executeQuickCommand,
+  listQuickCommands,
+} from "@/lib/quickCommands";
 
 export async function GET() {
   return Response.json(
@@ -32,19 +44,31 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Request body must be valid JSON." }, { status: 400 });
+    return Response.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 },
+    );
   }
 
   const message =
-    typeof body === "object" && body !== null && "message" in body && typeof body.message === "string"
+    typeof body === "object" &&
+    body !== null &&
+    "message" in body &&
+    typeof body.message === "string"
       ? body.message.trim()
       : "";
   const preferredDept =
-    typeof body === "object" && body !== null && "department" in body && typeof body.department === "string"
+    typeof body === "object" &&
+    body !== null &&
+    "department" in body &&
+    typeof body.department === "string"
       ? body.department
       : undefined;
   const history =
-    typeof body === "object" && body !== null && "history" in body && Array.isArray(body.history)
+    typeof body === "object" &&
+    body !== null &&
+    "history" in body &&
+    Array.isArray(body.history)
       ? body.history
           .filter(
             (turn): turn is AssistantTurn =>
@@ -54,9 +78,16 @@ export async function POST(request: Request) {
               typeof turn.content === "string",
           )
           .slice(-8)
-          .map((turn) => ({ role: turn.role, content: turn.content.slice(0, 1_000) }))
+          .map((turn) => ({
+            role: turn.role,
+            content: turn.content.slice(0, 1_000),
+          }))
       : [];
-  const stream = typeof body === "object" && body !== null && "stream" in body && body.stream === true;
+  const stream =
+    typeof body === "object" &&
+    body !== null &&
+    "stream" in body &&
+    body.stream === true;
 
   if (!message) {
     return Response.json({ error: "A message is required." }, { status: 400 });
@@ -70,27 +101,41 @@ export async function POST(request: Request) {
     const quickCmd = matchQuickCommand(message);
     if (quickCmd) {
       const quickResult = await executeQuickCommand(quickCmd, message);
-      
+
       await remember([
         { role: "user", content: message },
         { role: "rox", content: quickResult.reply },
       ]);
-      
-      return Response.json({
-        reply: quickResult.reply,
-        department: "quick",
-        toolCalls: [{ tool: quickCmd.name, args: {}, ok: quickResult.ok, output: quickResult.reply }],
-        recalled: [],
-        learned: false,
-        provider: "local",
-        cognitiveState: "focus",
-        lessonsLearned: await lessonCount(),
-      }, { headers: { "Cache-Control": "no-store" } });
+
+      return Response.json(
+        {
+          reply: quickResult.reply,
+          department: "quick",
+          toolCalls: [
+            {
+              tool: quickCmd.name,
+              args: {},
+              ok: quickResult.ok,
+              output: quickResult.reply,
+            },
+          ],
+          recalled: [],
+          learned: false,
+          provider: "local",
+          cognitiveState: "focus",
+          lessonsLearned: await lessonCount(),
+        },
+        { headers: { "Cache-Control": "no-store" } },
+      );
     }
 
     if (stream) {
       return new Response(await streamAssistant(message, history), {
-        headers: { "Cache-Control": "no-store", "Content-Type": "text/event-stream; charset=utf-8", Connection: "keep-alive" },
+        headers: {
+          "Cache-Control": "no-store",
+          "Content-Type": "text/event-stream; charset=utf-8",
+          Connection: "keep-alive",
+        },
       });
     }
 
@@ -99,10 +144,23 @@ export async function POST(request: Request) {
 
     // Check if this is a YouTube-related task - use multi-agent for that
     const normalized = message.toLowerCase();
-    const isYouTubeTask = normalized.includes("youtube") || normalized.includes("yt ") || normalized.includes("video") || normalized.includes("generate video");
+    const isYouTubeTask =
+      normalized.includes("youtube") ||
+      normalized.includes("yt ") ||
+      normalized.includes("video") ||
+      normalized.includes("generate video");
 
-    let agentResult: { assignedDepartment: string; result: { output: string; success: boolean; action: string }; newLessons: number; totalLessons: number } | null = null;
-    let crossRecall: Array<{ lesson: string; department: string; success: boolean }> = [];
+    let agentResult: {
+      assignedDepartment: string;
+      result: { output: string; success: boolean; action: string };
+      newLessons: number;
+      totalLessons: number;
+    } | null = null;
+    let crossRecall: Array<{
+      lesson: string;
+      department: string;
+      success: boolean;
+    }> = [];
 
     if (isYouTubeTask) {
       // Use multi-agent for YouTube tasks
@@ -125,7 +183,7 @@ export async function POST(request: Request) {
 
     // Build final response
     const reply = agentResult.result.output;
-    
+
     await remember([
       { role: "user", content: message },
       { role: "rox", content: reply },
@@ -158,6 +216,9 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     console.error("Assistant route error:", error);
-    return Response.json({ error: "Assistant service unavailable." }, { status: 503 });
+    return Response.json(
+      { error: "Assistant service unavailable." },
+      { status: 503 },
+    );
   }
 }

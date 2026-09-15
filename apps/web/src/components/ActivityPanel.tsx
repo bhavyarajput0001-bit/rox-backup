@@ -1,33 +1,66 @@
-import { motion } from 'framer-motion';
-import { FileText, Clock, ArrowUpRight } from 'lucide-react';
-import { useRoxStore } from '@rox/ui/store';
-import type { Activity } from '@rox/types';
+import { motion } from "framer-motion";
+import { FileText, Clock, ArrowUpRight } from "lucide-react";
+import { useRoxStore } from "@rox/ui/store";
+import type { Activity } from "@rox/types";
 
 const MOCK_ACTIVITIES: Activity[] = [
-  { id: '1', type: 'document', title: 'Resume Redesign', description: 'Created', timestamp: '2 hours ago', icon: 'file' },
-  { id: '2', type: 'task', title: 'Application Form', description: 'Updated', timestamp: '4 hours ago', icon: 'check' },
-  { id: '3', type: 'research', title: 'Hindi Question Paper', description: 'Compiled', timestamp: '6 hours ago', icon: 'search' },
-  { id: '4', type: 'analysis', title: 'Research & Insights', description: 'Explored', timestamp: '8 hours ago', icon: 'chart' },
+  {
+    id: "1",
+    type: "document",
+    title: "Resume Redesign",
+    description: "Created",
+    timestamp: "2 hours ago",
+    icon: "file",
+  },
+  {
+    id: "2",
+    type: "task",
+    title: "Application Form",
+    description: "Updated",
+    timestamp: "4 hours ago",
+    icon: "check",
+  },
+  {
+    id: "3",
+    type: "research",
+    title: "Hindi Question Paper",
+    description: "Compiled",
+    timestamp: "6 hours ago",
+    icon: "search",
+  },
+  {
+    id: "4",
+    type: "analysis",
+    title: "Research & Insights",
+    description: "Explored",
+    timestamp: "8 hours ago",
+    icon: "chart",
+  },
 ];
 
 export default function ActivityPanel() {
-  const activities = useRoxStore((s) => s.tasks.map(t => ({
-    id: t.id,
-    type: 'task',
-    title: t.title,
-    description: `${t.status.replace('_', ' ')}`,
-    timestamp: 'just now',
-    icon: 'check',
-  }))).length > 0
-    ? useRoxStore((s) => s.tasks.map(t => ({
+  const activities =
+    useRoxStore((s) =>
+      s.tasks.map((t) => ({
         id: t.id,
-        type: 'task',
+        type: "task",
         title: t.title,
-        description: `${t.status.replace('_', ' ')}`,
-        timestamp: 'just now',
-        icon: 'check',
-      })))
-    : MOCK_ACTIVITIES;
+        description: `${t.status.replace("_", " ")}`,
+        timestamp: "just now",
+        icon: "check",
+      })),
+    ).length > 0
+      ? useRoxStore((s) =>
+          s.tasks.map((t) => ({
+            id: t.id,
+            type: "task",
+            title: t.title,
+            description: `${t.status.replace("_", " ")}`,
+            timestamp: "just now",
+            icon: "check",
+          })),
+        )
+      : MOCK_ACTIVITIES;
 
   return (
     <motion.div
@@ -37,7 +70,9 @@ export default function ActivityPanel() {
       className="glass-panel rounded-[var(--radius-lg)] p-5"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-rox-text text-sm font-medium tracking-wide">Recent Activity</h3>
+        <h3 className="text-rox-text text-sm font-medium tracking-wide">
+          Recent Activity
+        </h3>
         <button className="text-rox-amber text-xs hover:text-rox-gold transition-colors flex items-center gap-1">
           View All <ArrowUpRight size={12} />
         </button>
@@ -56,8 +91,12 @@ export default function ActivityPanel() {
               <FileText size={14} className="text-rox-amber" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-rox-text text-xs font-medium truncate">{activity.title}</p>
-              <p className="text-rox-gray text-[11px]">{activity.description}</p>
+              <p className="text-rox-text text-xs font-medium truncate">
+                {activity.title}
+              </p>
+              <p className="text-rox-gray text-[11px]">
+                {activity.description}
+              </p>
             </div>
             <div className="flex items-center gap-1 text-rox-dim text-[10px]">
               <Clock size={10} />

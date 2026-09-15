@@ -5,13 +5,7 @@
     "action": "research.search(query=\"search for React performance tips\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "search",
-      "for",
-      "react",
-      "performance",
-      "tips"
-    ],
+    "keywords": ["search", "for", "react", "performance", "tips"],
     "timestamp": "2026-09-14T16:51:58.214Z"
   },
   {
@@ -20,13 +14,7 @@
     "action": "research.search(query=\"search for React performance tips\")",
     "success": true,
     "latencyMs": 6834,
-    "keywords": [
-      "search",
-      "for",
-      "react",
-      "performance",
-      "tips"
-    ],
+    "keywords": ["search", "for", "react", "performance", "tips"],
     "timestamp": "2026-09-14T17:29:25.935Z"
   },
   {
@@ -35,14 +23,7 @@
     "action": "research.search(query=\"analyze the current weather in San Francisco\")",
     "success": true,
     "latencyMs": 3185,
-    "keywords": [
-      "analyze",
-      "the",
-      "current",
-      "weather",
-      "san",
-      "francisco"
-    ],
+    "keywords": ["analyze", "the", "current", "weather", "san", "francisco"],
     "timestamp": "2026-09-14T17:31:41.634Z"
   }
 ]

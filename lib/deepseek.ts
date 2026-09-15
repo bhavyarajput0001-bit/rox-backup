@@ -1,6 +1,6 @@
 /**
  * DeepSeek Harness Integration
- * 
+ *
  * Routes heavy reasoning tasks to DeepSeek Harness when available.
  * Falls back to Omniroute/FreeLLM.
  */
@@ -33,7 +33,7 @@ export async function getDeepSeekConfig(): Promise<DeepSeekConfig> {
   const baseUrl = process.env.DEEPSEEK_BASE_URL || DS_DEFAULT_URL;
   const apiKey = process.env.DEEPSEEK_API_KEY || "";
   const model = process.env.DEEPSEEK_MODEL || "deepseek-chat";
-  
+
   // Check if local server is running
   let available = false;
   try {
@@ -51,14 +51,17 @@ export async function getDeepSeekConfig(): Promise<DeepSeekConfig> {
       }
     } catch {}
   }
-  
+
   return { baseUrl, apiKey, model, available };
 }
 
-export async function callDeepSeek(messages: Array<{role: string; content: string}>, config?: DeepSeekConfig): Promise<DSResponse> {
-  const cfg = config || await getDeepSeekConfig();
+export async function callDeepSeek(
+  messages: Array<{ role: string; content: string }>,
+  config?: DeepSeekConfig,
+): Promise<DSResponse> {
+  const cfg = config || (await getDeepSeekConfig());
   const startTime = Date.now();
-  
+
   // Use local server if available
   if (cfg.available && cfg.baseUrl !== DS_PRODUCTION_URL) {
     try {
@@ -75,12 +78,12 @@ export async function callDeepSeek(messages: Array<{role: string; content: strin
         }),
         signal: AbortSignal.timeout(30000),
       });
-      
+
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      
+
       const data = await resp.json();
       const reply = data.choices?.[0]?.message?.content || "";
-      
+
       return {
         success: true,
         reply,
@@ -98,7 +101,7 @@ export async function callDeepSeek(messages: Array<{role: string; content: strin
       };
     }
   }
-  
+
   // Fallback to production
   if (!cfg.apiKey) {
     return {
@@ -109,13 +112,13 @@ export async function callDeepSeek(messages: Array<{role: string; content: strin
       provider: "deepseek",
     };
   }
-  
+
   try {
     const resp = await fetch(`${DS_PRODUCTION_URL}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${cfg.apiKey}`,
+        Authorization: `Bearer ${cfg.apiKey}`,
       },
       body: JSON.stringify({
         model: cfg.model,
@@ -125,12 +128,12 @@ export async function callDeepSeek(messages: Array<{role: string; content: strin
       }),
       signal: AbortSignal.timeout(60000),
     });
-    
+
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    
+
     const data = await resp.json();
     const reply = data.choices?.[0]?.message?.content || "";
-    
+
     return {
       success: true,
       reply,
@@ -149,7 +152,11 @@ export async function callDeepSeek(messages: Array<{role: string; content: strin
   }
 }
 
-export async function deepSeekHealthCheck(): Promise<{ available: boolean; url: string; model: string }> {
+export async function deepSeekHealthCheck(): Promise<{
+  available: boolean;
+  url: string;
+  model: string;
+}> {
   const cfg = await getDeepSeekConfig();
   return {
     available: cfg.available,

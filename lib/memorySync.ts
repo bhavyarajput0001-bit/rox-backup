@@ -1,13 +1,19 @@
 /**
  * Memory Sync System
- * 
+ *
  * Auto-syncs Rox's memory with:
  * - ~/shared-agent-memory/ (Obsidian vault)
  * - ~/Projects/agent-hub/ (cross-agent packets)
  * - ~/.rox-data/ (local cache)
  */
 
-import { readdir, readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
+import {
+  readdir,
+  readFile,
+  writeFile,
+  mkdir,
+  copyFile,
+} from "node:fs/promises";
 import path from "node:path";
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
@@ -74,7 +80,7 @@ export async function syncMemory(): Promise<SyncResult> {
 
 async function loadFromSharedMemory(): Promise<{ count: number }> {
   const count = 0; // Placeholder - would read from Obsidian vault
-  
+
   // Check if vault exists
   const vaultPath = path.join(SHARED_MEMORY_DIR, "obsidian-vault");
   try {
@@ -83,7 +89,7 @@ async function loadFromSharedMemory(): Promise<{ count: number }> {
   } catch {
     // No vault yet
   }
-  
+
   return { count };
 }
 
@@ -91,10 +97,10 @@ async function loadFromAgentHub(): Promise<{ count: number }> {
   try {
     const statePath = path.join(AGENT_HUB_DIR, "STATE.md");
     const content = await readFile(statePath, "utf8");
-    
+
     // Parse active agents
     const activeAgents = content.match(/active_agents:\s*(.+)/)?.[1] || "";
-    
+
     // Count packets
     const packetsDir = path.join(AGENT_HUB_DIR, "packets");
     try {
@@ -118,7 +124,11 @@ async function loadLessons(): Promise<number> {
   }
 }
 
-export async function syncToSharedMemory(task: string, result: string, success: boolean): Promise<void> {
+export async function syncToSharedMemory(
+  task: string,
+  result: string,
+  success: boolean,
+): Promise<void> {
   // Write to local lessons
   try {
     await mkdir(ROX_DATA_DIR, { recursive: true });
@@ -131,7 +141,10 @@ export async function syncToSharedMemory(task: string, result: string, success: 
       source: "rox",
     });
     // Keep last 1000 lessons
-    await writeFile(LESSONS_FILE, JSON.stringify(lessons.slice(-1000), null, 2));
+    await writeFile(
+      LESSONS_FILE,
+      JSON.stringify(lessons.slice(-1000), null, 2),
+    );
   } catch (e) {
     console.error("Failed to sync lesson:", e);
   }
@@ -146,7 +159,15 @@ export async function syncToSharedMemory(task: string, result: string, success: 
   }
 }
 
-async function loadLessonsData(): Promise<Array<{task: string; result: string; success: boolean; timestamp: string; source: string}>> {
+async function loadLessonsData(): Promise<
+  Array<{
+    task: string;
+    result: string;
+    success: boolean;
+    timestamp: string;
+    source: string;
+  }>
+> {
   try {
     const raw = await readFile(LESSONS_FILE, "utf8");
     return JSON.parse(raw);
@@ -155,9 +176,12 @@ async function loadLessonsData(): Promise<Array<{task: string; result: string; s
   }
 }
 
-export async function getCrossAgentRecall(query: string, limit = 5): Promise<Array<{source: string; content: string; similarity: number}>> {
+export async function getCrossAgentRecall(
+  query: string,
+  limit = 5,
+): Promise<Array<{ source: string; content: string; similarity: number }>> {
   const results = [];
-  
+
   // Search shared memory
   try {
     const vaultPath = path.join(SHARED_MEMORY_DIR, "obsidian-vault");
@@ -177,13 +201,15 @@ export async function getCrossAgentRecall(query: string, limit = 5): Promise<Arr
   } catch {
     // No vault
   }
-  
+
   // Search lessons
   try {
     const lessons = await loadLessonsData();
     for (const lesson of lessons) {
-      if (lesson.task.toLowerCase().includes(query.toLowerCase()) ||
-          lesson.result.toLowerCase().includes(query.toLowerCase())) {
+      if (
+        lesson.task.toLowerCase().includes(query.toLowerCase()) ||
+        lesson.result.toLowerCase().includes(query.toLowerCase())
+      ) {
         results.push({
           source: "lessons",
           content: `${lesson.task} → ${lesson.result}`,
@@ -192,8 +218,6 @@ export async function getCrossAgentRecall(query: string, limit = 5): Promise<Arr
       }
     }
   } catch {}
-  
-  return results
-    .sort((a, b) => b.similarity - a.similarity)
-    .slice(0, limit);
+
+  return results.sort((a, b) => b.similarity - a.similarity).slice(0, limit);
 }

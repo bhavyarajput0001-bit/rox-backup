@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createOrbScene, type OrbPalette, type OrbSceneApi } from "@/lib/orbScene";
+import {
+  createOrbScene,
+  type OrbPalette,
+  type OrbSceneApi,
+} from "@/lib/orbScene";
 import type { AssistantAction, AssistantResult } from "@/lib/assistant";
 import { HandTracker, type TrackerStatus } from "@/lib/handTracker";
 
@@ -53,11 +57,16 @@ export default function RoxOrb() {
   const voiceCancelRef = useRef(false);
 
   const [camera, setCamera] = useState<CameraState>("off");
-  const [status, setStatus] = useState<TrackerStatus>({ hands: 0, mode: "idle" });
+  const [status, setStatus] = useState<TrackerStatus>({
+    hands: 0,
+    mode: "idle",
+  });
   const [error, setError] = useState<string | null>(null);
   const [palette, setPalette] = useState<OrbPalette>("original");
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
-  const [voiceTranscript, setVoiceTranscript] = useState("Awaiting voice command");
+  const [voiceTranscript, setVoiceTranscript] = useState(
+    "Awaiting voice command",
+  );
   const [uiMode, setUiMode] = useState<UiMode>("original");
   const [chatOpen, setChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState("");
@@ -65,7 +74,12 @@ export default function RoxOrb() {
   const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const [mounted, setMounted] = useState(false);
-  const chatDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
+  const chatDragRef = useRef<{
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+  } | null>(null);
 
   const stopVoiceMeter = () => {
     if (audioFrameRef.current !== null) {
@@ -211,7 +225,10 @@ export default function RoxOrb() {
     async (command: string) => {
       const message = command.trim();
       if (!message) return;
-      setChatMessages((current) => [...current, { id: Date.now(), role: "user", text: message }]);
+      setChatMessages((current) => [
+        ...current,
+        { id: Date.now(), role: "user", text: message },
+      ]);
       setVoiceTranscript(`Processing: ${message}`);
 
       try {
@@ -224,12 +241,19 @@ export default function RoxOrb() {
         const result = (await response.json()) as AssistantResult;
         applyAssistantAction(result.action);
         setVoiceTranscript(`${result.provider.toUpperCase()}: ${result.reply}`);
-        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: result.reply }]);
+        setChatMessages((current) => [
+          ...current,
+          { id: Date.now() + 1, role: "rox", text: result.reply },
+        ]);
         speak(result.reply);
       } catch {
-        const fallback = "The assistant service is unavailable. Local orb controls are still ready.";
+        const fallback =
+          "The assistant service is unavailable. Local orb controls are still ready.";
         setVoiceTranscript(fallback);
-        setChatMessages((current) => [...current, { id: Date.now() + 1, role: "rox", text: fallback }]);
+        setChatMessages((current) => [
+          ...current,
+          { id: Date.now() + 1, role: "rox", text: fallback },
+        ]);
         speak(fallback);
       }
     },
@@ -267,14 +291,21 @@ export default function RoxOrb() {
   };
 
   const startVoiceCapture = async () => {
-    if (voiceStartingRef.current || recognitionRef.current || voiceState === "speaking") return;
+    if (
+      voiceStartingRef.current ||
+      recognitionRef.current ||
+      voiceState === "speaking"
+    )
+      return;
     voiceStartingRef.current = true;
     voiceCancelRef.current = false;
     const recognitionApi = window as typeof window & {
       SpeechRecognition?: SpeechRecognitionConstructor;
       webkitSpeechRecognition?: SpeechRecognitionConstructor;
     };
-    const Recognition = recognitionApi.SpeechRecognition ?? recognitionApi.webkitSpeechRecognition;
+    const Recognition =
+      recognitionApi.SpeechRecognition ??
+      recognitionApi.webkitSpeechRecognition;
     if (!Recognition) {
       voiceStartingRef.current = false;
       setVoiceState("unsupported");
@@ -313,7 +344,10 @@ export default function RoxOrb() {
           squareSum += normalized * normalized;
         }
         const energy = Math.min(1, Math.sqrt(squareSum / samples.length) * 4.5);
-        hologramRef.current?.style.setProperty("--voice-energy", energy.toFixed(3));
+        hologramRef.current?.style.setProperty(
+          "--voice-energy",
+          energy.toFixed(3),
+        );
         audioFrameRef.current = requestAnimationFrame(updateVoiceMeter);
       };
       updateVoiceMeter();
@@ -405,7 +439,11 @@ export default function RoxOrb() {
       <div className="overlay-vignette" />
       <div className="overlay-grain" />
       <div className="overlay-scanlines" />
-      <div ref={hologramRef} className={`voice-hologram voice-${voiceState}`} aria-hidden="true">
+      <div
+        ref={hologramRef}
+        className={`voice-hologram voice-${voiceState}`}
+        aria-hidden="true"
+      >
         <span className="hologram-ring hologram-ring-one" />
         <span className="hologram-ring hologram-ring-two" />
         <span className="hologram-beam" />
@@ -419,20 +457,48 @@ export default function RoxOrb() {
       <div className="hud hud-datetime">
         {mounted && (
           <>
-            <span className="datetime-date">{currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
-            <span className="datetime-time">{currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+            <span className="datetime-date">
+              {currentTime.toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+            <span className="datetime-time">
+              {currentTime.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })}
+            </span>
           </>
         )}
       </div>
 
       <div className="hud hud-diagnostics" aria-label="System diagnostics">
-        <div className="diagnostic-heading">CORE TELEMETRY <span>LIVE</span></div>
-        <div className="diagnostic-grid">
-          <span>FLUX</span><b>98.4%</b><i><em style={{ width: "98%" }} /></i>
-          <span>FIELD</span><b>STABLE</b><i><em style={{ width: "82%" }} /></i>
-          <span>SYNC</span><b>ACTIVE</b><i><em style={{ width: "91%" }} /></i>
+        <div className="diagnostic-heading">
+          CORE TELEMETRY <span>LIVE</span>
         </div>
-        <div className="diagnostic-code">RX-07 · ORBITAL MESH · 0xFF3A · READY</div>
+        <div className="diagnostic-grid">
+          <span>FLUX</span>
+          <b>98.4%</b>
+          <i>
+            <em style={{ width: "98%" }} />
+          </i>
+          <span>FIELD</span>
+          <b>STABLE</b>
+          <i>
+            <em style={{ width: "82%" }} />
+          </i>
+          <span>SYNC</span>
+          <b>ACTIVE</b>
+          <i>
+            <em style={{ width: "91%" }} />
+          </i>
+        </div>
+        <div className="diagnostic-code">
+          RX-07 · ORBITAL MESH · 0xFF3A · READY
+        </div>
       </div>
 
       <div className={`hud hud-voice voice-${voiceState}`} aria-live="polite">
@@ -441,13 +507,17 @@ export default function RoxOrb() {
           {voiceState === "listening"
             ? "LISTENING"
             : voiceState === "speaking"
-            ? "ROX SPEAKING"
-            : "VOICE LINK"}
+              ? "ROX SPEAKING"
+              : "VOICE LINK"}
         </span>
         <small>{voiceTranscript}</small>
       </div>
 
-      <div className="hud ui-mode-switch" role="group" aria-label="Interface mode">
+      <div
+        className="hud ui-mode-switch"
+        role="group"
+        aria-label="Interface mode"
+      >
         <span>INTERFACE</span>
         <button
           type="button"
@@ -471,7 +541,11 @@ export default function RoxOrb() {
         <div className="cinematic-orbit-label">ROX / PERSONAL INTELLIGENCE</div>
         <div className="cinematic-state">
           <span className="cinematic-state-dot" />
-          {voiceState === "listening" ? "LISTENING TO YOU" : voiceState === "speaking" ? "ROX IS SPEAKING" : "READY WHEN YOU ARE"}
+          {voiceState === "listening"
+            ? "LISTENING TO YOU"
+            : voiceState === "speaking"
+              ? "ROX IS SPEAKING"
+              : "READY WHEN YOU ARE"}
         </div>
         <div className="cinematic-transcript">{voiceTranscript}</div>
         <div className="cinematic-actions">
@@ -493,7 +567,12 @@ export default function RoxOrb() {
       <section
         className={`chat-panel${chatOpen ? " is-open" : ""}`}
         aria-label="Rox conversation"
-        style={{ "--chat-x": `${chatPosition.x}px`, "--chat-y": `${chatPosition.y}px` } as React.CSSProperties}
+        style={
+          {
+            "--chat-x": `${chatPosition.x}px`,
+            "--chat-y": `${chatPosition.y}px`,
+          } as React.CSSProperties
+        }
       >
         <div
           className="chat-panel-header"
@@ -503,14 +582,25 @@ export default function RoxOrb() {
           onPointerCancel={stopChatDrag}
         >
           <span>ROX / SESSION TRANSCRIPT</span>
-          <button type="button" aria-label="Close chat" onClick={() => setChatOpen(false)}>×</button>
+          <button
+            type="button"
+            aria-label="Close chat"
+            onClick={() => setChatOpen(false)}
+          >
+            ×
+          </button>
         </div>
         <div className="chat-messages">
           {chatMessages.length === 0 ? (
-            <div className="chat-empty">Your conversation with Rox will appear here.</div>
+            <div className="chat-empty">
+              Your conversation with Rox will appear here.
+            </div>
           ) : (
             chatMessages.map((message) => (
-              <div key={message.id} className={`chat-message chat-${message.role}`}>
+              <div
+                key={message.id}
+                className={`chat-message chat-${message.role}`}
+              >
                 <span>{message.role === "user" ? "YOU" : "ROX"}</span>
                 <p>{message.text}</p>
               </div>
@@ -530,7 +620,9 @@ export default function RoxOrb() {
             placeholder="Message Rox..."
             aria-label="Message Rox"
           />
-          <button type="submit" aria-label="Send message">↗</button>
+          <button type="submit" aria-label="Send message">
+            ↗
+          </button>
         </form>
       </section>
 
@@ -539,7 +631,9 @@ export default function RoxOrb() {
           <span className="key">DRAG</span> spin&nbsp;&nbsp;
           <span className="key">SCROLL</span> zoom
         </div>
-        <div><span className="key">HOLD SPACE</span> talk</div>
+        <div>
+          <span className="key">HOLD SPACE</span> talk
+        </div>
         {cameraOn ? (
           <div>
             <span className="key">PINCH + MOVE</span> spin&nbsp;&nbsp;
@@ -555,7 +649,9 @@ export default function RoxOrb() {
       </div>
 
       <div className="hud hud-controls">
-        <div className="control-heading">COMMAND DECK <span>ONLINE</span></div>
+        <div className="control-heading">
+          COMMAND DECK <span>ONLINE</span>
+        </div>
         <button
           type="button"
           className="hud-btn voice-btn"
@@ -603,7 +699,12 @@ export default function RoxOrb() {
         <div className={`camera-panel${cameraOn ? " visible" : ""}`}>
           {/* Mirrored preview so it behaves like a mirror */}
           <video ref={videoRef} muted playsInline className="camera-video" />
-          <canvas ref={overlayRef} width={208} height={156} className="camera-overlay" />
+          <canvas
+            ref={overlayRef}
+            width={208}
+            height={156}
+            className="camera-overlay"
+          />
           <div className="camera-status">
             {status.hands > 0
               ? `${status.hands} HAND${status.hands > 1 ? "S" : ""} · ${MODE_LABEL[status.mode]}`
@@ -621,17 +722,35 @@ export default function RoxOrb() {
             onClick={toggleGestures}
             disabled={camera === "starting"}
           >
-            {camera === "starting" ? "INITIALIZING…" : cameraOn ? "GESTURES ON" : "GESTURES OFF"}
+            {camera === "starting"
+              ? "INITIALIZING…"
+              : cameraOn
+                ? "GESTURES ON"
+                : "GESTURES OFF"}
           </button>
         </div>
         <div className="hud-row">
-          <button type="button" className="hud-btn" onClick={() => sceneRef.current?.zoomIn()} aria-label="Zoom in">
+          <button
+            type="button"
+            className="hud-btn"
+            onClick={() => sceneRef.current?.zoomIn()}
+            aria-label="Zoom in"
+          >
             +
           </button>
-          <button type="button" className="hud-btn" onClick={() => sceneRef.current?.zoomOut()} aria-label="Zoom out">
+          <button
+            type="button"
+            className="hud-btn"
+            onClick={() => sceneRef.current?.zoomOut()}
+            aria-label="Zoom out"
+          >
             −
           </button>
-          <button type="button" className="hud-btn" onClick={() => sceneRef.current?.resetView()}>
+          <button
+            type="button"
+            className="hud-btn"
+            onClick={() => sceneRef.current?.resetView()}
+          >
             RESET
           </button>
         </div>

@@ -1,49 +1,49 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Zap, FileText, Code2, Lightbulb } from 'lucide-react';
-import { useRoxStore } from '@rox/ui/store';
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, X, Zap, FileText, Code2, Lightbulb } from "lucide-react";
+import { useRoxStore } from "@rox/ui/store";
 
 const COMMAND_SUGGESTIONS = [
-  { label: 'Research the latest AI news', icon: Search, module: 'research' },
-  { label: 'Write a blog post about...', icon: FileText, module: 'writing' },
-  { label: 'Debug my code', icon: Code2, module: 'coding' },
-  { label: 'Generate ideas for...', icon: Lightbulb, module: 'ideas' },
-  { label: 'Create a presentation', icon: FileText, module: 'design' },
-  { label: 'Analyze this data', icon: Search, module: 'analysis' },
-  { label: 'Summarize this document', icon: FileText, module: 'writing' },
-  { label: 'Build a web app', icon: Code2, module: 'coding' },
+  { label: "Research the latest AI news", icon: Search, module: "research" },
+  { label: "Write a blog post about...", icon: FileText, module: "writing" },
+  { label: "Debug my code", icon: Code2, module: "coding" },
+  { label: "Generate ideas for...", icon: Lightbulb, module: "ideas" },
+  { label: "Create a presentation", icon: FileText, module: "design" },
+  { label: "Analyze this data", icon: Search, module: "analysis" },
+  { label: "Summarize this document", icon: FileText, module: "writing" },
+  { label: "Build a web app", icon: Code2, module: "coding" },
 ];
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const setCoreState = useRoxStore((s) => s.setCoreState);
   const setActiveModule = useRoxStore((s) => s.setActiveModule);
 
   useEffect(() => {
     const handler = () => setOpen(true);
-    window.addEventListener('rox:open-palette', handler);
-    return () => window.removeEventListener('rox:open-palette', handler);
+    window.addEventListener("rox:open-palette", handler);
+    return () => window.removeEventListener("rox:open-palette", handler);
   }, []);
 
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 50);
     } else {
-      setQuery('');
+      setQuery("");
     }
   }, [open]);
 
-  const filtered = COMMAND_SUGGESTIONS.filter(c =>
-    c.label.toLowerCase().includes(query.toLowerCase())
+  const filtered = COMMAND_SUGGESTIONS.filter((c) =>
+    c.label.toLowerCase().includes(query.toLowerCase()),
   );
 
-  const handleSelect = (cmd: typeof COMMAND_SUGGESTIONS[0]) => {
+  const handleSelect = (cmd: (typeof COMMAND_SUGGESTIONS)[0]) => {
     setOpen(false);
-    setCoreState('thinking');
+    setCoreState("thinking");
     if (cmd.module) setActiveModule(cmd.module as any);
-    setTimeout(() => setCoreState('idle'), 2000);
+    setTimeout(() => setCoreState("idle"), 2000);
   };
 
   return (
@@ -85,7 +85,9 @@ export default function CommandPalette() {
 
               <div className="max-h-80 overflow-y-auto p-2">
                 {filtered.length === 0 ? (
-                  <p className="text-rox-dim text-sm text-center py-8">No results found</p>
+                  <p className="text-rox-dim text-sm text-center py-8">
+                    No results found
+                  </p>
                 ) : (
                   filtered.map((cmd, i) => {
                     const Icon = cmd.icon;
@@ -100,7 +102,9 @@ export default function CommandPalette() {
                       >
                         <Icon size={16} className="text-rox-amber" />
                         <span>{cmd.label}</span>
-                        <span className="ml-auto text-rox-dim text-xs">{cmd.module}</span>
+                        <span className="ml-auto text-rox-dim text-xs">
+                          {cmd.module}
+                        </span>
                       </motion.button>
                     );
                   })
@@ -108,8 +112,15 @@ export default function CommandPalette() {
               </div>
 
               <div className="px-5 py-3 border-t border-rox-amber/10 flex items-center gap-4 text-[11px] text-rox-dim">
-                <span className="flex items-center gap-1"><Zap size={10} /> <kbd className="px-1.5 py-0.5 rounded bg-white/5">Enter</kbd> to select</span>
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded bg-white/5">Esc</kbd> to close</span>
+                <span className="flex items-center gap-1">
+                  <Zap size={10} />{" "}
+                  <kbd className="px-1.5 py-0.5 rounded bg-white/5">Enter</kbd>{" "}
+                  to select
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1.5 py-0.5 rounded bg-white/5">Esc</kbd> to
+                  close
+                </span>
               </div>
             </div>
           </motion.div>

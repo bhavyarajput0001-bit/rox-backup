@@ -127,13 +127,15 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
 
   // ——— MATERIAL HELPERS ———
   function lineMat(color: number, opacity = 1) {
-    return registerMaterial(new THREE.LineBasicMaterial({
-      color,
-      transparent: true,
-      opacity,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    }));
+    return registerMaterial(
+      new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      }),
+    );
   }
 
   // ——— UTILITY: Create ring at latitude ———
@@ -202,7 +204,10 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
       const opacity = 0.85 * falloff;
       const color = Math.abs(t) < 0.3 ? C_BRIGHT : C_MID;
       outerShell.add(
-        new THREE.Line(meridian(R1, lon + offset, 200), lineMat(color, opacity)),
+        new THREE.Line(
+          meridian(R1, lon + offset, 200),
+          lineMat(color, opacity),
+        ),
       );
     }
   }
@@ -253,7 +258,9 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
           ),
         );
       }
-      group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+      group.add(
+        new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat),
+      );
     }
 
     // vertical lines
@@ -270,7 +277,9 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
           ),
         );
       }
-      group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+      group.add(
+        new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat),
+      );
     }
 
     return group;
@@ -405,37 +414,81 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   orbGroup.add(icoWire);
 
   // Glowing center sphere — subtle, see-through
-  const coreSphereMat = registerMaterial(new THREE.MeshBasicMaterial({
-    color: C_HOT,
-    transparent: true,
-    opacity: 0.15,
-    blending: THREE.AdditiveBlending,
-  }));
-  const coreSphere = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), coreSphereMat);
+  const coreSphereMat = registerMaterial(
+    new THREE.MeshBasicMaterial({
+      color: C_HOT,
+      transparent: true,
+      opacity: 0.15,
+      blending: THREE.AdditiveBlending,
+    }),
+  );
+  const coreSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.15, 16, 16),
+    coreSphereMat,
+  );
   orbGroup.add(coreSphere);
 
   // Larger faint glow — very subtle
-  const glowSphereMat = registerMaterial(new THREE.MeshBasicMaterial({
-    color: C_MID,
-    transparent: true,
-    opacity: 0.04,
-    blending: THREE.AdditiveBlending,
-  }));
-  const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), glowSphereMat);
+  const glowSphereMat = registerMaterial(
+    new THREE.MeshBasicMaterial({
+      color: C_MID,
+      transparent: true,
+      opacity: 0.04,
+      blending: THREE.AdditiveBlending,
+    }),
+  );
+  const glowSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    glowSphereMat,
+  );
   orbGroup.add(glowSphere);
 
   // ═══════════════════════════════════════════════
   // CODE TEXT — tiny, dense, scattered
   // ═══════════════════════════════════════════════
   const codeSnippets = [
-    "sys.init()", "0xFF3A", "malloc()", ">> SCAN", "void*", "ACK",
-    "SYNC OK", "ptr_ref", "exec()", "hash256", "::bind", "core.0",
-    "01101001", "10110100", ">>> RDY", "HEAP 4K", "TCP/SYN",
-    "mutex.lk", "IRQ 0x7", "DMA xfer", "REG EAX", "FAULT 0",
-    "kernel.d", "pipe |>", "chmod +x", "fork()", "SIGTERM",
-    "eth0: UP", "AES-256", "RSA 4096", "TLS 1.3", "HTTP/2",
-    "latency", "200 OK", "PATCH /", "fn main", "use std",
-    "impl Orb", "async {}", "spawn()", "arc::new", ".unwrap",
+    "sys.init()",
+    "0xFF3A",
+    "malloc()",
+    ">> SCAN",
+    "void*",
+    "ACK",
+    "SYNC OK",
+    "ptr_ref",
+    "exec()",
+    "hash256",
+    "::bind",
+    "core.0",
+    "01101001",
+    "10110100",
+    ">>> RDY",
+    "HEAP 4K",
+    "TCP/SYN",
+    "mutex.lk",
+    "IRQ 0x7",
+    "DMA xfer",
+    "REG EAX",
+    "FAULT 0",
+    "kernel.d",
+    "pipe |>",
+    "chmod +x",
+    "fork()",
+    "SIGTERM",
+    "eth0: UP",
+    "AES-256",
+    "RSA 4096",
+    "TLS 1.3",
+    "HTTP/2",
+    "latency",
+    "200 OK",
+    "PATCH /",
+    "fn main",
+    "use std",
+    "impl Orb",
+    "async {}",
+    "spawn()",
+    "arc::new",
+    ".unwrap",
   ];
 
   interface SpriteDrift {
@@ -470,7 +523,12 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     return s;
   }
 
-  function scatterText(count: number, sizeFn: () => number, rFn: () => number, speedScale: [number, number]) {
+  function scatterText(
+    count: number,
+    sizeFn: () => number,
+    rFn: () => number,
+    speedScale: [number, number],
+  ) {
     const group = new THREE.Group();
     for (let i = 0; i < count; i++) {
       const sp = makeTextSprite(
@@ -548,19 +606,27 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   const debrisCount = window.innerWidth < 900 ? 110 : 160;
   for (let i = 0; i < debrisCount; i++) {
     const geo = debrisGeos[Math.floor(Math.random() * debrisGeos.length)];
-    const mat = registerMaterial(new THREE.MeshBasicMaterial({
-      color: Math.random() > 0.7 ? C_BRIGHT : C_MID,
-      transparent: true,
-      opacity: 0.3 + Math.random() * 0.6,
-      blending: THREE.AdditiveBlending,
-    }));
+    const mat = registerMaterial(
+      new THREE.MeshBasicMaterial({
+        color: Math.random() > 0.7 ? C_BRIGHT : C_MID,
+        transparent: true,
+        opacity: 0.3 + Math.random() * 0.6,
+        blending: THREE.AdditiveBlending,
+      }),
+    );
     const mesh = new THREE.Mesh(geo, mat);
     const orbitR = 1.2 + Math.random() * 4.0;
     const speed = (0.08 + Math.random() * 0.6) * (Math.random() > 0.5 ? 1 : -1);
     const tiltX = (Math.random() - 0.5) * Math.PI * 0.9;
     const tiltZ = (Math.random() - 0.5) * Math.PI * 0.5;
     const phase = Math.random() * Math.PI * 2;
-    mesh.userData = { orbitR, speed, tiltX, tiltZ, phase } satisfies DebrisOrbit;
+    mesh.userData = {
+      orbitR,
+      speed,
+      tiltX,
+      tiltZ,
+      phase,
+    } satisfies DebrisOrbit;
     debris.push(mesh);
     orbGroup.add(mesh);
 
@@ -602,7 +668,10 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   }
 
   const dustGeo = new THREE.BufferGeometry();
-  dustGeo.setAttribute("position", new THREE.Float32BufferAttribute(dustPos, 3));
+  dustGeo.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(dustPos, 3),
+  );
 
   // Soft dot texture
   const dotC = document.createElement("canvas");
@@ -616,16 +685,18 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   dCtx.fillStyle = g;
   dCtx.fillRect(0, 0, 64, 64);
 
-  const dustMat = registerMaterial(new THREE.PointsMaterial({
-    map: new THREE.CanvasTexture(dotC),
-    size: 0.04,
-    transparent: true,
-    opacity: 0.5,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    sizeAttenuation: true,
-    color: C_BRIGHT,
-  }));
+  const dustMat = registerMaterial(
+    new THREE.PointsMaterial({
+      map: new THREE.CanvasTexture(dotC),
+      size: 0.04,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true,
+      color: C_BRIGHT,
+    }),
+  );
   const dustPoints = new THREE.Points(dustGeo, dustMat);
   orbGroup.add(dustPoints);
 
@@ -633,15 +704,21 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
   // SCANNING RINGS
   // ═══════════════════════════════════════════════
   function makeScanRing(radius: number, thickness = 0.015) {
-    const geo = new THREE.RingGeometry(radius - thickness, radius + thickness, 120);
-    const mat = registerMaterial(new THREE.MeshBasicMaterial({
-      color: C_BRIGHT,
-      transparent: true,
-      opacity: 0,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    }));
+    const geo = new THREE.RingGeometry(
+      radius - thickness,
+      radius + thickness,
+      120,
+    );
+    const mat = registerMaterial(
+      new THREE.MeshBasicMaterial({
+        color: C_BRIGHT,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      }),
+    );
     const mesh = new THREE.Mesh(geo, mat);
     mesh.rotation.x = Math.PI / 2;
     return mesh;
@@ -714,12 +791,19 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     chromaticPass.uniforms.uLava.value = palette === "lava" ? 1 : 0;
     paletteBloom = palette === "lava" ? 1.45 : 1;
     paletteMaterials.forEach((material) => {
-      const colorMaterial = material as THREE.Material & { color?: THREE.Color };
+      const colorMaterial = material as THREE.Material & {
+        color?: THREE.Color;
+      };
       if (!colorMaterial.color) return;
       const current = colorMaterial.color.getHex();
-      const colorIndex = Object.values(PALETTES).findIndex((colors) => colors.includes(current));
+      const colorIndex = Object.values(PALETTES).findIndex((colors) =>
+        colors.includes(current),
+      );
       if (colorIndex === -1) return;
-      const roleIndex = Object.values(PALETTES).flatMap((colors) => colors).indexOf(current) % 5;
+      const roleIndex =
+        Object.values(PALETTES)
+          .flatMap((colors) => colors)
+          .indexOf(current) % 5;
       colorMaterial.color.setHex(PALETTES[palette][roleIndex]);
     });
   }
@@ -778,7 +862,10 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     );
     coreSphereMat.opacity = Math.min(0.6, coreOpacity);
     glowSphere.scale.setScalar(1 + surge * 0.8);
-    glowSphereMat.opacity = Math.max(0, (0.03 + surge * 0.08) * (1 - fadeOut * 0.9));
+    glowSphereMat.opacity = Math.max(
+      0,
+      (0.03 + surge * 0.08) * (1 - fadeOut * 0.9),
+    );
     // Icosahedron wireframe stays visible even when glow fades
     icoWire.scale.setScalar(1 + surge * 0.6);
     icoWireMat.opacity = Math.min(1, 0.5 + surge * 0.4);
@@ -789,7 +876,8 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
       const a = t * u.speed + u.phase;
       d.position.set(
         u.orbitR * Math.cos(a) * Math.cos(u.tiltX),
-        u.orbitR * Math.sin(u.tiltX) * Math.sin(a * 0.8) + Math.sin(a * 0.3 + u.tiltZ) * 0.2,
+        u.orbitR * Math.sin(u.tiltX) * Math.sin(a * 0.8) +
+          Math.sin(a * 0.3 + u.tiltZ) * 0.2,
         u.orbitR * Math.sin(a) * Math.cos(u.tiltZ),
       );
       d.rotation.x += 0.015;
@@ -847,7 +935,8 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
       Math.sin(t * 2.7) * 0.08 + Math.sin(t * 7.5) * 0.04,
     );
     chromaticPass.uniforms.uLavaPulse.value = lavaPulse;
-    bloom.strength = (1.6 + Math.sin(t * 0.8) * 0.3 + lavaPulse * 2.2) * paletteBloom;
+    bloom.strength =
+      (1.6 + Math.sin(t * 0.8) * 0.3 + lavaPulse * 2.2) * paletteBloom;
 
     // Update chromatic aberration time
     chromaticPass.uniforms.uTime.value = t;
@@ -888,7 +977,9 @@ export function createOrbScene(container: HTMLElement): OrbSceneApi {
     scene.traverse((obj) => {
       const mesh = obj as THREE.Mesh;
       if (mesh.geometry) mesh.geometry.dispose();
-      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      const mats = Array.isArray(mesh.material)
+        ? mesh.material
+        : [mesh.material];
       for (const mat of mats) {
         if (!mat) continue;
         const anyMat = mat as THREE.Material & { map?: THREE.Texture };

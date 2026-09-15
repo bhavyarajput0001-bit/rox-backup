@@ -28,10 +28,14 @@ export type LocalYTCommand =
 type YTResult = { reply: string; ok: boolean };
 
 const FREELLM_URL =
-  (process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415") + "/chat/completions";
+  (process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415") +
+  "/chat/completions";
 const FREELLM_KEY = process.env.FREELLM_API_KEY || "";
 
-async function askLLM(systemPrompt: string, userPrompt: string): Promise<string> {
+async function askLLM(
+  systemPrompt: string,
+  userPrompt: string,
+): Promise<string> {
   const res = await fetch(FREELLM_URL, {
     method: "POST",
     headers: {
@@ -58,12 +62,16 @@ async function askLLM(systemPrompt: string, userPrompt: string): Promise<string>
 
 // ── Command handlers ──────────────────────────────────────────────
 
-async function ytScript(topic: string, style?: string, length?: string): Promise<YTResult> {
+async function ytScript(
+  topic: string,
+  style?: string,
+  length?: string,
+): Promise<YTResult> {
   const styleNote = style ? ` Use a ${style} style.` : "";
   const lengthNote = length ? ` Target length: ${length}.` : "";
   const reply = await askLLM(
     "You are a professional YouTube script writer. Write engaging, well-structured video scripts with hooks, narrative flow, and CTAs. Be concise but thorough.",
-    `Write a complete YouTube video script about "${topic}".${styleNote}${lengthNote} Include: opening hook (first 5 seconds), intro, main content sections with timestamps, key points, and a strong call-to-action ending.`
+    `Write a complete YouTube video script about "${topic}".${styleNote}${lengthNote} Include: opening hook (first 5 seconds), intro, main content sections with timestamps, key points, and a strong call-to-action ending.`,
   );
   return { ok: true, reply };
 }
@@ -71,7 +79,7 @@ async function ytScript(topic: string, style?: string, length?: string): Promise
 async function ytTitle(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube title optimization expert. Generate titles that are click-worthy, SEO-friendly, and under 60 characters. Use power words, numbers, and curiosity gaps.",
-    `Generate 10 optimized YouTube video titles for a video about "${topic}". Each title should be under 60 characters, include relevant keywords, and use proven title formulas (how-to, list, question, etc). Number each title.`
+    `Generate 10 optimized YouTube video titles for a video about "${topic}". Each title should be under 60 characters, include relevant keywords, and use proven title formulas (how-to, list, question, etc). Number each title.`,
   );
   return { ok: true, reply };
 }
@@ -79,7 +87,7 @@ async function ytTitle(topic: string): Promise<YTResult> {
 async function ytDescription(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube SEO expert. Write descriptions that rank in YouTube search. Include relevant keywords naturally, timestamps, and engagement hooks.",
-    `Write a complete YouTube video description for a video about "${topic}". Include: first 2-3 lines (shown before "Show more"), timestamped sections, relevant keywords naturally placed, social links section, and a subscribe CTA. Make it SEO-optimized but natural.`
+    `Write a complete YouTube video description for a video about "${topic}". Include: first 2-3 lines (shown before "Show more"), timestamped sections, relevant keywords naturally placed, social links section, and a subscribe CTA. Make it SEO-optimized but natural.`,
   );
   return { ok: true, reply };
 }
@@ -87,7 +95,7 @@ async function ytDescription(topic: string): Promise<YTResult> {
 async function ytTags(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube SEO tag specialist. Generate tags that maximize discoverability. Include short-tail, long-tail, and trending tags.",
-    `Generate 30 optimized YouTube tags for a video about "${topic}". Include: primary keyword tags, long-tail variations, related topics, trending tags, and misspellings people commonly search. Format as a comma-separated list with the most important tags first.`
+    `Generate 30 optimized YouTube tags for a video about "${topic}". Include: primary keyword tags, long-tail variations, related topics, trending tags, and misspellings people commonly search. Format as a comma-separated list with the most important tags first.`,
   );
   return { ok: true, reply };
 }
@@ -95,7 +103,7 @@ async function ytTags(topic: string): Promise<YTResult> {
 async function ytSEO(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube SEO expert. Generate complete SEO packages: title, description, tags, and hashtags all optimized for maximum reach.",
-    `Create a complete YouTube SEO package for a video about "${topic}". Include:\n\n1. TITLE (5 variations, under 60 chars each)\n2. DESCRIPTION (first 3 lines + full SEO description with timestamps and keywords)\n3. TAGS (30 tags, comma-separated, ranked by importance)\n4. HASHTAGS (10 hashtags for the description)\n5. THUMBNAIL TEXT (3 short text overlays for the thumbnail)\n\nMake everything SEO-optimized and click-worthy.`
+    `Create a complete YouTube SEO package for a video about "${topic}". Include:\n\n1. TITLE (5 variations, under 60 chars each)\n2. DESCRIPTION (first 3 lines + full SEO description with timestamps and keywords)\n3. TAGS (30 tags, comma-separated, ranked by importance)\n4. HASHTAGS (10 hashtags for the description)\n5. THUMBNAIL TEXT (3 short text overlays for the thumbnail)\n\nMake everything SEO-optimized and click-worthy.`,
   );
   return { ok: true, reply };
 }
@@ -103,7 +111,7 @@ async function ytSEO(topic: string): Promise<YTResult> {
 async function ytThumbnail(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube thumbnail designer and CTR optimization expert. Describe visual concepts that drive clicks.",
-    `Design 3 thumbnail concepts for a YouTube video about "${topic}". For each concept include:\n1. Main visual element\n2. Text overlay (3-5 words, large and bold)\n3. Color scheme\n4. Expression/emotion to convey\n5. Layout description\n\nFocus on high-CTR design principles: contrast, faces, text hierarchy, curiosity.`
+    `Design 3 thumbnail concepts for a YouTube video about "${topic}". For each concept include:\n1. Main visual element\n2. Text overlay (3-5 words, large and bold)\n3. Color scheme\n4. Expression/emotion to convey\n5. Layout description\n\nFocus on high-CTR design principles: contrast, faces, text hierarchy, curiosity.`,
   );
   return { ok: true, reply };
 }
@@ -112,7 +120,7 @@ async function ytIdeas(niche?: string): Promise<YTResult> {
   const nicheNote = niche ? ` in the "${niche}" niche` : "";
   const reply = await askLLM(
     "You are a YouTube content strategist. Generate viral content ideas based on trends, search demand, and audience engagement patterns.",
-    `Generate 15 YouTube video ideas${nicheNote}. For each idea include:\n- Title concept\n- Why it would perform (search volume, trending, engagement potential)\n- Target audience\n- Video format (tutorial, list, story, review, etc)\n- Estimated difficulty (easy/medium/hard)\n\nFocus on a mix of evergreen and trending topics.`
+    `Generate 15 YouTube video ideas${nicheNote}. For each idea include:\n- Title concept\n- Why it would perform (search volume, trending, engagement potential)\n- Target audience\n- Video format (tutorial, list, story, review, etc)\n- Estimated difficulty (easy/medium/hard)\n\nFocus on a mix of evergreen and trending topics.`,
   );
   return { ok: true, reply };
 }
@@ -121,7 +129,7 @@ async function ytCalendar(niche: string, count?: number): Promise<YTResult> {
   const videoCount = count || 12;
   const reply = await askLLM(
     "You are a YouTube content calendar planner. Create strategic publishing schedules that balance evergreen and trending content.",
-    `Create a ${videoCount}-week YouTube content calendar for the "${niche}" niche. For each week include:\n- Video topic and title\n- Content format (tutorial, list, review, story)\n- Target publish day\n- SEO focus keywords\n- Cross-promotion strategy\n\nBalance: 40% evergreen, 30% trending, 20% series, 10% experimental.`
+    `Create a ${videoCount}-week YouTube content calendar for the "${niche}" niche. For each week include:\n- Video topic and title\n- Content format (tutorial, list, review, story)\n- Target publish day\n- SEO focus keywords\n- Cross-promotion strategy\n\nBalance: 40% evergreen, 30% trending, 20% series, 10% experimental.`,
   );
   return { ok: true, reply };
 }
@@ -129,7 +137,7 @@ async function ytCalendar(niche: string, count?: number): Promise<YTResult> {
 async function ytHook(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube hook expert. The first 5 seconds determine if viewers stay. Write hooks that create immediate engagement.",
-    `Write 10 different opening hooks for a YouTube video about "${topic}". Each hook should:\n1. Be under 15 words\n2. Create curiosity or surprise\n3. Use proven hook patterns (question, bold claim, story start, controversy, pattern interrupt)\n\nLabel each hook with its pattern type and explain why it works.`
+    `Write 10 different opening hooks for a YouTube video about "${topic}". Each hook should:\n1. Be under 15 words\n2. Create curiosity or surprise\n3. Use proven hook patterns (question, bold claim, story start, controversy, pattern interrupt)\n\nLabel each hook with its pattern type and explain why it works.`,
   );
   return { ok: true, reply };
 }
@@ -138,7 +146,7 @@ async function ytChapters(topic: string, duration?: string): Promise<YTResult> {
   const dur = duration || "10 minutes";
   const reply = await askLLM(
     "You are a YouTube chapter/timestamp optimizer. Chapters improve watch time, SEO, and user experience.",
-    `Create optimized YouTube chapters for a ${dur} video about "${topic}". Include:\n- Timestamp for each chapter (starting at 00:00)\n- Descriptive chapter title with keywords\n- Brief content note for each section\n- Optimal chapter count (5-8 chapters)\n\nMake sure the first chapter is click-worthy and chapters flow naturally.`
+    `Create optimized YouTube chapters for a ${dur} video about "${topic}". Include:\n- Timestamp for each chapter (starting at 00:00)\n- Descriptive chapter title with keywords\n- Brief content note for each section\n- Optimal chapter count (5-8 chapters)\n\nMake sure the first chapter is click-worthy and chapters flow naturally.`,
   );
   return { ok: true, reply };
 }
@@ -146,7 +154,7 @@ async function ytChapters(topic: string, duration?: string): Promise<YTResult> {
 async function ytHashtags(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube hashtag strategist. Hashtags boost discoverability but must be used strategically.",
-    `Generate 15 YouTube hashtags for a video about "${topic}". Include:\n- 3 branded/channel hashtags\n- 5 primary topic hashtags (high volume)\n- 4 long-tail hashtags (low competition)\n- 3 trending hashtags (current trends)\n\nFormat: #hashtag (each on new line). Rank by importance. Explain why each category matters.`
+    `Generate 15 YouTube hashtags for a video about "${topic}". Include:\n- 3 branded/channel hashtags\n- 5 primary topic hashtags (high volume)\n- 4 long-tail hashtags (low competition)\n- 3 trending hashtags (current trends)\n\nFormat: #hashtag (each on new line). Rank by importance. Explain why each category matters.`,
   );
   return { ok: true, reply };
 }
@@ -155,7 +163,7 @@ async function ytCaption(topic: string, platform?: string): Promise<YTResult> {
   const plat = platform || "Instagram";
   const reply = await askLLM(
     "You are a social media caption writer. Write captions that drive engagement and cross-promote YouTube content.",
-    `Write 3 social media captions for ${plat} to promote a YouTube video about "${topic}". Each caption should:\n1. Be platform-optimized (character limit, hashtag count, tone)\n2. Include a hook in the first line\n3. Drive viewers to the YouTube video\n4. Include relevant emojis\n5. Have a clear CTA\n\nLabel each as Version A, B, C with different tones (professional, casual, provocative).`
+    `Write 3 social media captions for ${plat} to promote a YouTube video about "${topic}". Each caption should:\n1. Be platform-optimized (character limit, hashtag count, tone)\n2. Include a hook in the first line\n3. Drive viewers to the YouTube video\n4. Include relevant emojis\n5. Have a clear CTA\n\nLabel each as Version A, B, C with different tones (professional, casual, provocative).`,
   );
   return { ok: true, reply };
 }
@@ -163,7 +171,7 @@ async function ytCaption(topic: string, platform?: string): Promise<YTResult> {
 async function ytOutline(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube content planner. Create detailed video outlines that ensure comprehensive coverage and viewer retention.",
-    `Create a detailed video outline for "${topic}". Include:\n1. Video title options (3)\n2. Target audience\n3. Key message/takeaway\n4. Opening hook\n5. Section-by-section outline with:\n   - Main point\n   - Supporting details\n   - Visual/B-roll suggestions\n   - Transition to next section\n6. Closing CTA\n7. Suggested end screen elements\n8. Related video ideas for the series`
+    `Create a detailed video outline for "${topic}". Include:\n1. Video title options (3)\n2. Target audience\n3. Key message/takeaway\n4. Opening hook\n5. Section-by-section outline with:\n   - Main point\n   - Supporting details\n   - Visual/B-roll suggestions\n   - Transition to next section\n6. Closing CTA\n7. Suggested end screen elements\n8. Related video ideas for the series`,
   );
   return { ok: true, reply };
 }
@@ -171,7 +179,7 @@ async function ytOutline(topic: string): Promise<YTResult> {
 async function ytResearch(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube research analyst. Analyze topics for content opportunities, audience intent, and competitive angles.",
-    `Research the YouTube topic "${topic}" and provide:\n1. Audience Intent: What are viewers actually looking for?\n2. Content Gap: What's missing from existing videos on this topic?\n3. Angle Opportunities: 3 unique angles to stand out\n4. Search Volume Indicators: Related searches people make\n5. Difficulty Assessment: How competitive is this topic?\n6. Monetization Potential: What ads/sponsors fit this content?\n7. Cross-platform Potential: Where else can this content live?\n8. Evergreen vs Trending: How long will this content be relevant?\n\nBe specific and actionable.`
+    `Research the YouTube topic "${topic}" and provide:\n1. Audience Intent: What are viewers actually looking for?\n2. Content Gap: What's missing from existing videos on this topic?\n3. Angle Opportunities: 3 unique angles to stand out\n4. Search Volume Indicators: Related searches people make\n5. Difficulty Assessment: How competitive is this topic?\n6. Monetization Potential: What ads/sponsors fit this content?\n7. Cross-platform Potential: Where else can this content live?\n8. Evergreen vs Trending: How long will this content be relevant?\n\nBe specific and actionable.`,
   );
   return { ok: true, reply };
 }
@@ -179,7 +187,7 @@ async function ytResearch(topic: string): Promise<YTResult> {
 async function ytCompete(topic: string): Promise<YTResult> {
   const reply = await askLLM(
     "You are a YouTube competitive analyst. Study the competitive landscape to find opportunities.",
-    `Analyze the YouTube competitive landscape for "${topic}". Provide:\n1. Top 5 competitor content types (what works)\n2. Common title patterns used\n3. Average video lengths that perform\n4. Thumbnail trends\n5. What competitors are doing WRONG (gaps)\n6. Your differentiation strategy\n7. Suggested content mix to compete\n8. Quick wins you can implement immediately\n\nFocus on actionable competitive intelligence.`
+    `Analyze the YouTube competitive landscape for "${topic}". Provide:\n1. Top 5 competitor content types (what works)\n2. Common title patterns used\n3. Average video lengths that perform\n4. Thumbnail trends\n5. What competitors are doing WRONG (gaps)\n6. Your differentiation strategy\n7. Suggested content mix to compete\n8. Quick wins you can implement immediately\n\nFocus on actionable competitive intelligence.`,
   );
   return { ok: true, reply };
 }
@@ -188,14 +196,16 @@ async function ytPlan(niche: string, count?: number): Promise<YTResult> {
   const videoCount = count || 10;
   const reply = await askLLM(
     "You are a YouTube channel growth strategist. Create comprehensive content plans that balance growth, engagement, and monetization.",
-    `Create a complete ${videoCount}-video content plan for a "${niche}" YouTube channel. For each video include:\n1. Title (SEO optimized)\n2. Video format and style\n3. Target length\n4. Hook concept\n5. Key talking points\n6. SEO keywords\n7. Thumbnail concept\n8. Expected difficulty\n9. Growth potential (low/medium/high)\n10. Why this video fits the channel\n\nOrganize by priority: first 3 videos for channel launch, next 3 for momentum, last 4 for growth.`
+    `Create a complete ${videoCount}-video content plan for a "${niche}" YouTube channel. For each video include:\n1. Title (SEO optimized)\n2. Video format and style\n3. Target length\n4. Hook concept\n5. Key talking points\n6. SEO keywords\n7. Thumbnail concept\n8. Expected difficulty\n9. Growth potential (low/medium/high)\n10. Why this video fits the channel\n\nOrganize by priority: first 3 videos for channel launch, next 3 for momentum, last 4 for growth.`,
   );
   return { ok: true, reply };
 }
 
 // ── Command router ────────────────────────────────────────────────
 
-export async function runLocalYTCommand(cmd: LocalYTCommand): Promise<YTResult> {
+export async function runLocalYTCommand(
+  cmd: LocalYTCommand,
+): Promise<YTResult> {
   try {
     switch (cmd.command) {
       case "yt_script":

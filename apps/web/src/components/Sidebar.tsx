@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Home,
   Brain,
@@ -7,16 +7,31 @@ import {
   FileText,
   Wrench,
   Settings,
-} from 'lucide-react';
-import { useRoxStore } from '@rox/ui/store';
+} from "lucide-react";
+import { useRoxStore } from "@rox/ui/store";
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home', icon: Home, desc: 'Overview & Quick Actions' },
-  { id: 'brain', label: 'Brain', icon: Brain, desc: 'Deep Research & Insights' },
-  { id: 'projects', label: 'Projects', icon: FolderGit2, desc: 'Your Workspaces' },
-  { id: 'files', label: 'Files', icon: FileText, desc: 'Docs & Knowledge' },
-  { id: 'tools', label: 'Tools', icon: Wrench, desc: 'Apps & Integrations' },
-  { id: 'settings', label: 'Settings', icon: Settings, desc: 'Customize Experience' },
+  { id: "home", label: "Home", icon: Home, desc: "Overview & Quick Actions" },
+  {
+    id: "brain",
+    label: "Brain",
+    icon: Brain,
+    desc: "Deep Research & Insights",
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    icon: FolderGit2,
+    desc: "Your Workspaces",
+  },
+  { id: "files", label: "Files", icon: FileText, desc: "Docs & Knowledge" },
+  { id: "tools", label: "Tools", icon: Wrench, desc: "Apps & Integrations" },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    desc: "Customize Experience",
+  },
 ];
 
 export default function Sidebar() {
@@ -41,8 +56,8 @@ export default function Sidebar() {
             whileTap={{ scale: 0.95 }}
             className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
               active
-                ? 'bg-rox-amber/20 border border-rox-amber/50 shadow-[0_0_20px_rgba(255,138,0,0.2)]'
-                : 'text-rox-dim hover:text-rox-gray hover:bg-white/5'
+                ? "bg-rox-amber/20 border border-rox-amber/50 shadow-[0_0_20px_rgba(255,138,0,0.2)]"
+                : "text-rox-dim hover:text-rox-gray hover:bg-white/5"
             }`}
             aria-label={item.label}
             title={item.label}
@@ -66,7 +81,9 @@ export default function Sidebar() {
           <div className="w-1 h-1 rounded-full bg-rox-amber animate-pulse" />
         </div>
         <p className="text-[8px] text-rox-dim leading-tight tracking-wide">
-          Small steps.<br />drive big dreams.
+          Small steps.
+          <br />
+          drive big dreams.
         </p>
         {/* Mini waveform */}
         <div className="flex items-end justify-center gap-0.5 h-4 mt-2">
@@ -79,7 +96,7 @@ export default function Sidebar() {
                 duration: 1,
                 repeat: Infinity,
                 delay: i * 0.1,
-                ease: 'easeInOut',
+                ease: "easeInOut",
               }}
               style={{ height: 4 }}
             />

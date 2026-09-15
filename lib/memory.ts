@@ -40,10 +40,43 @@ function tokenize(text: string): string[] {
 }
 
 const STOPWORDS = new Set([
-  "the", "and", "for", "you", "your", "can", "with", "that", "this", "from",
-  "have", "are", "was", "were", "will", "would", "could", "should", "what",
-  "when", "where", "which", "there", "here", "about", "into", "them", "they",
-  "please", "tell", "show", "give", "make", "want", "need", "open", "status",
+  "the",
+  "and",
+  "for",
+  "you",
+  "your",
+  "can",
+  "with",
+  "that",
+  "this",
+  "from",
+  "have",
+  "are",
+  "was",
+  "were",
+  "will",
+  "would",
+  "could",
+  "should",
+  "what",
+  "when",
+  "where",
+  "which",
+  "there",
+  "here",
+  "about",
+  "into",
+  "them",
+  "they",
+  "please",
+  "tell",
+  "show",
+  "give",
+  "make",
+  "want",
+  "need",
+  "open",
+  "status",
 ]);
 
 function keywordsOf(text: string): string[] {
@@ -83,7 +116,10 @@ export async function remember(turns: AssistantTurn[]): Promise<void> {
 
 // ---- Lesson memory (keyword recall + growth) ----
 
-export async function recallLessons(request: string, limit = 3): Promise<RecallHit[]> {
+export async function recallLessons(
+  request: string,
+  limit = 3,
+): Promise<RecallHit[]> {
   const lessons = await loadJSON<LearnedLesson[]>(LESSONS_PATH, []);
   const tokens = keywordsOf(request);
   if (!tokens.length) return [];
@@ -103,7 +139,9 @@ export async function rememberLesson(input: {
     const lessons = await loadJSON<LearnedLesson[]>(LESSONS_PATH, []);
     const keywords = keywordsOf(`${input.task} ${input.action}`);
     const existing = lessons.find(
-      (lesson) => lesson.keywords.some((kw) => keywords.includes(kw)) && lesson.task.slice(0, 40) === input.task.slice(0, 40),
+      (lesson) =>
+        lesson.keywords.some((kw) => keywords.includes(kw)) &&
+        lesson.task.slice(0, 40) === input.task.slice(0, 40),
     );
     if (existing) {
       existing.result = input.result;

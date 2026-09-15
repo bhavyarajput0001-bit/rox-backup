@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
-import { OrbitControls, Environment } from '@react-three/drei';
-import { useRoxStore } from '@rox/ui/store';
+import { useRef, useState, useEffect } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import * as THREE from "three";
+import { OrbitControls, Environment } from "@react-three/drei";
+import { useRoxStore } from "@rox/ui/store";
 
 interface RoxCoreProps {
   autoRotate: boolean;
@@ -15,25 +15,49 @@ export default function RoxCore({ autoRotate, focusMode }: RoxCoreProps) {
   const autoRotateRef = useRef(autoRotate);
   const focusModeRef = useRef(focusMode);
 
-  useEffect(() => { autoRotateRef.current = autoRotate; }, [autoRotate]);
-  useEffect(() => { focusModeRef.current = focusMode; }, [focusMode]);
+  useEffect(() => {
+    autoRotateRef.current = autoRotate;
+  }, [autoRotate]);
+  useEffect(() => {
+    focusModeRef.current = focusMode;
+  }, [focusMode]);
 
   return (
     <Canvas
       camera={{ position: [0, 0, 6], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
-      style={{ position: 'absolute', inset: 0 }}
+      style={{ position: "absolute", inset: 0 }}
     >
-      <color attach="background" args={['#030303']} />
-      <fog attach="fog" args={['#030303', 5, 15]} />
+      <color attach="background" args={["#030303"]} />
+      <fog attach="fog" args={["#030303", 5, 15]} />
 
       <ambientLight intensity={0.1} />
 
-      <pointLight position={[5, 5, 5]} intensity={1.5} color="#FFB000" distance={15} />
-      <pointLight position={[-5, -3, 2]} intensity={0.8} color="#FF8A00" distance={10} />
-      <pointLight position={[0, 3, -5]} intensity={0.5} color="#FFD166" distance={8} />
+      <pointLight
+        position={[5, 5, 5]}
+        intensity={1.5}
+        color="#FFB000"
+        distance={15}
+      />
+      <pointLight
+        position={[-5, -3, 2]}
+        intensity={0.8}
+        color="#FF8A00"
+        distance={10}
+      />
+      <pointLight
+        position={[0, 3, -5]}
+        intensity={0.5}
+        color="#FFD166"
+        distance={8}
+      />
 
-      <RoxGroup ref={coreRef} isInteracting={isInteracting} autoRotateRef={autoRotateRef} focusModeRef={focusModeRef} />
+      <RoxGroup
+        ref={coreRef}
+        isInteracting={isInteracting}
+        autoRotateRef={autoRotateRef}
+        focusModeRef={focusModeRef}
+      />
 
       <OrbitControls
         enableDamping
@@ -84,16 +108,23 @@ function RoxGroup({ ref, isInteracting, autoRotateRef, focusModeRef }: any) {
   }
 
   const particleGeo = new THREE.BufferGeometry();
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  particleGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+  particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  particleGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  particleGeo.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
 
   useFrame((_, delta) => {
     if (!group.current) return;
     const elapsed = clock.current.getElapsedTime();
 
     // State-based animation speed
-    const speedMult = state === 'thinking' ? 2 : state === 'executing' ? 3 : state === 'idle' ? 0.5 : 1;
+    const speedMult =
+      state === "thinking"
+        ? 2
+        : state === "executing"
+          ? 3
+          : state === "idle"
+            ? 0.5
+            : 1;
     const rotSpeed = isInteracting ? 0 : speedMult;
 
     // Group rotation
@@ -102,17 +133,19 @@ function RoxGroup({ ref, isInteracting, autoRotateRef, focusModeRef }: any) {
 
     // Nucleus pulse
     if (nucleus.current) {
-      const pulse = state === 'success' 
-        ? 1.3 + Math.sin(elapsed * 5) * 0.1
-        : 1.0 + Math.sin(elapsed * 0.8) * 0.05;
+      const pulse =
+        state === "success"
+          ? 1.3 + Math.sin(elapsed * 5) * 0.1
+          : 1.0 + Math.sin(elapsed * 0.8) * 0.05;
       nucleus.current.scale.setScalar(pulse);
-      
+
       // Color based on state
-      const color = state === 'error' 
-        ? new THREE.Color('#E85D04')
-        : state === 'success'
-        ? new THREE.Color('#FFF2B2')
-        : new THREE.Color('#FFB000');
+      const color =
+        state === "error"
+          ? new THREE.Color("#E85D04")
+          : state === "success"
+            ? new THREE.Color("#FFF2B2")
+            : new THREE.Color("#FFB000");
       nucleus.current.material.color.lerp(color, 0.05);
     }
 
@@ -138,15 +171,15 @@ function RoxGroup({ ref, isInteracting, autoRotateRef, focusModeRef }: any) {
         const y = pos.getY(i);
         const z = pos.getZ(i);
         const dist = Math.sqrt(x * x + y * y + z * z);
-        
+
         // Gentle orbital motion
         const angle = delta * 0.1 * rotSpeed;
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
-        
+
         pos.setX(i, x * cos - z * sin);
         pos.setZ(i, x * sin + z * cos);
-        
+
         // Keep particles within bounds
         if (dist > 4) {
           pos.setX(i, x * 0.99);
@@ -177,11 +210,7 @@ function RoxGroup({ ref, isInteracting, autoRotateRef, focusModeRef }: any) {
       {/* Inner glow sphere */}
       <mesh scale={[0.4, 0.4, 0.4]}>
         <sphereGeometry args={[1, 32, 32]} />
-        <meshBasicMaterial
-          color="#FFF2B2"
-          transparent
-          opacity={0.6}
-        />
+        <meshBasicMaterial color="#FFF2B2" transparent opacity={0.6} />
       </mesh>
 
       {/* Holographic Shell */}
@@ -213,7 +242,7 @@ function RoxGroup({ ref, isInteracting, autoRotateRef, focusModeRef }: any) {
       {/* Orbital Rings */}
       <group ref={ringsRef}>
         {[0, 1, 2].map((i) => (
-          <mesh key={i} rotation={[Math.PI / 3 * i, 0, Math.PI / 6 * i]}>
+          <mesh key={i} rotation={[(Math.PI / 3) * i, 0, (Math.PI / 6) * i]}>
             <torusGeometry args={[2 + i * 0.3, 0.008, 8, 100]} />
             <meshStandardMaterial
               color="#FFD166"
@@ -228,13 +257,20 @@ function RoxGroup({ ref, isInteracting, autoRotateRef, focusModeRef }: any) {
 
       {/* Particle Field */}
       <points ref={particlesRef}>
-        <bufferGeometry attach="geometry" {...{
-          attributes: {
-            position: { array: positions, count: particleCount, needsUpdate: true },
-            color: { array: colors, count: particleCount },
-            size: { array: sizes, count: particleCount },
-          }
-        }} />
+        <bufferGeometry
+          attach="geometry"
+          {...{
+            attributes: {
+              position: {
+                array: positions,
+                count: particleCount,
+                needsUpdate: true,
+              },
+              color: { array: colors, count: particleCount },
+              size: { array: sizes, count: particleCount },
+            },
+          }}
+        />
         <pointsMaterial
           size={0.04}
           vertexColors

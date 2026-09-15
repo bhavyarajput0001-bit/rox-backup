@@ -5,19 +5,19 @@
 :root {
   --rox-bg: #030303;
   --rox-deep: #070604;
-  --rox-dark: #0C0804;
-  --rox-amber: #FF8A00;
-  --rox-gold: #FFB000;
-  --rox-light: #FFD166;
-  --rox-bright: #FFF2B2;
-  --rox-text: #FFF8E7;
-  --rox-gray: #9A8C7A;
-  --rox-dim: #5A4E40;
-  
+  --rox-dark: #0c0804;
+  --rox-amber: #ff8a00;
+  --rox-gold: #ffb000;
+  --rox-light: #ffd166;
+  --rox-bright: #fff2b2;
+  --rox-text: #fff8e7;
+  --rox-gray: #9a8c7a;
+  --rox-dim: #5a4e40;
+
   --glass-bg: rgba(15, 10, 5, 0.55);
-  --glass-border: rgba(255, 150, 40, 0.20);
+  --glass-border: rgba(255, 150, 40, 0.2);
   --glass-shadow: rgba(255, 120, 20, 0.08);
-  
+
   --radius-lg: 28px;
   --radius-md: 22px;
   --radius-sm: 16px;
@@ -30,7 +30,9 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -39,7 +41,7 @@ html, body, #root {
 body {
   background: var(--rox-bg);
   color: var(--rox-text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -66,23 +68,44 @@ body {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-fade-in {
@@ -106,7 +129,7 @@ body {
   background: rgba(15, 10, 5, 0.75);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 150, 40, 0.30);
+  border: 1px solid rgba(255, 150, 40, 0.3);
   box-shadow: 0 0 60px rgba(255, 120, 20, 0.12);
 }
 
@@ -130,7 +153,9 @@ body {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

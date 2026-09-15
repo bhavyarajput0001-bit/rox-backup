@@ -5,13 +5,7 @@
     "action": "youtube.run(task=\"generate a youtube title about coffee\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "generate",
-      "youtube",
-      "title",
-      "about",
-      "coffee"
-    ],
+    "keywords": ["generate", "youtube", "title", "about", "coffee"],
     "timestamp": "2026-09-14T16:50:50.921Z"
   },
   {
@@ -20,14 +14,7 @@
     "action": "youtube.run(task=\"generate a youtube title about morning routine\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "generate",
-      "youtube",
-      "title",
-      "about",
-      "morning",
-      "routine"
-    ],
+    "keywords": ["generate", "youtube", "title", "about", "morning", "routine"],
     "timestamp": "2026-09-14T16:51:39.028Z"
   },
   {
@@ -36,10 +23,7 @@
     "action": "youtube.run(task=\"youtube status\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T17:09:55.109Z"
   },
   {
@@ -48,11 +32,7 @@
     "action": "youtube.run(task=\"yt script about rust\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "script",
-      "about",
-      "rust"
-    ],
+    "keywords": ["script", "about", "rust"],
     "timestamp": "2026-09-14T17:09:55.119Z"
   },
   {
@@ -61,13 +41,7 @@
     "action": "youtube.run(task=\"youtube generate video about rust\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "youtube",
-      "generate",
-      "video",
-      "about",
-      "rust"
-    ],
+    "keywords": ["youtube", "generate", "video", "about", "rust"],
     "timestamp": "2026-09-14T17:21:37.464Z"
   },
   {
@@ -76,13 +50,7 @@
     "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
     "success": false,
     "latencyMs": 17,
-    "keywords": [
-      "youtube",
-      "generate",
-      "video",
-      "about",
-      "rust"
-    ],
+    "keywords": ["youtube", "generate", "video", "about", "rust"],
     "timestamp": "2026-09-14T17:24:22.304Z"
   },
   {
@@ -91,12 +59,7 @@
     "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
     "success": true,
     "latencyMs": 15785,
-    "keywords": [
-      "script",
-      "about",
-      "rust",
-      "programming"
-    ],
+    "keywords": ["script", "about", "rust", "programming"],
     "timestamp": "2026-09-14T17:24:41.552Z"
   },
   {
@@ -105,12 +68,7 @@
     "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
     "success": false,
     "latencyMs": 30007,
-    "keywords": [
-      "script",
-      "about",
-      "rust",
-      "programming"
-    ],
+    "keywords": ["script", "about", "rust", "programming"],
     "timestamp": "2026-09-14T17:27:46.394Z"
   },
   {
@@ -119,12 +77,7 @@
     "action": "local_yt.yt_script({\"command\":\"yt_script\",\"topic\":\"about rust programming\"}).slice(0,100)",
     "success": true,
     "latencyMs": 8378,
-    "keywords": [
-      "script",
-      "about",
-      "rust",
-      "programming"
-    ],
+    "keywords": ["script", "about", "rust", "programming"],
     "timestamp": "2026-09-14T17:29:01.765Z"
   },
   {
@@ -133,13 +86,7 @@
     "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
     "success": false,
     "latencyMs": 4,
-    "keywords": [
-      "youtube",
-      "generate",
-      "video",
-      "about",
-      "rust"
-    ],
+    "keywords": ["youtube", "generate", "video", "about", "rust"],
     "timestamp": "2026-09-14T17:29:28.991Z"
   },
   {
@@ -148,13 +95,7 @@
     "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
     "success": false,
     "latencyMs": 7,
-    "keywords": [
-      "youtube",
-      "generate",
-      "video",
-      "about",
-      "rust"
-    ],
+    "keywords": ["youtube", "generate", "video", "about", "rust"],
     "timestamp": "2026-09-14T17:30:44.114Z"
   },
   {
@@ -163,11 +104,7 @@
     "action": "local_yt.yt_hook({\"command\":\"yt_hook\",\"topic\":\"about fitness\"}).slice(0,100)",
     "success": true,
     "latencyMs": 882,
-    "keywords": [
-      "hook",
-      "about",
-      "fitness"
-    ],
+    "keywords": ["hook", "about", "fitness"],
     "timestamp": "2026-09-14T17:31:41.226Z"
   },
   {
@@ -176,10 +113,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 36,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T17:57:07.785Z"
   },
   {
@@ -188,10 +122,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 175,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T17:57:07.977Z"
   },
   {
@@ -200,10 +131,7 @@
     "action": "youtube.analytics({\"command\":\"analytics\"})",
     "success": true,
     "latencyMs": 2,
-    "keywords": [
-      "youtube",
-      "analytics"
-    ],
+    "keywords": ["youtube", "analytics"],
     "timestamp": "2026-09-14T17:57:07.986Z"
   },
   {
@@ -212,13 +140,7 @@
     "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
     "success": false,
     "latencyMs": 2,
-    "keywords": [
-      "youtube",
-      "generate",
-      "video",
-      "about",
-      "rust"
-    ],
+    "keywords": ["youtube", "generate", "video", "about", "rust"],
     "timestamp": "2026-09-14T17:57:07.994Z"
   },
   {
@@ -227,11 +149,7 @@
     "action": "local_yt.yt_title({\"command\":\"yt_title\",\"topic\":\"about coffee\"}).slice(0,100)",
     "success": true,
     "latencyMs": 5437,
-    "keywords": [
-      "title",
-      "about",
-      "coffee"
-    ],
+    "keywords": ["title", "about", "coffee"],
     "timestamp": "2026-09-14T18:09:42.490Z"
   },
   {
@@ -240,13 +158,7 @@
     "action": "youtube.generate({\"command\":\"generate\"})",
     "success": false,
     "latencyMs": 46,
-    "keywords": [
-      "generate",
-      "youtube",
-      "hooks",
-      "about",
-      "fitness"
-    ],
+    "keywords": ["generate", "youtube", "hooks", "about", "fitness"],
     "timestamp": "2026-09-14T18:10:14.230Z"
   },
   {
@@ -255,13 +167,7 @@
     "action": "local_yt.yt_title({\"command\":\"yt_title\",\"topic\":\"productivity\"}).slice(0,100)",
     "success": true,
     "latencyMs": 792,
-    "keywords": [
-      "generate",
-      "youtube",
-      "title",
-      "about",
-      "productivity"
-    ],
+    "keywords": ["generate", "youtube", "title", "about", "productivity"],
     "timestamp": "2026-09-14T18:10:26.255Z"
   },
   {
@@ -270,11 +176,7 @@
     "action": "local_yt.yt_hook({\"command\":\"yt_hook\",\"topic\":\"about sleep\"}).slice(0,100)",
     "success": true,
     "latencyMs": 800,
-    "keywords": [
-      "hook",
-      "about",
-      "sleep"
-    ],
+    "keywords": ["hook", "about", "sleep"],
     "timestamp": "2026-09-14T18:10:27.099Z"
   },
   {
@@ -283,10 +185,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 3,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T18:27:04.732Z"
   },
   {
@@ -295,10 +194,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 15,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T18:39:20.859Z"
   },
   {
@@ -307,10 +203,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 90,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T18:39:20.958Z"
   },
   {
@@ -319,13 +212,7 @@
     "action": "youtube.generate({\"command\":\"generate\",\"topic\":\"rust\"})",
     "success": false,
     "latencyMs": 2,
-    "keywords": [
-      "youtube",
-      "generate",
-      "video",
-      "about",
-      "rust"
-    ],
+    "keywords": ["youtube", "generate", "video", "about", "rust"],
     "timestamp": "2026-09-14T18:39:20.974Z"
   },
   {
@@ -334,10 +221,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 3,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T18:59:43.878Z"
   },
   {
@@ -346,10 +230,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 886,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T18:59:44.774Z"
   },
   {
@@ -358,10 +239,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 20,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:03:45.761Z"
   },
   {
@@ -370,10 +248,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 3,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:05:01.594Z"
   },
   {
@@ -382,10 +257,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 53,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T19:05:01.695Z"
   },
   {
@@ -394,10 +266,7 @@
     "action": "youtube.analytics({\"command\":\"analytics\"})",
     "success": true,
     "latencyMs": 2,
-    "keywords": [
-      "youtube",
-      "analytics"
-    ],
+    "keywords": ["youtube", "analytics"],
     "timestamp": "2026-09-14T19:05:01.705Z"
   },
   {
@@ -406,10 +275,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 5,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:20:16.275Z"
   },
   {
@@ -418,10 +284,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 46,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:23:43.138Z"
   },
   {
@@ -430,10 +293,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 467,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T19:23:43.636Z"
   },
   {
@@ -442,10 +302,7 @@
     "action": "youtube.analytics({\"command\":\"analytics\"})",
     "success": true,
     "latencyMs": 2,
-    "keywords": [
-      "youtube",
-      "analytics"
-    ],
+    "keywords": ["youtube", "analytics"],
     "timestamp": "2026-09-14T19:23:43.663Z"
   },
   {
@@ -454,10 +311,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 6,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:35:17.318Z"
   },
   {
@@ -466,10 +320,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 99,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T19:35:17.432Z"
   },
   {
@@ -478,10 +329,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 2,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:44:08.886Z"
   },
   {
@@ -490,10 +338,7 @@
     "action": "youtube.jobs({\"command\":\"jobs\"})",
     "success": true,
     "latencyMs": 60,
-    "keywords": [
-      "youtube",
-      "jobs"
-    ],
+    "keywords": ["youtube", "jobs"],
     "timestamp": "2026-09-14T19:44:08.955Z"
   },
   {
@@ -502,10 +347,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 8,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:47:18.487Z"
   },
   {
@@ -514,10 +356,7 @@
     "action": "youtube.status({\"command\":\"status\"})",
     "success": true,
     "latencyMs": 1,
-    "keywords": [
-      "youtube",
-      "status"
-    ],
+    "keywords": ["youtube", "status"],
     "timestamp": "2026-09-14T19:56:53.921Z"
   },
   {
@@ -526,11 +365,7 @@
     "action": "youtube.run(task=\"open youtube.com\")",
     "success": true,
     "latencyMs": 2,
-    "keywords": [
-      "open",
-      "youtube",
-      "com"
-    ],
+    "keywords": ["open", "youtube", "com"],
     "timestamp": "2026-09-14T23:57:31.675Z"
   },
   {
@@ -539,13 +374,7 @@
     "action": "youtube.run(task=\"play krish rao over youtube\")",
     "success": true,
     "latencyMs": 0,
-    "keywords": [
-      "play",
-      "krish",
-      "rao",
-      "over",
-      "youtube"
-    ],
+    "keywords": ["play", "krish", "rao", "over", "youtube"],
     "timestamp": "2026-09-14T23:59:08.193Z"
   }
 ]

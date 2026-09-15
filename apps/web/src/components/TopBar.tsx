@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Bell, User, Settings, Moon, Volume2 } from 'lucide-react';
-import { useRoxStore } from '@rox/ui/store';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Search, Bell, User, Settings, Moon, Volume2 } from "lucide-react";
+import { useRoxStore } from "@rox/ui/store";
 
 export default function TopBar() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -25,7 +25,9 @@ export default function TopBar() {
           <h1 className="text-lg font-light tracking-[0.2em] text-rox-bright leading-none">
             ROX
           </h1>
-          <p className="text-[10px] text-rox-gray tracking-wider">YOUR AI ASSISTANT</p>
+          <p className="text-[10px] text-rox-gray tracking-wider">
+            YOUR AI ASSISTANT
+          </p>
         </div>
         <div className="h-4 w-px bg-rox-dim mx-2" />
         <span className="text-xs text-rox-gray tracking-wide hidden sm:block">
@@ -67,7 +69,9 @@ export default function TopBar() {
 
         {/* Mute */}
         <button
-          onClick={() => updateSettings({ soundEnabled: !settings.soundEnabled })}
+          onClick={() =>
+            updateSettings({ soundEnabled: !settings.soundEnabled })
+          }
           className="p-2 rounded-full hover:bg-white/5 transition-colors text-rox-gray hover:text-rox-text"
           aria-label="Toggle sound"
         >

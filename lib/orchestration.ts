@@ -1,6 +1,6 @@
 /**
  * Unified Agent Orchestration Layer
- * 
+ *
  * Ties together:
  * - Multi-agent department system
  * - ECC 68 specialized agents
@@ -9,8 +9,17 @@
  * - Self-learning loop
  */
 
-import { executeTask, getSystemStatus, recallAcrossDepartments } from "./agents/multiAgent";
-import { loadECCAgents, routeToECCAgent, executeECCAgent, getECCStats } from "./eccAgents";
+import {
+  executeTask,
+  getSystemStatus,
+  recallAcrossDepartments,
+} from "./agents/multiAgent";
+import {
+  loadECCAgents,
+  routeToECCAgent,
+  executeECCAgent,
+  getECCStats,
+} from "./eccAgents";
 import { callDeepSeek, deepSeekHealthCheck } from "./deepseek";
 import { syncMemory, getCrossAgentRecall } from "./memorySync";
 import type { TaskResult } from "./agents/multiAgent";
@@ -40,22 +49,24 @@ export type OrchestrationResult = {
  * 2. Route through multi-agent departments
  * 3. Fallback to DeepSeek or LLM
  */
-export async function orchestrateTask(request: OrchestrationRequest): Promise<OrchestrationResult> {
+export async function orchestrateTask(
+  request: OrchestrationRequest,
+): Promise<OrchestrationResult> {
   const startTime = Date.now();
-  
+
   // Sync memory from all sources
   try {
     await syncMemory();
   } catch {
     // Ignore sync errors
   }
-  
+
   // Get cross-agent recall
   let crossAgentRecall: Array<{ source: string; content: string }> = [];
   try {
     crossAgentRecall = await getCrossAgentRecall(request.message);
   } catch {}
-  
+
   // Phase 1: Try ECC agents
   if (request.preferECC) {
     const eccRoute = await routeToECCAgent(request.message);
@@ -75,22 +86,29 @@ export async function orchestrateTask(request: OrchestrationRequest): Promise<Or
       }
     }
   }
-  
+
   // Phase 2: Multi-agent department routing
   const deptResult = await executeTask(request.message, request.preferredDept);
-  
+
   // Sync result to shared memory
   try {
-    await syncToSharedMemory(request.message, deptResult.result.output, deptResult.result.success);
+    await syncToSharedMemory(
+      request.message,
+      deptResult.result.output,
+      deptResult.result.success,
+    );
   } catch {}
-  
+
   // Phase 3: DeepSeek fallback for heavy reasoning
   let provider = "multi-agent";
   if (deptResult.result.latencyMs > 25000 || !deptResult.result.success) {
     const dsHealth = await deepSeekHealthCheck();
     if (dsHealth.available && request.preferDeepSeek) {
       const dsResult = await callDeepSeek([
-        { role: "system", content: "You are Rox, a helpful AI assistant with access to tools." },
+        {
+          role: "system",
+          content: "You are Rox, a helpful AI assistant with access to tools.",
+        },
         { role: "user", content: request.message },
       ]);
       if (dsResult.success) {
@@ -107,7 +125,7 @@ export async function orchestrateTask(request: OrchestrationRequest): Promise<Or
       }
     }
   }
-  
+
   return {
     success: deptResult.result.success,
     reply: deptResult.result.output,
@@ -133,7 +151,7 @@ export async function getFullSystemStatus(): Promise<{
     getECCStats(),
     deepSeekHealthCheck(),
   ]);
-  
+
   return {
     multiAgent,
     ecc,
@@ -142,7 +160,11 @@ export async function getFullSystemStatus(): Promise<{
   };
 }
 
-async function syncToSharedMemory(task: string, result: string, success: boolean): Promise<void> {
+async function syncToSharedMemory(
+  task: string,
+  result: string,
+  success: boolean,
+): Promise<void> {
   // Already handled by memorySync
   void task;
   void result;

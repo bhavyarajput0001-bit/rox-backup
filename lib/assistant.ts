@@ -1,4 +1,11 @@
-import { calculate, capabilityReport, getNews, getWeather, readWebpage, searchWeb } from "@/lib/onlineTools";
+import {
+  calculate,
+  capabilityReport,
+  getNews,
+  getWeather,
+  readWebpage,
+  searchWeb,
+} from "@/lib/onlineTools";
 import { openApp, openUrl, searchUrl, systemSnapshot } from "@/lib/automation";
 import { remember, recentMemory } from "@/lib/memory";
 import { runYouTubeControl } from "@/lib/youtubeControl";
@@ -10,13 +17,32 @@ export type AssistantAction =
   | { type: "reset" }
   | { type: "zoom"; value: "in" | "out" }
   | { type: "gestures" }
-  | { type: "cognitiveState"; value: "idle" | "focus" | "reasoning" | "automating" | "learning" | "resting" | "alert" | "offline" };
+  | {
+      type: "cognitiveState";
+      value:
+        | "idle"
+        | "focus"
+        | "reasoning"
+        | "automating"
+        | "learning"
+        | "resting"
+        | "alert"
+        | "offline";
+    };
 
 export type AssistantResult = {
   reply: string;
   action?: AssistantAction;
   provider: "local" | "model" | "online";
-  cognitiveState?: "idle" | "focus" | "reasoning" | "automating" | "learning" | "resting" | "alert" | "offline";
+  cognitiveState?:
+    | "idle"
+    | "focus"
+    | "reasoning"
+    | "automating"
+    | "learning"
+    | "resting"
+    | "alert"
+    | "offline";
 };
 
 export type AssistantTurn = {
@@ -42,14 +68,21 @@ export interface ProviderConfig {
 const PROVIDER_CONFIGS = {
   local: { baseUrl: "", apiKey: "", model: "rules", priority: 100 },
   omniroute: {
-    baseUrl: (process.env.OMNIROUTE_BASE_URL || "http://127.0.0.1:20128/v1").replace(/\/$/, ""),
-    apiKey: process.env.OMNIROUTE_API_KEY || "sk-d656ee33b2d34cb0-381aa9-5acd090f",
+    baseUrl: (
+      process.env.OMNIROUTE_BASE_URL || "http://127.0.0.1:20128/v1"
+    ).replace(/\/$/, ""),
+    apiKey:
+      process.env.OMNIROUTE_API_KEY || "sk-d656ee33b2d34cb0-381aa9-5acd090f",
     model: process.env.OMNIROUTE_MODEL || "auto/best-coding",
     priority: 80,
   },
   freellm: {
-    baseUrl: (process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1").replace(/\/$/, ""),
-    apiKey: process.env.FREELLM_API_KEY || "freellmapi-c6d846374855a302d3b1450673db04d7f34e4546abf036c9",
+    baseUrl: (
+      process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1"
+    ).replace(/\/$/, ""),
+    apiKey:
+      process.env.FREELLM_API_KEY ||
+      "freellmapi-c6d846374855a302d3b1450673db04d7f34e4546abf036c9",
     model: process.env.FREELLM_MODEL || "auto",
     priority: 60,
   },
@@ -57,7 +90,9 @@ const PROVIDER_CONFIGS = {
 
 type ProviderKey = keyof typeof PROVIDER_CONFIGS;
 
-function selectProvider(taskComplexity: "simple" | "medium" | "complex"): ProviderKey {
+function selectProvider(
+  taskComplexity: "simple" | "medium" | "complex",
+): ProviderKey {
   const complexityToPriority = {
     simple: 100,
     medium: 60,
@@ -68,7 +103,7 @@ function selectProvider(taskComplexity: "simple" | "medium" | "complex"): Provid
   const minPriority = complexityToPriority[taskComplexity];
 
   return candidates.filter(
-    (key) => PROVIDER_CONFIGS[key].priority >= minPriority
+    (key) => PROVIDER_CONFIGS[key].priority >= minPriority,
   )[0] as ProviderKey;
 }
 
@@ -104,7 +139,7 @@ function assessComplexity(message: string): "simple" | "medium" | "complex" {
 async function callLLMProvider(
   message: string,
   history: AssistantTurn[],
-  provider: ProviderKey
+  provider: ProviderKey,
 ): Promise<{ reply: string; providerName: "model" } | null> {
   const config = getProviderConfig(provider);
 
@@ -125,12 +160,11 @@ async function callLLMProvider(
         temperature: 0.4,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          ...history.map(
-            (turn) => ({
-              role: turn.role === "rox" ? ("assistant" as const) : ("user" as const),
-              content: turn.content,
-            })
-          ),
+          ...history.map((turn) => ({
+            role:
+              turn.role === "rox" ? ("assistant" as const) : ("user" as const),
+            content: turn.content,
+          })),
           { role: "user", content: message },
         ],
       }),
@@ -218,7 +252,8 @@ function localIntent(message: string): AssistantResult | null {
   }
   if (normalized.includes("status") || normalized.includes("how are you")) {
     return {
-      reply: "Rox is online. The orb interface is ready and the local command system is active.",
+      reply:
+        "Rox is online. The orb interface is ready and the local command system is active.",
       provider: "local",
       cognitiveState: "idle",
     };
@@ -238,46 +273,71 @@ function providerCandidates() {
   return [
     // 1. Omniroute (router with automatic provider failover)
     process.env.OMNIROUTE_API_KEY && {
-      baseUrl: (process.env.OMNIROUTE_BASE_URL || "http://127.0.0.1:20128/v1").replace(/\/$/, ""),
+      baseUrl: (
+        process.env.OMNIROUTE_BASE_URL || "http://127.0.0.1:20128/v1"
+      ).replace(/\/$/, ""),
       apiKey: process.env.OMNIROUTE_API_KEY!,
       model: process.env.OMNIROUTE_MODEL || "auto",
     },
     // 2. FreeLLM (free open-source model router via local proxy)
     process.env.FREELLM_API_KEY && {
-      baseUrl: (process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1").replace(/\/$/, ""),
+      baseUrl: (
+        process.env.FREELLM_BASE_URL || "http://127.0.0.1:31415/v1"
+      ).replace(/\/$/, ""),
       apiKey: process.env.FREELLM_API_KEY!,
       model: process.env.FREELLM_MODEL || "auto",
     },
     // 3. Legacy AI_* provider (backwards compat)
     process.env.AI_API_KEY && {
-      baseUrl: (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, ""),
+      baseUrl: (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(
+        /\/$/,
+        "",
+      ),
       apiKey: process.env.AI_API_KEY!,
       model: process.env.AI_MODEL || "gpt-4o-mini",
     },
-  ].filter(Boolean) as Array<{ baseUrl: string; apiKey: string; model: string }>;
+  ].filter(Boolean) as Array<{
+    baseUrl: string;
+    apiKey: string;
+    model: string;
+  }>;
 }
 
-async function modelReply(message: string, history: AssistantTurn[]): Promise<AssistantResult | null> {
+async function modelReply(
+  message: string,
+  history: AssistantTurn[],
+): Promise<AssistantResult | null> {
   for (const provider of providerCandidates()) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15_000);
     try {
       const response = await fetch(`${provider.baseUrl}/chat/completions`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${provider.apiKey}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${provider.apiKey}`,
+        },
         body: JSON.stringify({
           model: provider.model,
           temperature: 0.4,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
-            ...history.map((turn) => ({ role: turn.role === "rox" ? ("assistant" as const) : ("user" as const), content: turn.content })),
+            ...history.map((turn) => ({
+              role:
+                turn.role === "rox"
+                  ? ("assistant" as const)
+                  : ("user" as const),
+              content: turn.content,
+            })),
             { role: "user", content: message },
           ],
         }),
         signal: controller.signal,
       });
       if (!response.ok) continue;
-      const data = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+      };
       const reply = data.choices?.[0]?.message?.content?.trim();
       if (reply) return { reply, provider: "model" };
     } catch {
@@ -292,62 +352,109 @@ async function modelReply(message: string, history: AssistantTurn[]): Promise<As
 async function onlineIntent(message: string): Promise<AssistantResult | null> {
   const normalized = message.toLowerCase().trim();
 
-  if (normalized.includes("online skills") || normalized.includes("what skills do you have")) {
+  if (
+    normalized.includes("online skills") ||
+    normalized.includes("what skills do you have")
+  ) {
     return { reply: capabilityReport(), provider: "local" };
   }
 
-  const calculation = message.match(/(?:calculate|what is)\s+([0-9()+\-*/%.\s]+)$/i);
+  const calculation = message.match(
+    /(?:calculate|what is)\s+([0-9()+\-*/%.\s]+)$/i,
+  );
   if (calculation?.[1]) {
     try {
-      return { reply: `The answer is ${calculate(calculation[1])}.`, provider: "local" };
+      return {
+        reply: `The answer is ${calculate(calculation[1])}.`,
+        provider: "local",
+      };
     } catch {
-      return { reply: "I could not parse that calculation.", provider: "local" };
+      return {
+        reply: "I could not parse that calculation.",
+        provider: "local",
+      };
     }
   }
 
-  const weatherMatch = message.match(/(?:weather|temperature)\s+(?:in|at|for)\s+(.+)/i);
+  const weatherMatch = message.match(
+    /(?:weather|temperature)\s+(?:in|at|for)\s+(.+)/i,
+  );
   if (weatherMatch?.[1]) {
     try {
       return { reply: await getWeather(weatherMatch[1]), provider: "online" };
     } catch {
-      return { reply: "I could not reach the weather service right now.", provider: "local" };
+      return {
+        reply: "I could not reach the weather service right now.",
+        provider: "local",
+      };
     }
   }
 
-  const newsMatch = message.match(/(?:news|headlines)(?:\s+(?:about|on|for))?\s*(.*)$/i);
+  const newsMatch = message.match(
+    /(?:news|headlines)(?:\s+(?:about|on|for))?\s*(.*)$/i,
+  );
   if (newsMatch) {
     try {
       const headlines = await getNews(newsMatch[1]);
-      return { reply: headlines ? `Here are the latest headlines:\n${headlines}` : "No headlines were found.", provider: "online" };
+      return {
+        reply: headlines
+          ? `Here are the latest headlines:\n${headlines}`
+          : "No headlines were found.",
+        provider: "online",
+      };
     } catch {
-      return { reply: "I could not reach the news service right now.", provider: "local" };
+      return {
+        reply: "I could not reach the news service right now.",
+        provider: "local",
+      };
     }
   }
 
   const url = message.match(/https?:\/\/[^\s]+/i)?.[0];
-  if (url && (normalized.includes("read") || normalized.includes("open") || normalized.includes("summarize"))) {
+  if (
+    url &&
+    (normalized.includes("read") ||
+      normalized.includes("open") ||
+      normalized.includes("summarize"))
+  ) {
     try {
       const content = await readWebpage(url);
-      return { reply: `I read the page. ${content.slice(0, 1_200)}`, provider: "online" };
+      return {
+        reply: `I read the page. ${content.slice(0, 1_200)}`,
+        provider: "online",
+      };
     } catch {
-      return { reply: "I could not read that webpage right now.", provider: "local" };
+      return {
+        reply: "I could not read that webpage right now.",
+        provider: "local",
+      };
     }
   }
 
-  const searchMatch = message.match(/(?:search|look up|find online)\s+(?:for\s+)?(.+)/i);
+  const searchMatch = message.match(
+    /(?:search|look up|find online)\s+(?:for\s+)?(.+)/i,
+  );
   if (searchMatch?.[1]) {
     try {
       const results = await searchWeb(searchMatch[1].trim());
-      return { reply: `Here is what I found online: ${results.slice(0, 1_800)}`, provider: "online" };
+      return {
+        reply: `Here is what I found online: ${results.slice(0, 1_800)}`,
+        provider: "online",
+      };
     } catch {
-      return { reply: "Online search is installed but unavailable right now.", provider: "local" };
+      return {
+        reply: "Online search is installed but unavailable right now.",
+        provider: "local",
+      };
     }
   }
 
   return null;
 }
 
-async function automationIntent(message: string): Promise<AssistantResult | null> {
+async function automationIntent(
+  message: string,
+): Promise<AssistantResult | null> {
   const normalized = message.toLowerCase().trim();
 
   // YouTube Automation Agent control (agent runs on its own port; Rox is the front door).
@@ -369,7 +476,10 @@ async function automationIntent(message: string): Promise<AssistantResult | null
       return {
         reply: result.reply,
         provider: "local",
-        action: youtubeCommand.command === "dashboard" ? { type: "cognitiveState", value: "automating" } : undefined,
+        action:
+          youtubeCommand.command === "dashboard"
+            ? { type: "cognitiveState", value: "automating" }
+            : undefined,
       };
     } catch (error) {
       return {
@@ -379,7 +489,11 @@ async function automationIntent(message: string): Promise<AssistantResult | null
     }
   }
 
-  if (normalized.includes("system scan") || normalized.includes("system status") || normalized === "scan my system") {
+  if (
+    normalized.includes("system scan") ||
+    normalized.includes("system status") ||
+    normalized === "scan my system"
+  ) {
     const snapshot = systemSnapshot();
     return {
       reply: `System scan complete. Memory is ${snapshot.memoryUsedPercent}% used across ${snapshot.cpuCores} CPU cores. Load is ${snapshot.loadAverage[0]}.`,
@@ -387,7 +501,9 @@ async function automationIntent(message: string): Promise<AssistantResult | null
     };
   }
 
-  const directUrl = message.match(/(?:open|go to|visit)\s+(https?:\/\/[^\s]+)/i)?.[1];
+  const directUrl = message.match(
+    /(?:open|go to|visit)\s+(https?:\/\/[^\s]+)/i,
+  )?.[1];
   if (directUrl) {
     try {
       const opened = await openUrl(directUrl);
@@ -397,40 +513,58 @@ async function automationIntent(message: string): Promise<AssistantResult | null
     }
   }
 
-  const youtube = message.match(/(?:play|open|search)\s+(.+?)\s+(?:on|in)\s+youtube/i) ?? message.match(/^youtube\s+(.+)/i);
+  const youtube =
+    message.match(/(?:play|open|search)\s+(.+?)\s+(?:on|in)\s+youtube/i) ??
+    message.match(/^youtube\s+(.+)/i);
   if (youtube?.[1]) {
     try {
       const url = searchUrl("youtube", youtube[1]);
       await openUrl(url);
-      return { reply: `Opening YouTube results for ${youtube[1].trim()}.`, provider: "local" };
+      return {
+        reply: `Opening YouTube results for ${youtube[1].trim()}.`,
+        provider: "local",
+      };
     } catch {
       return { reply: "I could not open YouTube.", provider: "local" };
     }
   }
 
-  const spotify = message.match(/(?:play|open|search)\s+(.+?)\s+(?:on|in)\s+spotify/i) ?? message.match(/^spotify\s+(.+)/i);
+  const spotify =
+    message.match(/(?:play|open|search)\s+(.+?)\s+(?:on|in)\s+spotify/i) ??
+    message.match(/^spotify\s+(.+)/i);
   if (spotify?.[1]) {
     try {
       await openUrl(searchUrl("spotify", spotify[1]));
-      return { reply: `Opening Spotify results for ${spotify[1].trim()}.`, provider: "local" };
+      return {
+        reply: `Opening Spotify results for ${spotify[1].trim()}.`,
+        provider: "local",
+      };
     } catch {
       return { reply: "I could not open Spotify.", provider: "local" };
     }
   }
 
-  const app = message.match(/^(?:open|launch|start)\s+(?:the\s+)?(.+?)\s+app$/i);
+  const app = message.match(
+    /^(?:open|launch|start)\s+(?:the\s+)?(.+?)\s+app$/i,
+  );
   if (app?.[1]) {
     try {
       await openApp(app[1]);
       return { reply: `Launching ${app[1].trim()}.`, provider: "local" };
     } catch {
-      return { reply: `I could not launch ${app[1].trim()}.`, provider: "local" };
+      return {
+        reply: `I could not launch ${app[1].trim()}.`,
+        provider: "local",
+      };
     }
   }
   return null;
 }
 
-export async function runAssistant(message: string, history: AssistantTurn[] = []): Promise<AssistantResult> {
+export async function runAssistant(
+  message: string,
+  history: AssistantTurn[] = [],
+): Promise<AssistantResult> {
   const local = localIntent(message);
   if (local) return local;
 
@@ -474,7 +608,11 @@ export async function runAssistant(message: string, history: AssistantTurn[] = [
   // If local rules handled it, we'd have returned already
   // Now try the selected AI provider
   if (provider !== "local" && providerConfig.apiKey) {
-    const llmResult = await callLLMProvider(message, history.slice(-8), provider);
+    const llmResult = await callLLMProvider(
+      message,
+      history.slice(-8),
+      provider,
+    );
     if (llmResult) {
       return {
         reply: llmResult.reply,
@@ -488,10 +626,15 @@ export async function runAssistant(message: string, history: AssistantTurn[] = [
   // Fallback: try remaining providers in priority order
   const allKeys: ProviderKey[] = ["omniroute", "freellm", "local"];
   const remainingProviders = allKeys.filter(
-    (p): p is ProviderKey => p !== selectedProviderKey && !!getProviderConfig(p).apiKey
+    (p): p is ProviderKey =>
+      p !== selectedProviderKey && !!getProviderConfig(p).apiKey,
   );
   for (const fallbackProvider of remainingProviders) {
-    const fallbackResult = await callLLMProvider(message, history.slice(-8), fallbackProvider);
+    const fallbackResult = await callLLMProvider(
+      message,
+      history.slice(-8),
+      fallbackProvider,
+    );
     if (fallbackResult) {
       return {
         reply: fallbackResult.reply,
@@ -503,7 +646,8 @@ export async function runAssistant(message: string, history: AssistantTurn[] = [
 
   // Truly no model connected - return local capabilities message
   return {
-    reply: "I heard you, but my reasoning model is not connected yet. I can still control the orb locally.",
+    reply:
+      "I heard you, but my reasoning model is not connected yet. I can still control the orb locally.",
     provider: "local",
     cognitiveState: "offline",
   };
@@ -513,7 +657,10 @@ function sseEvent(payload: unknown) {
   return `data: ${JSON.stringify(payload)}\n\n`;
 }
 
-export async function streamAssistant(message: string, history: AssistantTurn[] = []) {
+export async function streamAssistant(
+  message: string,
+  history: AssistantTurn[] = [],
+) {
   const local = localIntent(message);
   const complexity = assessComplexity(message);
   const encoder = new TextEncoder();
@@ -523,17 +670,32 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
     const encoder = new TextEncoder();
     return new ReadableStream<Uint8Array>({
       async start(controller) {
-        controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: local.provider })));
         controller.enqueue(
-          encoder.encode(sseEvent({ type: "meta", cognitiveState: local.cognitiveState }))
+          encoder.encode(sseEvent({ type: "meta", provider: local.provider })),
+        );
+        controller.enqueue(
+          encoder.encode(
+            sseEvent({ type: "meta", cognitiveState: local.cognitiveState }),
+          ),
         );
         for (const word of local.reply.split(/(?<=\s)/)) {
-          controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: word })));
+          controller.enqueue(
+            encoder.encode(sseEvent({ type: "chunk", text: word })),
+          );
         }
         controller.enqueue(
-          encoder.encode(sseEvent({ type: "done", ...local, cognitiveState: local.cognitiveState }))
+          encoder.encode(
+            sseEvent({
+              type: "done",
+              ...local,
+              cognitiveState: local.cognitiveState,
+            }),
+          ),
         );
-        await remember([{ role: "user", content: message }, { role: "rox", content: local.reply }]);
+        await remember([
+          { role: "user", content: message },
+          { role: "rox", content: local.reply },
+        ]);
         controller.close();
       },
     });
@@ -547,17 +709,26 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
       return new ReadableStream<Uint8Array>({
         async start(controller) {
           const encoder = new TextEncoder();
-          controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: "local" })));
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "meta", cognitiveState: "focus" }))
+            encoder.encode(sseEvent({ type: "meta", provider: "local" })),
+          );
+          controller.enqueue(
+            encoder.encode(sseEvent({ type: "meta", cognitiveState: "focus" })),
           );
           for (const word of result.reply.split(/(?<=\s)/)) {
-            controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: word })));
+            controller.enqueue(
+              encoder.encode(sseEvent({ type: "chunk", text: word })),
+            );
           }
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "done", ...result, cognitiveState: "focus" }))
+            encoder.encode(
+              sseEvent({ type: "done", ...result, cognitiveState: "focus" }),
+            ),
           );
-          await remember([{ role: "user", content: message }, { role: "rox", content: result.reply }]);
+          await remember([
+            { role: "user", content: message },
+            { role: "rox", content: result.reply },
+          ]);
           controller.close();
         },
       });
@@ -574,17 +745,32 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
       return new ReadableStream<Uint8Array>({
         async start(controller) {
           const encoder = new TextEncoder();
-          controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: "local" })));
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "meta", cognitiveState: "automating" }))
+            encoder.encode(sseEvent({ type: "meta", provider: "local" })),
+          );
+          controller.enqueue(
+            encoder.encode(
+              sseEvent({ type: "meta", cognitiveState: "automating" }),
+            ),
           );
           for (const word of result.reply.split(/(?<=\s)/)) {
-            controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: word })));
+            controller.enqueue(
+              encoder.encode(sseEvent({ type: "chunk", text: word })),
+            );
           }
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "done", ...result, cognitiveState: "automating" }))
+            encoder.encode(
+              sseEvent({
+                type: "done",
+                ...result,
+                cognitiveState: "automating",
+              }),
+            ),
           );
-          await remember([{ role: "user", content: message }, { role: "rox", content: result.reply }]);
+          await remember([
+            { role: "user", content: message },
+            { role: "rox", content: result.reply },
+          ]);
           controller.close();
         },
       });
@@ -592,12 +778,25 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
       return new ReadableStream<Uint8Array>({
         async start(controller) {
           const encoder = new TextEncoder();
-          controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: "local" })));
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "chunk", text: `I could not reach the YouTube agent.` }))
+            encoder.encode(sseEvent({ type: "meta", provider: "local" })),
           );
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "done", provider: "local", cognitiveState: "offline" }))
+            encoder.encode(
+              sseEvent({
+                type: "chunk",
+                text: `I could not reach the YouTube agent.`,
+              }),
+            ),
+          );
+          controller.enqueue(
+            encoder.encode(
+              sseEvent({
+                type: "done",
+                provider: "local",
+                cognitiveState: "offline",
+              }),
+            ),
           );
           controller.close();
         },
@@ -615,27 +814,33 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
     const timeout = setTimeout(() => controller.abort(), 30_000);
 
     try {
-      const response = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${providerConfig.apiKey}`,
+      const response = await fetch(
+        `${providerConfig.baseUrl}/chat/completions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${providerConfig.apiKey}`,
+          },
+          body: JSON.stringify({
+            model: providerConfig.model,
+            temperature: 0.4,
+            stream: true,
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              ...history.slice(-8).map((turn) => ({
+                role:
+                  turn.role === "rox"
+                    ? ("assistant" as const)
+                    : ("user" as const),
+                content: turn.content,
+              })),
+              { role: "user", content: message },
+            ],
+          }),
+          signal: controller.signal,
         },
-        body: JSON.stringify({
-          model: providerConfig.model,
-          temperature: 0.4,
-          stream: true,
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            ...history.slice(-8).map((turn) => ({
-              role: turn.role === "rox" ? ("assistant" as const) : ("user" as const),
-              content: turn.content,
-            })),
-            { role: "user", content: message },
-          ],
-        }),
-        signal: controller.signal,
-      });
+      );
 
       if (!response.ok || !response.body) {
         const fallback = await runAssistant(message, history);
@@ -645,34 +850,42 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let reply = "";
-      let currentState: "focus" | "reasoning" = complexity === "complex" ? "reasoning" : "focus";
+      let currentState: "focus" | "reasoning" =
+        complexity === "complex" ? "reasoning" : "focus";
 
       return new ReadableStream<Uint8Array>({
         async start(controller) {
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "meta", provider: "model" }))
+            encoder.encode(sseEvent({ type: "meta", provider: "model" })),
           );
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "meta", cognitiveState: currentState }))
+            encoder.encode(
+              sseEvent({ type: "meta", cognitiveState: currentState }),
+            ),
           );
           let buffer = "";
           while (true) {
             const { done, value } = await reader.read();
-            buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+            buffer += decoder.decode(value ?? new Uint8Array(), {
+              stream: !done,
+            });
             const events = buffer.split("\n\n");
             buffer = events.pop() ?? "";
             for (const event of events) {
               const data = event
                 .split("\n")
-                .find((line) => line.startsWith("data: "))?.slice(6);
+                .find((line) => line.startsWith("data: "))
+                ?.slice(6);
               if (!data || data === "[DONE]") continue;
-              const delta = (JSON.parse(data) as {
-                choices?: Array<{ delta?: { content?: string } }>;
-              }).choices?.[0]?.delta?.content;
+              const delta = (
+                JSON.parse(data) as {
+                  choices?: Array<{ delta?: { content?: string } }>;
+                }
+              ).choices?.[0]?.delta?.content;
               if (delta) {
                 reply += delta;
                 controller.enqueue(
-                  encoder.encode(sseEvent({ type: "chunk", text: delta }))
+                  encoder.encode(sseEvent({ type: "chunk", text: delta })),
                 );
               }
             }
@@ -684,9 +897,12 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
             cognitiveState: currentState,
           };
           controller.enqueue(
-            encoder.encode(sseEvent({ type: "done", ...result }))
+            encoder.encode(sseEvent({ type: "done", ...result })),
           );
-          await remember([{ role: "user", content: message }, { role: "rox", content: result.reply }]);
+          await remember([
+            { role: "user", content: message },
+            { role: "rox", content: result.reply },
+          ]);
           controller.close();
         },
       });
@@ -702,35 +918,65 @@ export async function streamAssistant(message: string, history: AssistantTurn[] 
     async start(controller) {
       const encoder = new TextEncoder();
       controller.enqueue(
-        encoder.encode(sseEvent({ type: "meta", provider: fallback.provider }))
+        encoder.encode(sseEvent({ type: "meta", provider: fallback.provider })),
       );
       controller.enqueue(
-        encoder.encode(sseEvent({ type: "meta", cognitiveState: fallback.cognitiveState }))
+        encoder.encode(
+          sseEvent({ type: "meta", cognitiveState: fallback.cognitiveState }),
+        ),
       );
       controller.enqueue(
-        encoder.encode(sseEvent({ type: "chunk", text: fallback.reply }))
+        encoder.encode(sseEvent({ type: "chunk", text: fallback.reply })),
       );
       controller.enqueue(
-        encoder.encode(sseEvent({ type: "done", ...fallback, cognitiveState: fallback.cognitiveState }))
+        encoder.encode(
+          sseEvent({
+            type: "done",
+            ...fallback,
+            cognitiveState: fallback.cognitiveState,
+          }),
+        ),
       );
-      await remember([{ role: "user", content: message }, { role: "rox", content: fallback.reply }]);
+      await remember([
+        { role: "user", content: message },
+        { role: "rox", content: fallback.reply },
+      ]);
       controller.close();
     },
   });
 }
 
-function streamAssistantResult(result: AssistantResult, message: string, encoder: TextEncoder) {
+function streamAssistantResult(
+  result: AssistantResult,
+  message: string,
+  encoder: TextEncoder,
+) {
   return new ReadableStream<Uint8Array>({
     async start(controller) {
-      controller.enqueue(encoder.encode(sseEvent({ type: "meta", provider: result.provider })));
       controller.enqueue(
-        encoder.encode(sseEvent({ type: "meta", cognitiveState: result.cognitiveState }))
+        encoder.encode(sseEvent({ type: "meta", provider: result.provider })),
       );
-      controller.enqueue(encoder.encode(sseEvent({ type: "chunk", text: result.reply })));
       controller.enqueue(
-        encoder.encode(sseEvent({ type: "done", ...result, cognitiveState: result.cognitiveState }))
+        encoder.encode(
+          sseEvent({ type: "meta", cognitiveState: result.cognitiveState }),
+        ),
       );
-      await remember([{ role: "user", content: message }, { role: "rox", content: result.reply }]);
+      controller.enqueue(
+        encoder.encode(sseEvent({ type: "chunk", text: result.reply })),
+      );
+      controller.enqueue(
+        encoder.encode(
+          sseEvent({
+            type: "done",
+            ...result,
+            cognitiveState: result.cognitiveState,
+          }),
+        ),
+      );
+      await remember([
+        { role: "user", content: message },
+        { role: "rox", content: result.reply },
+      ]);
       controller.close();
     },
   });

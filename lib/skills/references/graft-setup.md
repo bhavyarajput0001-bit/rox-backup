@@ -12,12 +12,14 @@ npm install @nanonets/graft --save-dev
 ## Usage
 
 ### Build Graph
+
 ```bash
 cd ~/Downloads/Rox/self_improvement/<repo>
 node ../../node_modules/.bin/graft build
 ```
 
 ### Check Status
+
 ```bash
 node ../../node_modules/.bin/graft check
 ```
@@ -25,10 +27,13 @@ node ../../node_modules/.bin/graft check
 ## Known Issues
 
 ### `--quiet` Flag Not Supported
+
 Graft v0.18+ does not accept `--quiet`. Remove it from commands.
 
 ### Path Resolution
+
 When running from `lib/skills/`, use relative paths:
+
 ```typescript
 const graftBin = process.env.PATH?.includes("node_modules")
   ? path.join(process.cwd(), "node_modules", ".bin", "graft")

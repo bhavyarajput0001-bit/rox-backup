@@ -1,37 +1,37 @@
 export type CoreState =
-  | 'idle'
-  | 'thinking'
-  | 'researching'
-  | 'creating'
-  | 'executing'
-  | 'success'
-  | 'error';
+  | "idle"
+  | "thinking"
+  | "researching"
+  | "creating"
+  | "executing"
+  | "success"
+  | "error";
 
 export type IntentType =
-  | 'chat'
-  | 'research'
-  | 'writing'
-  | 'design'
-  | 'coding'
-  | 'analysis'
-  | 'automation'
-  | 'file_operation'
-  | 'web_research'
-  | 'task_management';
+  | "chat"
+  | "research"
+  | "writing"
+  | "design"
+  | "coding"
+  | "analysis"
+  | "automation"
+  | "file_operation"
+  | "web_research"
+  | "task_management";
 
 export type ModuleId =
-  | 'writing'
-  | 'design'
-  | 'coding'
-  | 'research'
-  | 'productivity'
-  | 'media'
-  | 'analysis'
-  | 'custom';
+  | "writing"
+  | "design"
+  | "coding"
+  | "research"
+  | "productivity"
+  | "media"
+  | "analysis"
+  | "custom";
 
-export type TaskStatus = 'todo' | 'in_progress' | 'done';
+export type TaskStatus = "todo" | "in_progress" | "done";
 
-export type TaskPriority = 'low' | 'medium' | 'high';
+export type TaskPriority = "low" | "medium" | "high";
 
 export interface Task {
   id: string;
@@ -78,7 +78,7 @@ export interface ToolDef {
   permissions?: string[];
 }
 
-export type AIProvider = 'openai' | 'anthropic' | 'local';
+export type AIProvider = "openai" | "anthropic" | "local";
 
 export interface AIResponse {
   content: string;
@@ -90,18 +90,18 @@ export interface AIResponse {
 
 export interface ChatMessage {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: string;
   tools?: string[];
 }
 
 export interface UserSettings {
-  theme: 'dark' | 'light';
+  theme: "dark" | "light";
   aiProvider: AIProvider;
   model: string;
   animationsEnabled: boolean;
-  quality: 'low' | 'medium' | 'high' | 'ultra';
+  quality: "low" | "medium" | "high" | "ultra";
   soundEnabled: boolean;
   shortcuts: Record<string, string>;
 }

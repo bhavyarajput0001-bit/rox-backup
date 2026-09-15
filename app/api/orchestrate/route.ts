@@ -4,7 +4,8 @@ export async function GET() {
   return Response.json({
     name: "Rox Unified Orchestration Layer",
     version: "3.0",
-    description: "Routes tasks through ECC agents, multi-agent departments, and DeepSeek fallback",
+    description:
+      "Routes tasks through ECC agents, multi-agent departments, and DeepSeek fallback",
     capabilities: [
       "ecc-agent-routing",
       "multi-department-orchestration",
@@ -25,14 +26,16 @@ export async function POST(request: Request) {
   }
 
   const bodyObj = body as Record<string, unknown>;
-  const message = typeof bodyObj?.message === "string" ? bodyObj.message.trim() : "";
+  const message =
+    typeof bodyObj?.message === "string" ? bodyObj.message.trim() : "";
   if (!message) {
     return Response.json({ error: "Missing 'message' field" }, { status: 400 });
   }
 
   const preferECC = bodyObj?.preferECC === true;
   const preferDeepSeek = bodyObj?.preferDeepSeek === true;
-  const preferredDept = typeof bodyObj?.department === "string" ? bodyObj.department : undefined;
+  const preferredDept =
+    typeof bodyObj?.department === "string" ? bodyObj.department : undefined;
 
   const result = await orchestrateTask({
     message,

@@ -32,21 +32,25 @@ export function systemSnapshot(): SystemSnapshot {
 
 function ensureUrl(value: string) {
   const url = new URL(value);
-  if (!['http:', 'https:'].includes(url.protocol)) throw new Error("Only web URLs can be opened.");
+  if (!["http:", "https:"].includes(url.protocol))
+    throw new Error("Only web URLs can be opened.");
   return url.toString();
 }
 
 export async function openUrl(value: string) {
   const url = ensureUrl(value);
-  if (process.platform !== "darwin") throw new Error("Browser automation currently requires macOS.");
+  if (process.platform !== "darwin")
+    throw new Error("Browser automation currently requires macOS.");
   await execFileAsync("open", [url], { timeout: 8_000 });
   return url;
 }
 
 export async function openApp(name: string) {
   const appName = name.trim().replace(/[^a-zA-Z0-9 ._-]/g, "");
-  if (!appName || appName.length > 80) throw new Error("Invalid application name.");
-  if (process.platform !== "darwin") throw new Error("App automation currently requires macOS.");
+  if (!appName || appName.length > 80)
+    throw new Error("Invalid application name.");
+  if (process.platform !== "darwin")
+    throw new Error("App automation currently requires macOS.");
   await execFileAsync("open", ["-a", appName], { timeout: 8_000 });
   return appName;
 }
