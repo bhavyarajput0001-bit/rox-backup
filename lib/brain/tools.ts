@@ -10,6 +10,7 @@ import {
 } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
+import { hermesExecute as hermesExecuteTool } from "./hermesExecute";
 
 const execFileAsync = promisify(execFile);
 
@@ -24,6 +25,8 @@ export interface ToolParameter {
   description?: string;
   enum?: string[];
   items?: ToolParameter;
+  properties?: Record<string, ToolParameter>;
+  required?: string[];
 }
 
 export interface ToolDefinition {
@@ -560,7 +563,54 @@ export const TOOL_DEFINITIONS: Array<{
     },
     execute: youtubeExecute,
   },
-];
+  {
+    name: "hermes",
+    description: `Execute ANY task using the full Hermes Agent framework. This gives access to ALL 25 Hermes toolsets:
+
+COMPUTER USE: macOS/Windows/Linux desktop automation (screenshots, clicks, typing, apps)
+BROWSER: Web browser automation (navigation, clicks, forms, extraction)
+BROWSER_USE: Browser-use CLI for complex web tasks
+FILE: File operations (read, write, list, search, edit)
+TERMINAL: Shell execution (any command, background processes)
+WEB: Web search, fetch, extract content from URLs
+DELEGATION: Spawn sub-agents for parallel tasks
+MEMORY: Persistent memory (recall, store, graph, sessions)
+CRON: Cron job scheduling and management
+SKILLS: Load/use any of 200+ Hermes skills
+MCP: Connect to MCP servers for external tools
+GITHUB: GitHub operations (issues, PRs, repos, reviews)
+EMAIL: IMAP/SMTP email management
+APPLE: Apple ecosystem (Notes, Reminders, iMessage, FindMy)
+DEPLOYMENT: Docker, Render, Supabase, Vercel deployment
+DATA_SCIENCE: Jupyter kernels, data analysis
+MLOPS: HuggingFace, vLLM, llama.cpp, model serving
+CREATIVE: ASCII art, diagrams, music, video generation
+PRODUCTIVITY: Notion, Linear, Obsidian, Google Workspace
+RESEARCH: arXiv, web search, citations, competitor monitoring
+SOCIAL_MEDIA: X/Twitter posting and search
+DEVOPS: Kanban, Docker, local debugging, Next.js
+CODE: Lint, typecheck, debug, refactor
+DEBUG: Node, Python, Hermes TUI debugging
+NOTE_TAKING: Obsidian, session memory, cross-session recall
+
+Use this tool for ANY complex task that requires real-world action, multi-step reasoning, or access to external systems. Hermes handles planning, tool selection, execution, and self-improvement automatically.`,
+    parameters: {
+      type: "object",
+      properties: {
+        message: { type: "string", description: "The task or question for Hermes to complete. Be specific and detailed." },
+        toolsets: { type: "array", items: { type: "string" }, description: "Specific toolsets to enable. Default: all 25 toolsets." },
+        history: { type: "array", items: { type: "object", properties: { role: { type: "string", enum: ["user", "assistant", "system"] }, content: { type: "string" } }, required: ["role", "content"] }, description: "Conversation history for context" },
+        sessionId: { type: "string", description: "Hermes session ID to resume" },
+        stream: { type: "boolean", description: "Stream response incrementally" },
+        maxTurns: { type: "number", description: "Max reasoning/tool turns (default: 20)" },
+        provider: { type: "string", description: "LLM provider (auto, openai, anthropic, etc.)" },
+        model: { type: "string", description: "Specific model (e.g., gpt-4o, claude-3.5-sonnet)" },
+      },
+      required: ["message"],
+    },
+    execute: hermesExecuteTool,
+  },
+] as const;
 
 // ---------------------------------------------------------------------------
 // Export helpers
@@ -580,3 +630,6 @@ export function openAIToolSchema(): Array<{ type: "function"; function: { name: 
     function: { name: t.name, description: t.description, parameters: t.parameters },
   }));
 }
+
+/** Re-export hermes execute function */
+export { hermesExecute as runHermes } from "./hermesExecute";
