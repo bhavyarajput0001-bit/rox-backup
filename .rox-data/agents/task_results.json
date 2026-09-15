@@ -708,5 +708,25 @@
     "latencyMs": 1,
     "output": "YouTube agent is online: status \"setup_required\" (setup mode — needs YouTube credentials), uptime 33778s. Agents: none. Dashboard: http://127.0.0.1:3457/",
     "timestamp": "2026-09-14T19:56:53.921Z"
+  },
+  {
+    "taskId": "task_1789430251674_15ofl",
+    "department": "youtube",
+    "task": "open youtube.com",
+    "action": "youtube.run(task=\"open youtube.com\")",
+    "success": true,
+    "latencyMs": 2,
+    "output": "YouTube task queued for: open youtube.com...",
+    "timestamp": "2026-09-14T23:57:31.675Z"
+  },
+  {
+    "taskId": "task_1789430348193_0alq8",
+    "department": "youtube",
+    "task": "play krish rao over youtube",
+    "action": "youtube.run(task=\"play krish rao over youtube\")",
+    "success": true,
+    "latencyMs": 0,
+    "output": "YouTube task queued for: play krish rao over youtube...",
+    "timestamp": "2026-09-14T23:59:08.193Z"
   }
 ]

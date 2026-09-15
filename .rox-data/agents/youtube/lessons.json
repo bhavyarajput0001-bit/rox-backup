@@ -519,5 +519,33 @@
       "status"
     ],
     "timestamp": "2026-09-14T19:56:53.921Z"
+  },
+  {
+    "id": "lesson_task_1789430251674_15ofl",
+    "task": "open youtube.com",
+    "action": "youtube.run(task=\"open youtube.com\")",
+    "success": true,
+    "latencyMs": 2,
+    "keywords": [
+      "open",
+      "youtube",
+      "com"
+    ],
+    "timestamp": "2026-09-14T23:57:31.675Z"
+  },
+  {
+    "id": "lesson_task_1789430348193_0alq8",
+    "task": "play krish rao over youtube",
+    "action": "youtube.run(task=\"play krish rao over youtube\")",
+    "success": true,
+    "latencyMs": 0,
+    "keywords": [
+      "play",
+      "krish",
+      "rao",
+      "over",
+      "youtube"
+    ],
+    "timestamp": "2026-09-14T23:59:08.193Z"
   }
 ]
