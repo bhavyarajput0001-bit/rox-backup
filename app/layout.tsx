@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import NavTaskbar from "@/components/NavTaskbar";
+import SystemTray from "@/components/SystemTray";
 
 export const metadata: Metadata = {
   title: "Rox — Neural Orbital Interface",
@@ -18,8 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <NavTaskbar />
+        <main className="pt-14 pb-10 rox-shell">{children}</main>
+        <SystemTray />
+      </body>
     </html>
   );
 }
