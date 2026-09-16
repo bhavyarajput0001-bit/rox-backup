@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import NavTaskbar from "@/components/NavTaskbar";
 import SystemTray from "@/components/SystemTray";
+import LeftTaskbar from "@/components/LeftTaskbar";
+import BottomController from "@/components/BottomController";
+import { getAppMode } from "@/lib/appModes";
 
 export const metadata: Metadata = {
   title: "Rox — Neural Orbital Interface",
@@ -19,11 +22,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Initialize mode from localStorage on server
+  const initialMode = getAppMode();
+  
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={initialMode !== 'focus' ? `app-mode-${initialMode}` : ''}>
+        {/* Left Taskbar - Mode switcher & nav */}
+        <LeftTaskbar />
+        
+        {/* Top Navigation */}
         <NavTaskbar />
-        <main className="pt-14 pb-10 rox-shell">{children}</main>
+        
+        {/* Main Content Area */}
+        <main className="pt-14 pb-10 pl-16 rox-shell">
+          {children}
+        </main>
+        
+        {/* Bottom Controller - Media & system controls */}
+        <BottomController />
+        
+        {/* System Tray - Right side */}
         <SystemTray />
       </body>
     </html>

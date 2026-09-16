@@ -1,11 +1,10 @@
-// Login page for Rox
-
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { login, register, getAuth, saveAuth } from "@/lib/auth";
 import type { User } from "@/lib/auth";
+import { Brain } from "lucide-react";
 
 type Mode = "login" | "register";
 
@@ -26,7 +25,7 @@ export default function LoginPage() {
     if (auth.isAuthenticated) {
       router.replace("/dashboard");
     }
-    // Default device name
+    // Default device name detection
     const ua = navigator.userAgent;
     if (ua.includes("Mac")) setDeviceName("Mac");
     else if (ua.includes("iPhone") || ua.includes("iPad")) setDeviceName("iOS Device");
@@ -39,7 +38,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       let result;
       if (mode === "register") {
@@ -48,7 +46,6 @@ export default function LoginPage() {
       } else {
         result = await login(email, password, deviceName || undefined);
       }
-
       saveAuth(result.token, result.user);
       router.push("/dashboard");
     } catch (err) {
@@ -61,111 +58,128 @@ export default function LoginPage() {
   if (!mounted) return null;
 
   return (
-    <div className="login-page">
-      <div className="login-bg-orb" />
-      <div className="login-grain" />
-      <div className="login-scanlines" />
-
-      <div className="login-container">
-        <div className="login-header">
-          <div className="login-logo">
-            <span className="login-logo__orb" />
-            <span className="login-logo__text">R.O.X.</span>
+    <div className="login-page relative min-h-screen bg-black overflow-hidden">
+      {/* Film grain overlay */}
+      <div className="overlay-grain absolute inset-0 opacity-30 pointer-events-none" />
+      {/* Amber radial glow background */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(center,rgba(255,170,48,0.15),transparent_60%)] 
+        pointer-events-none"
+      />
+      
+      <div className="flex flex-col items-center justify-center min-h-screen flex-grow px-4">
+        {/* Glass Card Container */}
+        <div className="glass-card w-full max-w-md p-6 rounded-xl bg-black/30 backdrop-filter:blur(12px) border border-rox/10 shadow-[0_0_20px_rgba(255,170,48,0.2)]">
+          {/* Header: Brain icon + Title */}
+          <div className="flex flex-col items-center justify-center mb-6">
+            <div className="flex justify-center mb-2">
+              <Brain className="w-12 h-12 text-rox/bright animate-pulse" />
+              <p className="glow-text text-4xl font-bold tracking-wider mb-1">ROX</p>
+            </div>
+            <p className="text-rox-muted text-lg mt-1">Neural Orbital Interface</p>
           </div>
-          <p className="login-subtitle">
-            {mode === "login" ? "NEURAL ORBITAL INTERFACE" : "CREATE NEW IDENTITY"}
-          </p>
-        </div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
+          {/* Tabs */}
+          <div className="flex gap-2 mb-6 justify-center">
+            <button
+              type="button"
+              onClick={() => setMode("login")}
+              className="px-4 py-2 rounded-full text-sm font-medium transition-all transform hover:scale-105"
+              style={{
+                border: mode === "login" ? "2px solid var(--hud-bright)" : "1px solid rgba(255,170,48,0.3)",
+                background: mode === "login" ? "rgba(255,170,48,0.05)" : "transparent",
+                color: mode === "login" ? "var(--hud-bright)" : "var(--hud-muted)",
+              }}
+            >
+              LOGIN
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("register")}
+              className="px-4 py-2 rounded-full text-sm font-medium transition-all transform hover:scale-105"
+              style={{
+                border: mode === "register" ? "2px solid var(--hud-bright)" : "1px solid rgba(255,170,48,0.3)",
+                background: mode === "register" ? "rgba(255,170,48,0.05)" : "transparent",
+                color: mode === "register" ? "var(--hud-bright)" : "var(--hud-muted)",
+              }}
+            >
+              REGISTER
+            </button>
+          </div>
+
+          {/* Register-specific field */}
           {mode === "register" && (
-            <div className="form-group">
-              <label className="form-label">OPERATOR NAME</label>
+            <div className="mb-4">
+              <label className="block text-rox-muted text-xs mb-1">Operator Name</label>
               <input
                 type="text"
-                className="form-input"
+                className="w-full mb-2 glass-input"
+                placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                required
               />
             </div>
           )}
 
-          <div className="form-group">
-            <label className="form-label">EMAIL CREDENTIAL</label>
+          {/* Email and Password */}
+          <div className="space-y-3">
+            <label className="block text-rox-muted text-xs mb-1">Email Credential</label>
             <input
               type="email"
-              className="form-input"
+              className="w-full glass-input"
+              placeholder="operator@rox.system"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="operator@rox.system"
               required
             />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">ACCESS CODE</label>
+            <label className="block text-rox-muted text-xs mb-1">Access Code</label>
             <input
               type="password"
-              className="form-input"
+              className="w-full glass-input"
+              placeholder="••••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••••"
-              required
               minLength={6}
+              required
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">DEVICE IDENTIFIER</label>
-            <input
-              type="text"
-              className="form-input"
-              value={deviceName}
-              onChange={(e) => setDeviceName(e.target.value)}
-              placeholder="Custom device name"
-            />
-          </div>
+          {/* Device name input for register */}
+          {mode === "register" && (
+            <div className="space-y-1 mb-4">
+              <label className="block text-rox-muted text-xs mb-1">Device Identifier</label>
+              <input
+                type="text"
+                className="w-full glass-input"
+                placeholder="Custom device name"
+                value={deviceName}
+                onChange={(e) => setDeviceName(e.target.value)}
+              />
+            </div>
+          )}
 
-          {error && <div className="login-error">{error}</div>}
+          {/* Error message */}
+          {error && <div className="login-error text-red-400 text-sm mb-2">{error}</div>}
 
+          {/* Submit button */}
           <button
             type="submit"
-            className="login-btn"
+            className="w-full py-2 glass-button transition-all transform hover:scale-105"
             disabled={loading}
           >
             {loading ? (
-              <span className="login-btn__spinner" />
+              <span className="animate-pulse" />
             ) : (
-              mode === "login" ? "INITIALIZE SESSION" : "CREATE IDENTITY"
+              mode === "login"
+                ? "INITIALIZE SESSION"
+                : "CREATE IDENTITY"
             )}
           </button>
-        </form>
 
-        <div className="login-footer">
-          <button
-            type="button"
-            className="login-link"
-            onClick={() => {
-              setMode(mode === "login" ? "register" : "login");
-              setError("");
-            }}
-          >
-            {mode === "login"
-              ? "NEW OPERATOR? REGISTER →"
-              : "EXISTING OPERATOR? LOGIN →"}
-          </button>
-        </div>
-
-        <div className="login-orbit">
-          {[...Array(8)].map((_, i) => (
-            <span
-              key={i}
-              className="login-orbit__dot"
-              style={{ animationDelay: `${i * 0.3}s` }}
-            />
-          ))}
+          {/* Note */}
+          <p className="text-rox-muted text-sm mt-4 text-center">
+            Enter your API key for full AI powers
+          </p>
         </div>
       </div>
     </div>
