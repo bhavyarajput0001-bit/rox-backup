@@ -610,6 +610,140 @@ Use this tool for ANY complex task that requires real-world action, multi-step r
     },
     execute: hermesExecuteTool,
   },
+  {
+    name: "claude_code",
+    description: `Execute coding tasks using Claude Code CLI (Anthropic's autonomous coding agent).
+
+USE FOR:
+- Writing code, implementing features, bug fixes
+- Code refactoring, restructuring, cleanup
+- PR review, code review
+- Debugging complex issues
+- Running tests, linting, typechecking
+- Git operations, branch management
+
+CAPABILITIES:
+- Reads and writes files autonomously
+- Runs shell commands in the project directory
+- Spawns subagents for parallel work
+- Reviews PRs from GitHub
+- Uses slash commands (/compact, /review, /model, etc.)
+- Supports multiple models (sonnet, opus, haiku)
+
+EXAMPLES:
+- "claude_code task='Add error handling to all API routes'"
+- "claude_code task='Review PR #42 for security issues'"
+- "claude_code task='Refactor auth module to use JWT tokens'"`,
+    parameters: {
+      type: "object",
+      properties: {
+        task: { type: "string", description: "The coding task to execute" },
+        maxTurns: { type: "number", description: "Maximum reasoning turns (default: 10)" },
+        model: { type: "string", description: "Model to use (sonnet, opus, haiku)" },
+        workdir: { type: "string", description: "Working directory (defaults to current)" },
+        budgetUsd: { type: "number", description: "Cost limit in USD (default: no limit)" },
+      },
+      required: ["task"],
+    },
+    execute: async (args: Record<string, unknown>) => {
+      const { runClaudeCode } = await import("./agents/claudeCode");
+      const result = await runClaudeCode({
+        task: String(args.task ?? ""),
+        maxTurns: Number(args.maxTurns ?? 10),
+        model: String(args.model ?? ""),
+        workdir: String(args.workdir ?? ""),
+        budgetUsd: Number(args.budgetUsd ?? 0),
+      });
+      return result;
+    },
+  },
+  {
+    name: "opencode",
+    description: `Execute tasks using OpenCode CLI (provider-agnostic coding agent).
+
+USE FOR:
+- General coding tasks
+- Code generation and implementation
+- Task execution with multi-model support
+- Parallel task delegation
+
+CAPABILITIES:
+- Provider-agnostic (works with any OpenAI-compatible API)
+- One-shot execution via 'run' command
+- Interactive TUI mode
+- Session management
+- Cost tracking
+
+EXAMPLES:
+- "opencode task='Build a REST API with Express'"
+- "opencode task='Create unit tests for auth module'"`,
+    parameters: {
+      type: "object",
+      properties: {
+        task: { type: "string", description: "The task to execute" },
+        model: { type: "string", description: "Model to use" },
+        workdir: { type: "string", description: "Working directory" },
+        thinking: { type: "boolean", description: "Show model thinking" },
+        variant: { type: "string", enum: ["low", "medium", "high", "max"], description: "Reasoning effort level" },
+      },
+      required: ["task"],
+    },
+    execute: async (args: Record<string, unknown>) => {
+      const { runOpenCode } = await import("./agents/opencode");
+      const result = await runOpenCode({
+        task: String(args.task ?? ""),
+        model: String(args.model ?? ""),
+        workdir: String(args.workdir ?? ""),
+        thinking: Boolean(args.thinking ?? false),
+        variant: String(args.variant ?? "medium") as "low" | "medium" | "high" | "max",
+      });
+      return result;
+    },
+  },
+  {
+    name: "orchestrate",
+    description: `Route a task to the optimal agent (Hermes, Claude Code, or OpenCode) based on task type.
+
+AUTO-SELECTS:
+- Coding tasks → Claude Code (best for implementation)
+- Reviews → Claude Code (with read-only tools)
+- General tasks → Hermes (full toolset)
+
+USE THIS when you want Rox to automatically pick the best agent.
+
+EXAMPLES:
+- "orchestrate task='Create a new React component for the dashboard'"
+- "orchestrate task='Review the auth module for security issues'"
+- "orchestrate task='Search for weather in Tokyo'"`,
+    parameters: {
+      type: "object",
+      properties: {
+        task: { type: "string", description: "The task to execute" },
+        preferredAgent: {
+          type: "string",
+          enum: ["hermes", "claude-code", "opencode"],
+          description: "Force a specific agent (optional)",
+        },
+        category: {
+          type: "string",
+          enum: ["general", "coding", "refactor", "review", "debug", "test"],
+          description: "Task category (auto-detected if not provided)",
+        },
+        maxTurns: { type: "number", description: "Max turns for the agent" },
+      },
+      required: ["task"],
+    },
+    execute: async (args: Record<string, unknown>) => {
+      const { executeTask } = await import("./agentOrchestrator");
+      const result = await executeTask({
+        task: String(args.task ?? ""),
+        preferredAgent: String(args.preferredAgent ?? "") as any,
+        category: String(args.category ?? "") as any,
+        maxTurns: Number(args.maxTurns ?? 10),
+      });
+      return result;
+    },
+  },
 ] as const;
 
 // ---------------------------------------------------------------------------

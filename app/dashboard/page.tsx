@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Send, Bot, User, Cpu, MemoryStick, Loader2 } from "lucide-react";
+import { Send, Bot, User, Cpu, MemoryStick, Loader2, Code2, Terminal, Zap } from "lucide-react";
 import ToolCallIndicator from "@/components/ToolCallIndicator";
 import CognitiveStateBadge from "@/components/CognitiveStateBadge";
 
@@ -15,6 +15,7 @@ interface Message {
     ok: boolean;
     output: string;
   }>;
+  agent?: string;
 }
 
 export default function DashboardPage() {
@@ -23,6 +24,11 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [cognitiveState, setCognitiveState] = useState<"idle" | "focus" | "reasoning" | "automating" | "learning">("idle");
   const [provider, setProvider] = useState<string>("");
+  const [agents, setAgents] = useState<{
+    hermes: { available: boolean; name: string };
+    claudeCode: { available: boolean; version?: string; authenticated: boolean };
+    opencode: { available: boolean; version?: string };
+  } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -34,67 +40,153 @@ export default function DashboardPage() {
     }
   }, [router]);
 
+  // Fetch available agents
+  useEffect(() => {
+    fetch("/api/agents")
+      .then((res) => res.json())
+      .then(setAgents)
+      .catch(console.error);
+  }, []);
+
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = async () => {
-          if (!input.trim() || loading) return;
+  const sendMessage = async (task?: string) => {
+    const message = task || input.trim();
+    if (!message || loading) return;
 
-          const userMessage = input.trim();
-          setInput("");
-          setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-          setLoading(true);
+    const userMessage = message;
+    if (!task) setInput("");
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setLoading(true);
 
-          try {
-            const token = localStorage.getItem("rox_token");
-            if (!token) {
-              router.push("/login");
-              return;
+    try {
+      const token = localStorage.getItem("rox_token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
+      // Try agent execution first
+      const agentRes = await fetch("/api/agents/execute", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          task: userMessage,
+          maxTurns: 15,
+        }),
+      });
+
+      if (!agentRes.ok) {
+        throw new Error("Agent execution failed");
+      }
+
+      // Read SSE stream
+      const reader = agentRes.body?.getReader();
+      const decoder = new TextDecoder();
+      let assistantMessage = "";
+      let lastAgent = "hermes";
+      let toolCalls: Message["toolCalls"] = [];
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
+          const lines = chunk.split("\n");
+
+          for (let i = 0; i < lines.length; i++) {
+            if (lines[i].startsWith("event: ")) {
+              const eventType = lines[i].slice(7).trim();
+              const dataLine = lines[i + 1];
+              if (dataLine?.startsWith("data: ")) {
+                try {
+                  const data = JSON.parse(dataLine.slice(6));
+                  
+                  if (eventType === "agents") {
+                    setAgents(data);
+                  } else if (eventType === "result") {
+                    lastAgent = data.agent || "hermes";
+                    assistantMessage += data.output || "";
+                    if (data.metadata) {
+                      // Extract tool calls from metadata
+                    }
+                  } else if (eventType === "done") {
+                    // Stream complete
+                  }
+                } catch {
+                  // Ignore parse errors
+                }
+              }
             }
-            const res = await fetch("/api/assistant", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                message: userMessage,
-                history: messages.map((m) => ({
-                  role: m.role === "user" ? "user" : "rox",
-                  content: m.content,
-                })),
-                stream: false,
-              }),
-            });
-
-            if (!res.ok) {
-              throw new Error("Failed to get response");
-            }
-
-            const data = await res.json();
-        
-            setMessages((prev) => [
-              ...prev,
-              {
-                role: "assistant",
-                content: data.reply,
-                toolCalls: data.toolCalls,
-              },
-            ]);
-        
-            setCognitiveState(data.cognitiveState || "idle");
-            setProvider(data.provider || "");
-          } catch (error) {
-            setMessages((prev) => [
-              ...prev,
-              { role: "assistant", content: "Sorry, I encountered an error. Please try again." },
-            ]);
-          } finally {
-            setLoading(false);
           }
-        };
+        }
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: assistantMessage || "Task completed",
+          toolCalls,
+          agent: lastAgent,
+        },
+      ]);
+
+      setCognitiveState("idle");
+      setProvider(lastAgent);
+    } catch (error) {
+      // Fallback to regular assistant API
+      try {
+        const res = await fetch("/api/assistant", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("rox_token")}`,
+          },
+          body: JSON.stringify({
+            message: userMessage,
+            history: messages.map((m) => ({
+              role: m.role === "user" ? "user" : "rox",
+              content: m.content,
+            })),
+            stream: false,
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to get response");
+        }
+
+        const data = await res.json();
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: data.reply,
+            toolCalls: data.toolCalls,
+          },
+        ]);
+
+        setCognitiveState(data.cognitiveState || "idle");
+        setProvider(data.provider || "");
+      } catch (fallbackError) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: "Sorry, I encountered an error. Please try again." },
+        ]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -117,7 +209,30 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex-1 p-4">
-          <div className="text-xs text-rox-gray uppercase tracking-wider mb-3">History</div>
+          <div className="text-xs text-rox-gray uppercase tracking-wider mb-3">Agents</div>
+          <div className="space-y-2">
+            {agents && (
+              <>
+                <div className="flex items-center gap-2 text-sm">
+                  <Zap size={14} className={agents.hermes.available ? "text-green-400" : "text-rox-gray"} />
+                  <span className="text-rox-bright">Hermes</span>
+                  {agents.hermes.available && <span className="text-xs text-green-400 ml-auto">●</span>}
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Code2 size={14} className={agents.claudeCode.available ? "text-blue-400" : "text-rox-gray"} />
+                  <span className="text-rox-bright">Claude Code</span>
+                  {agents.claudeCode.available && <span className="text-xs text-blue-400 ml-auto">●</span>}
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Terminal size={14} className={agents.opencode.available ? "text-purple-400" : "text-rox-gray"} />
+                  <span className="text-rox-bright">OpenCode</span>
+                  {agents.opencode.available && <span className="text-xs text-purple-400 ml-auto">●</span>}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="mt-6 text-xs text-rox-gray uppercase tracking-wider mb-3">History</div>
           <div className="space-y-2">
             {messages.slice(-10).map((msg, i) => (
               <div key={i} className="text-sm text-rox-text truncate">
@@ -130,7 +245,7 @@ export default function DashboardPage() {
         <div className="p-4 border-t border-rox-border">
           <div className="flex items-center gap-2 text-sm text-rox-gray">
             <MemoryStick className="w-4 h-4" />
-            <span>v3.0</span>
+            <span>v3.1</span>
           </div>
         </div>
       </div>
@@ -171,10 +286,17 @@ export default function DashboardPage() {
               <h2 className="text-xl text-rox-bright mb-2">Welcome to Rox</h2>
               <p className="text-rox-gray">How can I help you today?</p>
               <div className="mt-6 flex flex-wrap gap-2 justify-center">
-                {["Search the web", "Write code", "Summarize a document", "Check weather"].map((suggestion) => (
+                {[
+                  "Search the web",
+                  "Write code",
+                  "Summarize a document",
+                  "Check weather",
+                  "Review PR #42",
+                  "Debug an issue",
+                ].map((suggestion) => (
                   <button
                     key={suggestion}
-                    onClick={() => setInput(suggestion)}
+                    onClick={() => sendMessage(suggestion)}
                     className="px-4 py-2 rounded-full bg-rox-surface border border-rox-border text-rox-gray hover:border-rox-amber/50 hover:text-rox-bright transition-all text-sm"
                   >
                     {suggestion}
@@ -198,6 +320,13 @@ export default function DashboardPage() {
                     : "bg-rox-surface border border-rox-border text-rox-bright"
                 }`}
               >
+                <div className="flex items-center gap-2 mb-1">
+                  {msg.agent && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-rox-bright/10 text-rox-bright">
+                      {msg.agent}
+                    </span>
+                  )}
+                </div>
                 <p className="whitespace-pre-wrap">{msg.content}</p>
                 {msg.toolCalls && msg.toolCalls.length > 0 && (
                   <div className="mt-3 space-y-2">
@@ -239,12 +368,12 @@ export default function DashboardPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Message Rox..."
-              rows={1}
+              placeholder="Message Rox... (try: 'Write a React component', 'Debug this error', 'Review PR #42')"
+              rows={2}
               className="flex-1 px-4 py-3 rounded-xl bg-rox-bg border border-rox-border text-rox-bright resize-none focus:outline-none focus:border-rox-amber/50"
             />
             <button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               disabled={loading || !input.trim()}
               className="px-4 py-3 rounded-xl bg-rox-amber text-rox-bg font-medium hover:bg-rox-gold transition-colors disabled:opacity-50"
             >
