@@ -1,0 +1,18 @@
+services:
+  rox:
+    build: .
+    image: rox-orb-ui:latest
+    container_name: rox
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    volumes:
+      - rox-memory:/app/.rox-data
+    restart: unless-stopped
+
+volumes:
+  rox-memory:

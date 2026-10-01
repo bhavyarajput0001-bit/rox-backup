@@ -1,0 +1,14 @@
+node_modules
+.next
+dist
+.git
+.rox-data
+self_improvement
+apps/*/node_modules
+apps/*/dist
+packages/*/node_modules
+*.md
+.env
+.env.local
+new.html
+docs
