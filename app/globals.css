@@ -1,0 +1,362 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * ROX — Premium Glassmorphism Design System
+ * Amber/Gold • Film Grain • Glass Surfaces • Glow Effects
+ * ═══════════════════════════════════════════════════════════
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Reset ────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--rox-bg);
+  font-family: "Courier New", monospace;
+  color: var(--rox-text);
+}
+
+.rox-shell {
+  min-height: 100%;
+  height: calc(100% - 56px);
+  margin-left: 64px;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1. DESIGN TOKENS (CSS Custom Properties)
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Primary Amber Palette ── */
+  --rox-bright: #ffaa30;
+  --rox-mid: #dd7700;
+  --rox-hot: #ffcc66;
+  --rox-glow: #ff8800;
+
+  /* ── Surface & Border ── */
+  --rox-surface: rgba(12, 6, 0, 0.72);
+  --rox-border: rgba(255, 170, 48, 0.12);
+  --rox-border-active: rgba(255, 170, 48, 0.35);
+
+  /* ── Background & Text ── */
+  --rox-bg: #000000;
+  --rox-text: #f0e6d4;
+  --rox-text-muted: #8a7a6a;
+
+  /* ── Legacy HUD vars ── */
+  --hud-bright: var(--rox-bright);
+  --hud-mid: var(--rox-mid);
+  --hud-hot: var(--rox-hot);
+  --hud-glow: var(--rox-glow);
+  --hud-panel: rgba(20, 10, 0, 0.55);
+  --hud-panel-hover: rgba(60, 30, 0, 0.7);
+}
+
+/* ── Body Background: subtle amber radial ── */
+
+body {
+  background-color: var(--rox-bg);
+  background-image: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(255, 170, 48, 0.03) 0%,
+    transparent 60%
+  );
+}
+
+/* ── Selection Color ── */
+
+::selection {
+  background: var(--rox-bright);
+  color: #000;
+}
+
+::-moz-selection {
+  background: var(--rox-bright);
+  color: #000;
+}
+
+/* ── Dark Scrollbar ── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rox-mid);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rox-bright);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. GLASSMORPHISM UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+
+.glass-panel {
+  background: var(--rox-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--rox-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-panel:hover {
+  border-color: var(--rox-border-active);
+  box-shadow: 0 8px 32px rgba(255, 170, 48, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. THEME VARIATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Lava Theme */
+body.theme-lava {
+  --rox-bright: #ff3b1f;
+  --rox-mid: #7a0508;
+  --rox-hot: #ff6b4a;
+  --rox-glow: #ff0000;
+  --rox-border: rgba(255, 59, 31, 0.2);
+  --rox-border-active: rgba(255, 59, 31, 0.5);
+  --rox-surface: rgba(20, 5, 5, 0.75);
+  background-image: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(255, 59, 31, 0.05) 0%,
+    transparent 60%
+  );
+}
+
+body.theme-dark {
+  --rox-bright: #00ffff;
+  --rox-mid: #0088aa;
+  --rox-hot: #66ffff;
+  --rox-glow: #00dddd;
+  --rox-border: rgba(0, 255, 255, 0.15);
+  --rox-border-active: rgba(0, 255, 255, 0.4);
+  --rox-surface: rgba(0, 20, 30, 0.7);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. APP MODES (Mode-specific color accents)
+   ═══════════════════════════════════════════════════════════ */
+
+body[data-app-mode="coding"] {
+  --rox-bright: #3b82f6;
+  --rox-mid: #1e40af;
+  --rox-hot: #60a5fa;
+  --rox-glow: #2563eb;
+  --rox-border: rgba(59, 130, 246, 0.2);
+  --rox-border-active: rgba(59, 130, 246, 0.5);
+}
+
+body[data-app-mode="entertainment"] {
+  --rox-bright: #a855f7;
+  --rox-mid: #7e22ce;
+  --rox-hot: #c084fc;
+  --rox-glow: #9333ea;
+  --rox-border: rgba(168, 85, 247, 0.2);
+  --rox-border-active: rgba(168, 85, 247, 0.5);
+}
+
+body[data-app-mode="media"] {
+  --rox-bright: #06b6d4;
+  --rox-mid: #0891b2;
+  --rox-hot: #22d3ee;
+  --rox-glow: #0891b2;
+  --rox-border: rgba(6, 182, 212, 0.2);
+  --rox-border-active: rgba(6, 182, 212, 0.5);
+}
+
+body[data-app-mode="research"] {
+  --rox-bright: #10b981;
+  --rox-mid: #059669;
+  --rox-hot: #34d399;
+  --rox-glow: #059669;
+  --rox-border: rgba(16, 185, 129, 0.2);
+  --rox-border-active: rgba(16, 185, 129, 0.5);
+}
+
+body[data-app-mode="system"] {
+  --rox-bright: #f59e0b;
+  --rox-mid: #d97706;
+  --rox-hot: #fbbf24;
+  --rox-glow: #d97706;
+  --rox-border: rgba(245, 158, 11, 0.2);
+  --rox-border-active: rgba(245, 158, 11, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 170, 48, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 170, 48, 0.35);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. TEXT EFFECTS
+   ═══════════════════════════════════════════════════════════ */
+
+.glow-text {
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. PALETTE SWITCHER (for JarvisOrb)
+   ═══════════════════════════════════════════════════════════ */
+
+.palette-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--rox-surface);
+  border: 1px solid var(--rox-border);
+}
+
+.palette-label {
+  font-size: 10px;
+  color: var(--rox-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.palette-options {
+  display: flex;
+  gap: 8px;
+}
+
+.palette-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.palette-btn[aria-pressed="true"] {
+  background: rgba(255, 170, 48, 0.2);
+  border-color: var(--rox-bright);
+  color: var(--rox-bright);
+}
+
+.palette-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.palette-lava .palette-swatch {
+  background: #ef4444;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+.hud-panel {
+  background: var(--rox-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--rox-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.hud-datetime {
+  font-size: 12px;
+  color: var(--rox-text-muted);
+  font-family: monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. MEDIA PLAYER INDICATOR
+   ═══════════════════════════════════════════════════════════ */
+
+.media-playing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: rgba(255, 170, 48, 0.1);
+  border: 1px solid rgba(255, 170, 48, 0.3);
+}
+
+.media-playing-indicator .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rox-bright);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. SECURITY BADGE
+   ═══════════════════════════════════════════════════════════ */
+
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.security-badge.secure {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.security-badge.warning {
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  color: #facc15;
+}
+
+.security-badge.danger {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
